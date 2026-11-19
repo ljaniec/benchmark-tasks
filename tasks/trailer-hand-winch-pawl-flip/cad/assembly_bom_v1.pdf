@@ -1,0 +1,42 @@
+%PDF-1.4
+1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj
+2 0 obj<< /Type /Pages /Kids [3 0 R] /Count 1 >>endobj
+3 0 obj<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>endobj
+4 0 obj<< /Length 821 >>stream
+BT /F1 9 Tf 40 760 Td 11 TL
+(Trailer hand-winch pawl-flip assembly BOM \(v1\)) Tj T*
+() Tj T*
+(Torque / fasteners:) Tj T*
+(  M8 x4 winch-to-riser: 25 N*m) Tj T*
+(  MGN12H rail screws: 3 N*m) Tj T*
+(  Bezel bond or M3 x4: 0.6 N*m) Tj T*
+() Tj T*
+(Exploded stack \(table up\):) Tj T*
+(  [chock] --rail--> [sled+spring] --strap--> [drum]) Tj T*
+(  [riser] + [T1100 winch] + [pawl bezel]) Tj T*
+(  [target tabs at x=365 mm]) Tj T*
+() Tj T*
+(Scored mouths \(table mm, y=-44\):) Tj T*
+(  GREEN UP   \(192.0, 272.5 h\) aperture 14 x 14) Tj T*
+(  MAGENTA DN \(174.8, 266.6 h\) aperture 14 x 14) Tj T*
+(  centre-to-centre 18.2 mm; clear gap 7.2 mm) Tj T*
+() Tj T*
+(Verify <=1.0 mm paddle-to-mouth at 0 and +38 deg.) Tj T*
+(Paper: pawl_mouth_template_v1.dxf \(1:1 mm\).) Tj T*
+(Solids: *.step + companion *.stl envelopes.) Tj T*
+ET
+endstream
+endobj
+5 0 obj<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000056 00000 n 
+0000000111 00000 n 
+0000000235 00000 n 
+0000001105 00000 n 
+trailer<< /Size 6 /Root 1 0 R >>
+startxref
+1173
+%%EOF
