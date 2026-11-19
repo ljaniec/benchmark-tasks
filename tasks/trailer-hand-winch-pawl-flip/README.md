@@ -6,7 +6,7 @@ Files in this folder: `task.json`, `task.py` (mechkit winch articulation, succes
 
 ## Offline check, no GPU
 
-From the root of this repository, with the yam-arena package importable (on the program's Brev launchable, after `source ~/IsaacLab-Arena/yam.env`):
+From the root of this repository, with the yam-arena package importable (in the program's configured simulation environment, after `source ~/IsaacLab-Arena/yam.env`):
 
 ```bash
 python tasks/trailer-hand-winch-pawl-flip/task.py
@@ -36,7 +36,7 @@ inspect-robots run --embodiment yam_arena --policy yam_scripted \
   --scorer task_score --max-steps 2400 --seed 0 --no-prompt --store-frames --log-dir ~/yam-eval/winch-demo
 ```
 
-The demo is `demo()` in `task.py`, open loop and deterministic (no `demo_observations`, no scorer branching). Left arm closes 7 mm narrower than the 26 mm sleeve (19 mm command, jaws stop on the sleeve), grips 7 mm inboard of the sleeve centre (y = 0.098 m) to keep the forearm off the +y cheek, tracks the full `r = 0.178 m` crank arc from +40 to -82.3 deg with the TCP on the sleeve axis, then opens after a rest, lifts clear and withdraws; right arm approaches straight above `p_up` (2.0 s final approach) with a 32 mm partial opening 8 mm above the blue paddle centre, closes 7 mm narrower than the 12 mm paddle, flips it into the magenta mouth, and lifts straight up clear of the paddle before opening and retreating, then both withdraw and rest. Mechkit on_reset seeds the pretensioned sled (`x = 0.4550 m`) before the initial settle and frame 0; on_step gear/strap coupling moves drum, stripe, and sled with the crank; green UP engaged refuses payout-direction couple (wind-in still allowed). Pawl uses an over-center drive target (UP below 20 deg, magenta pocket past the ridge). Unbraced under load with pawl past the ratchet, the sled spring back-drives the 4.1:1 train (runaway latch). Red sleeve is fixed to the crank link (no free-spin bearing); sleeve and paddle use the default friction mu 1.0. While the crank is counter-held under load the pinion drive adds a 0.30 N*m preload toward payout (true Fulton value 0.53 N*m, reduced for the YAM wrist); at the chock the pinned joints report zero rate so the 1.0 s rest hold is not defeated by gravity droop. Closing counts as a hold only when the pad opening is 20 to 27.5 mm (no closing on air at 28 to 30 mm). Hands-clear keepouts and `< 5 mm` strap/sled clearance check full TCP and finger-pad/tip surfaces against all winch, crank, pawl, strap, stripe, and sled extents.
+The demo is `demo()` in `task.py`, open loop and deterministic (no `demo_observations`, no scorer branching). Left arm closes 7 mm narrower than the 26 mm sleeve (19 mm command, jaws stop on the sleeve), grips 7 mm inboard of the sleeve centre (y = 0.098 m) to keep the forearm off the +y cheek, tracks the full `r = 0.178 m` crank arc from +40 to -82.3 deg with the TCP on the sleeve axis, then opens after a rest, lifts clear and withdraws; right arm approaches straight above `p_up` (2.0 s final approach) with a 32 mm partial opening 8 mm above the blue paddle centre, closes 7 mm narrower than the 12 mm paddle, flips it into the magenta mouth, and lifts straight up clear of the paddle before opening and retreating, then both withdraw and rest. Mechkit on_reset seeds the pretensioned sled (`x = 0.4550 m`) before the initial settle and frame 0; on_step gear/strap coupling moves drum, stripe, and sled with the crank; green UP engaged refuses payout-direction couple (wind-in still allowed). Pawl uses an over-center drive target (UP below 20 deg, magenta pocket past the ridge). Unbraced under load with pawl past the ratchet, the sled spring back-drives the 4.1:1 train (runaway latch). Red sleeve is fixed to the crank link (no free-spin bearing); sleeve and paddle use the default friction mu 1.0. While the crank is counter-held under load the pinion drive adds a 0.30 N*m preload toward payout (ideal load-derived value 0.53 N*m, reduced in this simulation); at the chock the pinned joints report zero rate so the 1.0 s rest hold is not defeated by gravity droop. Closing counts as a hold only when the pad opening is 20 to 27.5 mm (no closing on air at 28 to 30 mm). Hands-clear keepouts and `< 5 mm` strap/sled clearance check full TCP and finger-pad/tip surfaces against all winch, crank, pawl, strap, stripe, and sled extents.
 
 ## Run limit, runtime and seeds
 
@@ -49,10 +49,18 @@ The demo is `demo()` in `task.py`, open loop and deterministic (no `demo_observa
 
 Task file SHA-256, first 12 hex: 8d27506fc7a0 (`sha256sum task.py | cut -c1-12`; equals `eval.environment_revision` in both logs). inspect-robots 1.0.0, Dream checkpoint `dreamlabs/dream-1-beta`.
 
-- Videos: top camera above, left and right wrist cameras below, each camera at the 320 x 176 the policy sees.
+- Videos: 640 x 528 composites with the top view enlarged above the two wrist views. The original run notes report 320 x 176 policy input per camera.
 - Dream-1 run: trial `scene-0-e0`, `task_score = 0.0`, ended by `max_steps` after 2400 steps. The left arm reaches to within about 6 cm of the red crank sleeve and hovers beside it, the right arm moves toward the winch, but neither gripper grasps the crank or the pawl; both arms then withdraw toward their bases with closed grippers.
 - Demo: trial `scene-0-e0`, `task_score = 1.0`, ended by `success` after 725 steps.
 - Setup screenshot: frame 0 of the top camera, from the demo command with `-E cam_width=640 -E cam_height=360 --max-steps 1`.
+
+## Evidence and fidelity limits
+
+The supplied run handoff and original package report Dream-1 0.0 after 2,400 steps and demo 1.0 after 725 steps. The task-code SHA above matches that package. The retained H.264/yuv420p videos contain 2,401 and 726 frames at 20 Hz, respectively, including the initial frame. Raw Inspect logs are not included in this repository, so these are the original reported run scores, not a fresh replay or new simulation result.
+
+A local CPU recheck passed all 78 scoring cases, found no unapproved collider interpenetrations above 0.5 mm or below-table geometry, and kept both arm plans inside URDF limits with worst IK position errors of 0.099 mm (left) and 0.098 mm (right). The reported seven permitted collider overlaps belong to the four joint-adjacent body-pair classes in `GEOM_ALLOWED`.
+
+The environment's gear/strap coupling writes joint states and the stripe pose every control step. Its grip classification, detent drive targets, reduced preload and rate pinning are mechanism approximations. They are separate from the open-loop policy and do not supply object-state feedback to it. The videos demonstrate this simulated mechanism; physical equivalence of the loads, material response and proposed CAD assembly has not been validated on hardware.
 
 ## Reset between trials
 
