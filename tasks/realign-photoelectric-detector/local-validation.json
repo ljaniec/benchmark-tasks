@@ -1,0 +1,139 @@
+{
+  "status": "passed",
+  "control_hz": 20,
+  "physics_hz": 480,
+  "seed": 0,
+  "object_jitter": 0,
+  "tests": {
+    "cpu_tests_passed": 12
+  },
+  "runs": {
+    "demo": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 1096,
+          "terminal_score": 1.0,
+          "maximum_score": 1.0,
+          "invalid": false,
+          "dwell": 10,
+          "max_frame_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": {
+        "previous_episode": "episode-00",
+        "reset_episode": "episode-01",
+        "poses_and_velocities_match": true,
+        "counters_cleared": true,
+        "camera_timestamps_reset": true,
+        "initial_camera_bytes_match": true,
+        "hold_steps": 20,
+        "hold_score": 0.0,
+        "clamp_closed": false
+      },
+      "framework_status": "success",
+      "wall_seconds": 302.53592426600517
+    },
+    "dream": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 2000,
+          "terminal_score": 0.0,
+          "maximum_score": 0.0,
+          "invalid": false,
+          "dwell": 0,
+          "max_frame_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": null,
+      "framework_status": "success",
+      "wall_seconds": 610.7894049020106
+    }
+  },
+  "camera_audit": {
+    "native_size": [
+      640,
+      360
+    ],
+    "policy_size": [
+      320,
+      176
+    ],
+    "official_dream_jpeg_quality": 85,
+    "sampled_steps": [
+      0,
+      200,
+      380,
+      480,
+      650,
+      920,
+      1000,
+      1096
+    ],
+    "observed": "Receive LED on/off/on, detector, tool and block visible across the three views. Socket naturally occludes bolt during engagement. No identifying overlays or observed z-fighting.",
+    "limitation": "Small bolt witness does not support a precise angle reading at policy resolution; physical judging uses a close photograph/protractor. No claim of general visual-servo success.",
+    "model_sampled_steps": [
+      0,
+      400,
+      1000,
+      1600,
+      2000
+    ],
+    "model_observed": "Three valid views throughout sampled frames; detector available in overhead and left-wrist views as the model moves. No identifying overlays or observed z-fighting. The model did not align the detector."
+  },
+  "source_hashes": {
+    "test_contract.py": "579c04a824e8e99fd769ffa69b45a0e0275c5eac476ab14b6c2f16fcb3db9f43",
+    "optics.py": "88d51e3e4a8a61209f1456bb8b48f68baac3645f6b63521b06c3ce7f44f9a9cc",
+    "export_media.py": "677093225e0a52df409cfa64d6ebfa568dbf47b154e1a4f96ec06c5c2918a9d9",
+    "test_dream_budget.py": "6e177c57bbc8775f4b6b2dac83036ad9b56dc25ff61d22097bba4361e0b0c58d",
+    "demo.py": "0ba3dc0a42dfc4e8c254190274f45cac42a91060fabfbcc25a39975ed1f3e8da",
+    "audit_run.py": "a62edf57761444f3bf80d68723297d9ecdd94abda6d16c3d7f22510f1bcf0111",
+    "scene.py": "9927611c793b61bea20d469becaa3f49083472fbe47567adaa662517fa946e42",
+    "scorer.py": "c16c83f706d87adffed85cd4b08272474d9d4924c0810d8d01f08a0e3513cdc1",
+    "spec.py": "eb3ab22fb7649a78dc75a94ced68a38474545f3c0b61e3cc90d83b63f0b6a818",
+    "run_inspect.py": "617b0d5cb6f2c93aff86b1c5353391a8ded7072309b3d87a7bbe4004ea0b0b17",
+    "inspect_task.py": "98b0882bfa3b6f107ca4927227cf33bcfd93d839df19060b3696329dec10d594",
+    "dream_budget.py": "a687d62c608901314dc78b870cdbff6aa8aee359afd7343fcfb8b8ebcf1b0107",
+    "arena_runtime.py": "3c9b9ec06e66258a6744b9b35dc060191532fd19f69a8ccaf039fba3e96a54da",
+    "prepare_arena_compat.py": "0c5acd3c63000254923dc8843243956121b5d149a9db4046380b919f2b82a994"
+  },
+  "media_verification": {
+    "demo": {
+      "codec_name": "h264",
+      "width": 640,
+      "height": 1080,
+      "pix_fmt": "yuv420p",
+      "duration": "54.850000",
+      "nb_frames": "1097",
+      "bytes": 3258357,
+      "faststart": true,
+      "sha256": "f9fca7842139db60e942f4d0e121597f305391c9a7b20249c0c59bb461bafc66"
+    },
+    "dream": {
+      "codec_name": "h264",
+      "width": 640,
+      "height": 1080,
+      "pix_fmt": "yuv420p",
+      "duration": "100.050000",
+      "nb_frames": "2001",
+      "bytes": 4729477,
+      "faststart": true,
+      "sha256": "1c6e60e66fe0f3003fc7214d3947cf12db002ec8a56b7499b0c39da0caf1eb2e"
+    },
+    "setup": {
+      "bytes": 93932,
+      "sha256": "b4d6a635091eae786ead3b812c8f4d768eb8b160d14bd86ed77348ee68a4b074",
+      "first_overhead_frame": true
+    }
+  },
+  "media_id": "M-9KT8AV"
+}

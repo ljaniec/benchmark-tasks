@@ -1,0 +1,20 @@
+{
+  "title": "Realign and secure a robot conveyor's photoelectric detector",
+  "category": "Impact on AI timelines",
+  "instruction": "The conveyor detector is misaligned. Restore reliable detection and secure its mounting. Check detection with the orange test block, return the block to its green pad, and leave the beam clear with both hands away from the sensor and tool.",
+  "context": "Retroreflective detectors on conveyor rails supply object-position signals to robot cells. This commissioning step restores a detector disturbed on its slotted bracket, retains the optical setting through fastening, and verifies that a passing opaque object switches its output.",
+  "setup": "Fixed layout in metres, x away from the arms, y left, z up. Two YAM parallel-jaw arms at (0,+/-0.305,0.75), 75 mm aperture and 40 N per finger. Wood table 1.10 x 1.30 x 0.06, top z=0.7475. Fixed metal conveyor frame 0.56 x 0.36 x 0.045 at (0.620,0.09,0.7700), rubber belt 0.51 x 0.34 x 0.003 at (0.635,0.09,0.7940), metal pedestal 0.065 x 0.045 x 0.059 at (0.33,0,0.7770). Blue metal detector 42 x 15.6 x 48.5 mm on a steel bracket with 30 x 23.5 x 2 mm foot and 2 x 19 x 46.5 mm upright, combined 140 g. Pivot (0.330,0,0.8075), yaw -14 degrees; detector centre local (0.031,0,0.02525), yellow 5 mm receive LED on top. M5x0.8 clamp at (0.312,0,0.8075), initially quarter-turn loose, 8 mm hex head 3.5 mm high and 4 g with black radial index, captive 10 mm diameter x 1 mm washer. Fixed reflector 4 x 18 x 60 mm at (0.900,0,0.83275), facing -x, on a 12 x 18 x 59 mm metal post at (0.904,0,0.7770). Loose 100 g socket driver: black rectangular handle 20 x 20 x 60 mm, steel shaft 6 mm diameter x 65 mm, 8.1 mm hex socket 12 mm deep with 0.3 mm entry bevel; socket origin (0.23,-0.15,0.75755), axis +x, handle centre 110 mm along axis. Opaque orange plastic test block 40 x 40 x 60 mm, 45 g, at (0.38,-0.18,0.7785), on a fixed green 75 x 75 x 1 mm pad centred (0.38,-0.18,0.7480). The stationary conveyor, connected power and preset sensitivity are setup conditions.",
+  "scoring": "Terminal score: 0.25 for received-light LED on. 0.5 additionally requires the head index at least 95 degrees clockwise from reset, all robot parts >=5 mm from detector/bracket, and tool >=5 mm clear. For 1.0: hold this released setting with LED on for 0.5 s, block the beam with the test block alone for 0.5 s (LED off), then return the block wholly within its 75 mm pad with its bottom within 3 mm of pad top and robot >=5 mm clear. All 0.5 conditions, block return/release and LED on must hold for 10 consecutive 20 Hz steps. Regripping, tool contact, loosening or setting change >1 degree clears test history. Otherwise 0.0. Permanently zero for frame tilt >15 degrees, any dynamic object outside x=[-0.19,0.91], y=[-0.65,0.65], z=[0.7375,1.25], bracket separation >=2 mm, or fixed frame/reflector movement >2 mm. During legitimate beam blockage current score is 0; proof history is retained.",
+  "run_limit": "2,000 control steps at 20 Hz",
+  "fidelity": "Dimensioned procedural sensor/bracket, estimated flat-sided tool and materials. Native rigid robot/tool contacts; M5 rotation sets estimated preload and a torque-limited zero-velocity clamp drive, with no angle lock. Washer axial motion, thread geometry and cable geometry omitted; cable load is passive torque. Optical return uses nine occlusion-tested rays and a visible receive LED, not full sensor electronics. No physical-hardware calibration.",
+  "scores": "Dream-1: 0.0 (2,000 steps); demo: 1.0 (1,096 steps).",
+  "keywords": [
+    "robot maintenance",
+    "photoelectric detector",
+    "optical alignment",
+    "threaded clamp",
+    "functional test"
+  ],
+  "reset_notes": "Rebuild scene, joints, physics views and camera buffers; restore all prop and robot poses, zero velocities and original joint targets; return clamp to quarter-turn loose and clear every scoring counter. Seed 0, object jitter 0; no consumables.",
+  "media": "M-9KT8AV"
+}
