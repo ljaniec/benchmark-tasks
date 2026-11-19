@@ -1,0 +1,19 @@
+{
+  "title": "Release a backup battery from its retention strap",
+  "category": "Impact on jobs",
+  "keywords": [
+    "bimanual",
+    "hook-and-loop",
+    "deformable",
+    "battery-removal"
+  ],
+  "instruction": "Remove the disconnected backup battery from the accessible service assembly and leave it on the receiving mat, with the assembly and reusable strap intact.",
+  "context": "A reconstructed subtask of industrial robot backup-battery service, starting after isolation, opening and cable disconnection. Geometry is a lookalike service fixture, not an OEM replica.",
+  "setup": "Two YAM arms at a 1100 x 1300 x 60 mm wood-table proxy, top z=747.5 mm. A free 90 x 110 x 12 mm rigid metal service-base proxy (450 g including an 85 x 82 x 4 mm backplate, 48 x 48 x 4 mm shelf and 30 x 5 x 24 mm side pad) carries a blue 17.7 x 33.8 x 52.7 mm, 50 g plastic-shell inert battery proxy. A red 170.6 x 14 x 1.2 mm segmented textile-strap proxy wraps the battery with four overlap bonds and a folded-back free tail on the accessible side. A 120 x 120 x 2 mm green rubber-mat proxy is at (270,-200,748.5) mm. One fixed layout; detailed poses and material approximations are in spec.py and README.md.",
+  "scoring": "At episode end, highest current valid tier: 0.0 without an opened restraint; 0.25 when each overlap segment is at least 6 mm from its original mating location; 0.5 additionally when the battery is fully outside the assembly envelope by at least 5 mm; 1.0 additionally when the whole battery is on the mat, bottom within 2 mm of its top, every finger at least 5 mm clear, and battery-centre displacement over the last 10 samples at most 1 mm, with all terminal conditions maintained for 10 consecutive 20 Hz steps. Assembly tilt >15 degrees, workspace exit, broken strip joins, or battery removal through a closed restraint permanently zero the score.",
+  "run_limit": "2,400 control steps (120 seconds at 20 Hz)",
+  "reset_notes": "Reconstruct the USD stage and native physics state; reset all robot, body and joint positions/velocities and targets, all four overlap bonds, scorer history and dwell counters, RGB controller history, render products and camera buffers. No consumed physical parts in simulation.",
+  "fidelity": "PhysX approximates a reusable strap with 27 colliding links and four local overlap bonds (1.2 N, 0.012 N m each). Battery envelope and mass are sourced. The fixture, textile stiffness and friction are estimates, not OEM measurements. Electrical operation, connected cable, tearing and reattachment are omitted. The standard YAM controller uses 40 N finger limits; policy RGB is 320x176 (videos show native views); Dream also gets robot joints. Physical material calibration is unvalidated.",
+  "scores": "Dream-1 (dreamlabs/dream-1-beta): 0.0 in 2,000 steps; RGB-only Inspect demo: 1.0 in 818 steps.",
+  "media": "M-XLLQB5"
+}

@@ -1,0 +1,234 @@
+{
+  "validated_at_utc": "2026-11-19T11:31:12.499804+00:00",
+  "official_inspect": true,
+  "isaaclab_arena": true,
+  "runs": {
+    "demo": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 818,
+          "terminal_score": 1.0,
+          "maximum_score": 1.0,
+          "invalid": false,
+          "dwell": 10,
+          "max_fixture_tilt_deg": 0.6466451916591476,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": {
+        "previous_episode": "episode-00",
+        "reset_episode": "episode-01",
+        "poses_and_velocities_match": true,
+        "counters_cleared": true,
+        "camera_timestamps_reset": true,
+        "hold_steps": 20,
+        "hold_score": 0.0,
+        "max_overlap_gap_m": 1.6093327946208756e-07
+      },
+      "framework_status": "success",
+      "termination": [
+        "success"
+      ],
+      "environment_revision": "3d842dee3b13fafc49ac064b09b306f533ea40ddd2a5f9349a52a7e8b1904c3d",
+      "source_manifest_sha256": "03f38c3e99eab1286d3f7349ebc6357a2a913049c620694127d62c99348a72ad",
+      "inspect_eval_wall_seconds": 231.8027912839898,
+      "control_hz": 20,
+      "object_jitter": 0,
+      "eval_seed": 0,
+      "scene_seed": 0,
+      "epoch": 0,
+      "trial_seed": 3750648859
+    },
+    "dream": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 2000,
+          "terminal_score": 0.0,
+          "maximum_score": 0.0,
+          "invalid": false,
+          "dwell": 0,
+          "max_fixture_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": null,
+      "framework_status": "success",
+      "termination": [
+        "max_steps"
+      ],
+      "environment_revision": "3d842dee3b13fafc49ac064b09b306f533ea40ddd2a5f9349a52a7e8b1904c3d",
+      "source_manifest_sha256": "8d7ef2448005137656e7f5965b59e97d934cfbaebeeb544f305d36722fc0e536",
+      "inspect_eval_wall_seconds": 667.1442269149993,
+      "control_hz": 20,
+      "object_jitter": 0,
+      "eval_seed": 0,
+      "scene_seed": 0,
+      "epoch": 0,
+      "trial_seed": 3750648859,
+      "model": "dreamlabs/dream-1-beta",
+      "successful_chunks": 41,
+      "adapter_attempts": 83,
+      "generated_action_rows": 1968,
+      "beyond_limit_rows": 1561,
+      "dry_run": false,
+      "preroll_steps": 32,
+      "native_joint_clipping": {
+        "left_joint2": {
+          "count": 1510,
+          "max_excess": 0.06807512091798286
+        },
+        "right_joint2": {
+          "count": 1437,
+          "max_excess": 0.40255248699432655
+        },
+        "right_joint3": {
+          "count": 1039,
+          "max_excess": 0.06543044895281044
+        }
+      }
+    },
+    "dream_smoke": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 200,
+          "terminal_score": 0.0,
+          "maximum_score": 0.0,
+          "invalid": false,
+          "dwell": 0,
+          "max_fixture_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": null,
+      "framework_status": "success",
+      "termination": [
+        "max_steps"
+      ],
+      "environment_revision": "3d842dee3b13fafc49ac064b09b306f533ea40ddd2a5f9349a52a7e8b1904c3d",
+      "source_manifest_sha256": "10ed65f4cfa8019b4a5b047f099468b90f7453644f61bf4db385151c8d9867de",
+      "inspect_eval_wall_seconds": 76.4030434590095,
+      "control_hz": 20,
+      "object_jitter": 0,
+      "eval_seed": 0,
+      "scene_seed": 0,
+      "epoch": 0,
+      "trial_seed": 3750648859,
+      "model": "dreamlabs/dream-1-beta",
+      "successful_chunks": 4,
+      "adapter_attempts": 7,
+      "generated_action_rows": 192,
+      "beyond_limit_rows": 0,
+      "dry_run": false,
+      "preroll_steps": 32
+    }
+  },
+  "reset_frame_audit": {
+    "overhead_cam": {
+      "mean_abs_reset_difference_from_initial": 0.0,
+      "mean_abs_reset_difference_from_terminal": 24.487825520833333
+    },
+    "left_wrist_cam": {
+      "mean_abs_reset_difference_from_initial": 0.0,
+      "mean_abs_reset_difference_from_terminal": 29.63646412037037
+    },
+    "right_wrist_cam": {
+      "mean_abs_reset_difference_from_initial": 0.0,
+      "mean_abs_reset_difference_from_terminal": 63.24089554398148
+    }
+  },
+  "cpu_tests_passed": 13,
+  "cpu_tests_skipped": 0,
+  "compute": "Local GPU; no cloud instance started",
+  "budget": {
+    "adapter_attempts_reserved": 90,
+    "reserved_usd": 1.8,
+    "reservation_cap_usd": 2.0,
+    "new_cloud_compute_usd": 0,
+    "billing_note": "Reservations are conservative upper bounds, not a provider billing statement."
+  },
+  "limitations": [
+    "Lookalike fixture and strap dimensions; no OEM CAD calibration",
+    "Contact friction, elastic stiffness and overlap release thresholds are estimates",
+    "Segmented webbing omits microscopic hooks, tearing and reattachment",
+    "Calibrated wrist grasp approaches image border; temporary hand/fixture occlusion",
+    "Small contact rendering artifact on the backplate; target remains visible",
+    "Physical judging procedure has not been tested on hardware"
+  ],
+  "camera_observability": {
+    "native_resolution": [
+      640,
+      360
+    ],
+    "policy_resolution": [
+      320,
+      176
+    ],
+    "hz": 20,
+    "dream_jpeg_quality": 85,
+    "demo_sample_steps": [
+      0,
+      100,
+      140,
+      240,
+      380,
+      500,
+      580,
+      700,
+      818
+    ],
+    "dream_sample_steps": [
+      0,
+      600,
+      1200,
+      2000
+    ],
+    "starting_frames_identical_between_demo_and_model": true
+  },
+  "media_files": {
+    "demo": {
+      "sha256": "d409f201241968cb95b3b05f4b2960a3d7cd73e494c28ebbf94b25da02d26e84",
+      "bytes": 2737432,
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "frames": 819,
+      "duration_seconds": 40.95,
+      "faststart": true,
+      "decode_check_passed": true
+    },
+    "model_run": {
+      "sha256": "7e15be63de64a7130f95d24612850b288a26da77456e7a16e684539d75d24a32",
+      "bytes": 4193161,
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "frames": 2001,
+      "duration_seconds": 100.05,
+      "faststart": true,
+      "decode_check_passed": true
+    },
+    "setup": {
+      "sha256": "3fc8d3214458c287d80dbcd0928a05390da5341f9b204b468ccf1e7ac68ef40a",
+      "bytes": 102238,
+      "source": "First native overhead frame of the recorded model trial"
+    }
+  },
+  "release_source_audit": {
+    "all_python_ast_match_recorded_demo_and_model": true,
+    "formatting_only_changes": {
+      "scene.py": "Removed extra blank line at EOF after recording",
+      "scorer.py": "Removed extra blank line at EOF after recording",
+      "spec.py": "Removed extra blank line at EOF after recording"
+    }
+  }
+}
