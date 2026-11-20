@@ -52,8 +52,10 @@ class Coating:
         band=(self.height>=spec.TARGET_BAND[0])&(self.height<=spec.TARGET_BAND[1])
         root=band&(self.radius<=spec.MINOR_RADIUS+.2*(spec.MAJOR_RADIUS-spec.MINOR_RADIUS))
         blue=self.film>=spec.FILM_VISIBLE_M
+        visible_heights=self.height[blue]
         ratio=lambda m:float((self.area*m*blue).sum()/(self.area*m).sum())
         return {'coverage':ratio(band),'root_coverage':ratio(root),'head_clean':not self.head_contaminated,'film_disturbed':self.film_disturbed,
+                'coated_axial_interval_mm':[float(visible_heights.min()*1000),float(visible_heights.max()*1000)] if visible_heights.size else None,
                 'used_volume_m3':float((self.film*self.area).sum()),'remaining_volume_m3':self.remaining_volume,
                 'native_contacts':self.native_contacts,'sliding_contacts':self.sliding_contacts}
     def color_at(self,theta,z):
