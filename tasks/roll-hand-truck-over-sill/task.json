@@ -15,6 +15,6 @@
   "run_limit": "2,000 control steps (100 seconds at 20 Hz)",
   "reset_notes": "Return the upright truck, wheel angles, case and robot joints to the specified fixed layout; zero all velocities and scorer counters and recreate all three camera buffers. Nothing consumed.",
   "fidelity": "Full-size rigid cart with freely rotating contact-driven wheels, a separate 1 kg rigid case and a 15 mm sill. Published compact-cart height, wheel diameter, plate size and mass are preserved. Telescoping and folding joints are locked as in use; square rails, rectangular grip, mass distribution, tire friction and bearing drag are approximate. No grasp attachment or automatic cart motion.",
-  "scores": "Revision in local validation; previous-rule evidence was Dream-1 beta 0.0 and demo 1.0. Replacement recordings pending.",
-  "media": "M-S8LH8E"
+  "scores": "Dream-1 beta: 0.0 (1,200 steps); scripted RGB-only demo: 1.0 (1,376 steps, 10-step dwell). Seed 0, object jitter 0, 20 Hz.",
+  "media": "M-758EAU"
 }

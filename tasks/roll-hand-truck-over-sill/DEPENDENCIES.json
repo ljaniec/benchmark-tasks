@@ -15,7 +15,8 @@
     "numpy": "2.5.1",
     "pillow": "12.3.0",
     "websockets": "14.2",
-    "torch": "2.11.0+cu130"
+    "torch": "2.11.0+cu130",
+    "scipy": "1.18.1"
   },
   "arena": {
     "url": "https://github.com/isaac-sim/IsaacLab-Arena",
