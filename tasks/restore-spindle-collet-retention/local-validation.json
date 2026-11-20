@@ -1,0 +1,140 @@
+{
+  "validated_at_utc": "2026-11-20T00:14:02.790849+00:00",
+  "control_hz": 20,
+  "physics_hz": 480,
+  "object_jitter": 0,
+  "seed": 0,
+  "runs": {
+    "demo": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 863,
+          "terminal_score": 1.0,
+          "maximum_score": 1.0,
+          "invalid": false,
+          "dwell": 10,
+          "max_frame_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": {
+        "previous_episode": "episode-00",
+        "reset_episode": "episode-01",
+        "poses_and_velocities_match": true,
+        "counters_cleared": true,
+        "camera_timestamps_reset": true,
+        "initial_camera_bytes_match": true,
+        "hold_steps": 20,
+        "hold_score": 0.0,
+        "seated": false
+      }
+    },
+    "dream": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 1600,
+          "terminal_score": 0.0,
+          "maximum_score": 0.0,
+          "invalid": false,
+          "dwell": 0,
+          "max_frame_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": null,
+      "framework_status": "success",
+      "model": "dreamlabs/dream-1-beta",
+      "max_steps": 1600
+    }
+  },
+  "independent_geometry_regrading": {
+    "demo": {
+      "steps": 863,
+      "terminal_score": 1.0,
+      "maximum_score": 1.0,
+      "final_dwell": 10,
+      "independent_geometry_checks": 6904,
+      "mismatches": [],
+      "first_score_steps": {
+        "0.0": 0,
+        "0.25": 407,
+        "0.5": 505,
+        "1.0": 862
+      },
+      "fixed_fixtures_verified": true,
+      "terminal_bounds_error_m": 2.7755575615628914e-17,
+      "inputs": "Exported mesh extents, raw actor transforms and sector translations, native robot overlap hit lists; saved grade flags used only for comparison"
+    },
+    "dream": {
+      "steps": 1600,
+      "terminal_score": 0.0,
+      "maximum_score": 0.0,
+      "final_dwell": 0,
+      "independent_geometry_checks": 12800,
+      "mismatches": [],
+      "first_score_steps": {
+        "0.0": 0
+      },
+      "fixed_fixtures_verified": true,
+      "terminal_bounds_error_m": 3.852270835658089e-09,
+      "inputs": "Exported mesh extents, raw actor transforms and sector translations, native robot overlap hit lists; saved grade flags used only for comparison"
+    }
+  },
+  "cpu_tests": {
+    "suite": "unittest discover -s TASK -p test_*.py",
+    "count": 11,
+    "exit_code": 0,
+    "checked_at_utc": "2026-11-20T00:10:57.369424+00:00"
+  },
+  "observation_contract": {
+    "native_rgb": [
+      640,
+      360
+    ],
+    "policy_rgb": [
+      320,
+      176
+    ],
+    "dream_jpeg_quality": 85,
+    "cameras": [
+      "overhead_cam",
+      "left_wrist_cam",
+      "right_wrist_cam"
+    ],
+    "dream_state": [
+      "joint_pos"
+    ],
+    "demo_state": [],
+    "object_state_delivered": false,
+    "native_and_policy_frames_visually_checked": true
+  },
+  "source_hashes": {
+    "arena_runtime.py": "db5dba5f1d8e9ebee281284fe6040c793810d3620070fdf7cbcc47b0305f91d0",
+    "audit_run.py": "9a550f57dbda296669fc6e5a44a5d14b9c9cf8087c8fa04dce0e9eacc23ef4f8",
+    "demo.py": "6316e7b925e14a483d16ff3db7ca6a58f62249c968d418ddc88ac2af0e0891cc",
+    "dream_budget.py": "a687d62c608901314dc78b870cdbff6aa8aee359afd7343fcfb8b8ebcf1b0107",
+    "export_media.py": "677093225e0a52df409cfa64d6ebfa568dbf47b154e1a4f96ec06c5c2918a9d9",
+    "inspect_task.py": "f616f9ee23d91a1e6331fe71e2eecd744b3ab590c05331b11b77532ae6e6e63e",
+    "measurement.py": "bdf5658f76527c3ec13f095ee3b546cab02d57b1c448a30301a6073e3a7de1ed",
+    "prepare_arena_compat.py": "0c5acd3c63000254923dc8843243956121b5d149a9db4046380b919f2b82a994",
+    "run_inspect.py": "d62347344de1696291fef1aa9dcea990d7cf4dcee7f6936a9f056b9b53a6b5d3",
+    "scene.py": "bd41a090f128ef32e79910ae43715728308ac4b06257d078d714586f825942c5",
+    "scorer.py": "b416fea2d7a9239e456858200ceb8f12e2ba883f6dcf727244224ebb88918e44",
+    "spec.py": "8b48a580a429012b868e655cb6c2bf6a243857f197a1fe299e9aaba165bf336e",
+    "test_contract.py": "18e0b8aaebc07e187a03aa201e3d61368e45c67131d409ed80a572c2d1373198",
+    "test_dream_budget.py": "6e177c57bbc8775f4b6b2dac83036ad9b56dc25ff61d22097bba4361e0b0c58d"
+  },
+  "mechanism_diagnostics": {
+    "not_robot_feasibility_evidence": true,
+    "with_lip_terminal_separation_m": 0.004300801549106836,
+    "without_lip_terminal_separation_m": 0.21917741000652313
+  }
+}

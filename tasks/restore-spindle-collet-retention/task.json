@@ -1,0 +1,20 @@
+{
+  "title": "Restore a spindle collet's retaining fit",
+  "category": "Impact on jobs",
+  "instruction": "The collet has come free of its retaining nut. Reassemble the two parts so the nut retains the collet. Check the fit by lifting and tipping the assembly while holding only the nut, then leave the assembly on the green pad.",
+  "context": "Spindle toolholding is serviced across CNC machines and robot-mounted milling and deburring tools. When a collet is removed for a size change or cleaning, its retaining nut must recapture the groove before reinstallation, so subsequent tool changes withdraw the collet from the spindle taper. This task restores that retaining fit using the common ER interface.",
+  "setup": "Two YAM arms (75 mm aperture, 40 N per finger) at (0, ±0.305, 0.75) m, x forward/y left/z up. Fixed wood table 1100×1300×60 mm, centre (0.36,0,0.7175), top z=0.7475. Silver spring-steel ER32 collet, 33 mm maximum diameter×40 mm long, 19 mm bore, 100 g: inverted, nose origin (0.30,-0.02,0.86755), axis -z, narrow tail resting in a fixed steel locating support: 40×40×80 mm base at (0.30,-0.02,0.7875), 10 mm-deep open cup above it, 0.25 mm radial clearance and 8° inner taper. Separate blackened-steel nut, 50 mm across flats×23 mm long, 160 g: small-opening-face origin (0.27,0.16,0.77055), wide opening facing down onto the table. Its eccentric lip engages the collet groove; internal dimensions are in README. Fixed green rubber return pad 90×90×2 mm at (0.36,0.23,0.7485). All initial velocities zero; reset and cameras match the setup image.",
+  "scoring": "Terminal score: 0.25 for entry with collet nose plane -5 to 20 mm along the nut axis from its small-opening face (positive axis toward wide opening), axis offset ≤6 mm and angle ≤35°. 0.5 for a released seated collet: axis offset ≤1.5 mm, angle ≤5°, exposed collet length 18.5–21.8 mm beyond the nut wide-opening rim. 1.0 requires 10 consecutive steps seated with the collet released, the whole assembly ≥50 mm above the support-block top and nut axis ≥110° from upright; then 10 consecutive steps wholly within the return pad, lowest point within 3 mm of its top, both parts released. Collet and nut release use the 43×43×50 and 68×68×33 mm inspection boxes defined in README. Unseating or regrasping the collet clears the handling proof. Otherwise 0.0; permanently zero after any whole component leaves x=[-0.19,0.91], y=[-0.65,0.65], z=[0.7375,1.25] m, a collet nose sector separates ≥2 mm from its body, a fixed fixture moves >2 mm, or table tilt exceeds 15°. Ten steps=0.5 s at 20 Hz.",
+  "run_limit": "1,600 control steps at 20 Hz",
+  "fidelity": "Procedural ER32 envelopes with an eccentric retaining lip. Native rigid contacts and eight radially sprung nose sectors approximate limited collet compliance; there is no scripted snap or attachment. Unused nut threads and complete tool-clamping deformation are omitted. Internal clearances, spring constants and friction are estimates, not hardware-calibrated.",
+  "scores": "Dream-1 run: 0.0 (1,600 steps); demo: 1.0 (863 steps)",
+  "keywords": [
+    "robot-maintenance",
+    "spindle",
+    "collet",
+    "eccentric-retention",
+    "bimanual"
+  ],
+  "reset_notes": "Rebuild all bodies, native compliance and gripper constraints; restore poses, zero velocities and robot joints; clear scoring/proof counters and camera buffers. No consumables.",
+  "media": "M-8BHZ9H"
+}
