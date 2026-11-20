@@ -18,8 +18,10 @@ def main():
     p.add_argument('--budget-ledger', type=Path)
     p.add_argument('--check-reset', action='store_true', help='Audit a fresh reset and 20-step hold after the local trial')
     a = p.parse_args()
-    if not 1<=a.steps<=2000 or a.epochs not in (1,2):
-        p.error('Use 1..2000 control steps and 1 or 2 epochs')
+    root = Path(__file__).resolve().parent
+    run_limit=int(json.loads((root/'task.json').read_text())['run_limit'].split()[0].replace(',',''))
+    if not 1<=a.steps<=run_limit or a.epochs not in (1,2):
+        p.error(f'Use 1..{run_limit} control steps and 1 or 2 epochs')
     if a.output.exists():
         p.error('Use a new output directory')
     if a.policy == 'dream' and (a.budget_ledger is None or a.epochs!=1):
@@ -29,7 +31,6 @@ def main():
     lock = open('/tmp/robocurve-shared-gpu.lock','a')
     fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     a.output.mkdir(parents=True)
-    root = Path(__file__).resolve().parent
     source_files = [*root.glob('*.py'),root/'task.json',root/'DEPENDENCIES.json']
     (a.output/'source-manifest.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                                for p in source_files},indent=2)+'\n')
@@ -70,6 +71,10 @@ def main():
             world = arena.world
             assert world.steps == 0 and not world.history
             assert world.scorer.score == 0 and world.scorer.dwell == 0 and not world.scorer.invalid
+            assert np.count_nonzero(world.coating.film)==0
+            assert world.coating.remaining_volume==world.coating.initial_volume
+            assert not world.coating.head_contaminated and not world.coating.film_disturbed
+            assert world.coating.native_contacts==0 and world.coating.sliding_contacts==0
             for filename in ['reset-state.json','reset-robot-state.json','reset-cameras.json']:
                 assert json.loads((previous/filename).read_text()) == json.loads((world.output/filename).read_text()), filename
             assert set(observation.images) == {'top_cam','left_cam','right_cam'}

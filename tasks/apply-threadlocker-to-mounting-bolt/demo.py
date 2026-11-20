@@ -28,15 +28,15 @@ def plan(ik,constants,station,initial_only=False):
     row(5,l=([.320,.150,.591],CROSS,.008),r=([.275,-.200,.543],CROSS,.008))
     row(7,l=([.320,.150,.830],CROSS,.008),r=([.275,-.200,.780],CROSS,.008))
     turn=lambda angle:Rotation.from_euler('z',angle,degrees=True).as_matrix()@CROSS
-    row(9,l=([.400,.100,.800],turn(-90),.008),r=([.3415,-.200,.715],SIDE,.008))
-    row(11,r=([.3415,-.040,.717],SIDE,.008))
-    row(12,r=([.3415,.097,.717],SIDE,.008))
+    row(9,l=([.400,.100,.800],turn(-90),.008),r=([.3427,-.200,.715],SIDE,.008))
+    row(11,r=([.3427,-.040,.717],SIDE,.008))
+    row(12,r=([.3427,.097,.717],SIDE,.008))
     t=12
     for sweep,z in enumerate([.717,.719,.721]):
-        row(t+1,r=([.3415,.097,z],SIDE,.008));t+=1
+        row(t+1,r=([.3427,.097,z],SIDE,.008));t+=1
         for angle in ([0,85] if sweep%2==0 else [0,-90]):
             row(t+3,l=([.400,.100,.800],turn(angle),.008));t+=3
-    row(t+1,r=([.3415,-.040,.721],SIDE,.008))
+    row(t+1,r=([.3427,-.040,.721],SIDE,.008))
     row(t+3,r=([.454,-.050,.740],SIDE,.008))
     row(t+5,r=([.454,-.050,.740],OPPOSITE,.008))
     row(t+7,r=([.454,.103,.717],OPPOSITE,.008));t+=7
