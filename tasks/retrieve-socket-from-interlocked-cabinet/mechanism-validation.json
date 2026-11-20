@@ -1,0 +1,54 @@
+{
+  "calibration_only": true,
+  "passed": true,
+  "physics_hz": 480,
+  "source_sha256": {
+    "scene.py": "37e509ae2cf5f8974ceb24268b8d76430fe2b54a44e7c6e08a703bf9771693af",
+    "spec.py": "94d888fb11bed982afac5fe19ff9ecdfea64ddcfa324941b13f23cd11db3f19c",
+    "calibrate_interlock.py": "e85d5d1fa5c53a3e272af66b8e612f9373f50815a5359af0bf2d16a2efc38274"
+  },
+  "cases": [
+    {
+      "name": "upper_blocked_with_lower_open",
+      "force_n": -40,
+      "seconds": 1.0,
+      "lower_open_m": 0.2,
+      "upper_open_m": 0.003002119064331066
+    },
+    {
+      "name": "lower_blocked_by_screwdriver",
+      "force_n": 40,
+      "seconds": 1.0,
+      "lower_open_m": 0.07140822410583497,
+      "upper_open_m": -1.072883605846009e-07
+    },
+    {
+      "name": "upper_return_to_closed",
+      "force_n": 10,
+      "seconds": 0.5,
+      "lower_open_m": 0.07140822410583497,
+      "upper_open_m": -1.072883605846009e-07
+    },
+    {
+      "name": "lower_closes_after_tool_removed",
+      "force_n": 20,
+      "seconds": 2.0,
+      "lower_open_m": 3.099441528431335e-07,
+      "upper_open_m": -1.072883605846009e-07
+    },
+    {
+      "name": "upper_opens_after_lower_closes",
+      "force_n": -40,
+      "seconds": 2.0,
+      "lower_open_m": 3.099441528431335e-07,
+      "upper_open_m": 0.3709999740123749
+    },
+    {
+      "name": "lower_blocked_with_upper_open",
+      "force_n": -40,
+      "seconds": 1.0,
+      "lower_open_m": 0.004364144802093517,
+      "upper_open_m": 0.37099955677986146
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Retrieve a socket from an interlocked tool cabinet",
+  "category": "Impact on jobs",
+  "keywords": [
+    "workshop",
+    "tool retrieval",
+    "mechanical interlock",
+    "obstruction"
+  ],
+  "instruction": "Take the socket from the upper drawer and place it on the green mat. Leave the tools, drawers and cabinet undamaged.",
+  "context": "Mechanics and repair workers routinely retrieve sockets from workshop tool storage. A single-drawer interlock prevents the upper drawer from opening while the lower drawer remains out; a misplaced screwdriver obstructs closing the lower drawer. The task tests restoring access before retrieving a usable tool.",
+  "setup": "A fixed steel cabinet, 525 x 525 x 400 mm, sits on a 500 mm high workbench. Two 150 mm drawer fronts cover 400 x 400 mm trays with 400 mm travel and 120 x 20 x 20 mm rectangular handles. The lower drawer starts 200 mm open; the upper starts closed. A native stacked-bar interlock permits one open drawer. A 207 mm screwdriver (6 mm steel shaft, 32 mm polymer grip) stands tip-down in an 8 mm shaft holder in the lower tray, protruding across the upper front. A hollow 37 mm long, 26 mm diameter steel socket with 17 mm hex and 12.7 mm square drive is upright in the upper tray. A 200 x 200 mm green mat and 250 x 250 mm tool pad with a 36 mm square, 120 mm high open cup sit on the bench. Two YAM arms have 75 mm parallel jaws capped at 40 N per finger. Exact poses and materials are in the README.",
+  "scoring": "Terminal score: 0.25 if the lower drawer is within 5 mm of closed; 0.5 if the upper drawer is at least 200 mm open; 1.0 if the socket lies wholly on the green mat (bottom within 3 mm of its surface), all hands are at least 5 mm clear, and all movable objects remain within 2 mm and 2 degrees for 10 consecutive steps. The highest applicable tier applies. Damage, mechanism bypass, chassis tilt over 15 degrees or any movable object leaving the specified workspace permanently zeros the score. Otherwise 0.0.",
+  "run_limit": "2,000 control steps (100 seconds at 20 Hz)",
+  "reset_notes": "Rebuild all objects, guide joints, robot joints and camera buffers; restore the lower drawer to 200 mm open, upper to closed, bars raised 6.1 mm, upright tools, zero velocities and empty score/stability counters.",
+  "fidelity": "Full-size cabinet envelope, hollow socket and screwdriver, native sliding drawers and contact-driven stacked-bar interlock. Thickened collision plates represent thin folded sheet metal; 2.5 kg drawer masses, friction and bearing damping are approximations. The generic cam/bar mechanism is not manufacturer CAD. Cabinet is bolted to the bench; no tipping-safety claim.",
+  "scores": "Dream-1 beta: 0.0 (1,200 steps); scripted RGB-only demo: 1.0 (976 steps, 10-step dwell). Seed 0, object jitter 0, 20 Hz.",
+  "media": "M-ZGFR47"
+}
