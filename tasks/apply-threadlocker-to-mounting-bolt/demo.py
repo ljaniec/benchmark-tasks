@@ -40,7 +40,7 @@ def plan(ik,constants,station,initial_only=False):
     row(t+3,r=([.454,-.050,.740],SIDE,.008))
     row(t+5,r=([.454,-.050,.740],OPPOSITE,.008))
     row(t+7,r=([.458,.097,.7125],OPPOSITE,.008));t+=7
-    for sweep,z in enumerate([.7125,.7145,.7165]):
+    for sweep,z in enumerate([.7125,.7145,.7165,.7185]):
         row(t+1,r=([.458,.097,z],OPPOSITE,.008));t+=1
         for angle in ([0,-90] if sweep%2==0 else [0,85]):
             row(t+3,l=([.400,.100,.800],turn(angle),.008));t+=3

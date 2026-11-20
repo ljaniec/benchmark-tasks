@@ -8,11 +8,11 @@
   ],
   "instruction": "Prepare the M16 mounting bolt for reassembly. Apply the blue threadlocker around the three-thread engagement band, 4 to 10 mm from its tip, including the thread roots. Keep the head clean and keep the wet band clear of fingers, supports and the carrier. Finish with the applicator withdrawn; the bolt may be held by its clean head.",
   "context": "Applying threadlocker prevents vibration from loosening fasteners in pumps, gearboxes and other machinery. This task covers application before assembly and curing.",
-  "setup": "Local prototype: a real-size M16 x 80 mm fully threaded steel hex-head bolt, semi-solid blue threadlocker in a rectangular carrier, a starting support and two applicator supports, on a 500 mm workbench with two YAM arms. Full construction is procedural in scene.py; contract and transfer calibration are under development.",
+  "setup": "A fixed 1100 x 1300 mm workbench has its top 500 mm above ground. An uncoated steel M16 x 80 mm bolt (2 mm pitch; 24 mm hex flats; 10 mm head; 146.45 g) stands tip-down at (320,150,504) mm in a fixed 17.4 mm-bore nest. A 50 g, 80 x 24 x 24 mm rectangular ABS-plastic carrier lies lengthwise along X at (280,-200,540) mm on two fixed rests. A fresh blue 8 x 10 x 10 mm wax plug projects 8 mm beyond its +X face. Two YAM arms stand at (0,+/-305,750) mm, with 75 mm grippers open and raised. All loose parts start still. README and scene.py specify the remaining fixed supports, camera mounts and geometry.",
   "scoring": "Prototype: 0.25 at one-third visible engagement-band and root coverage; 0.5 at two-thirds; 1.0 at 95 percent with the applicator at least 5 mm clear of the bolt and fingers at least 5 mm clear of the band and stable for 10 steps at 20 Hz. Holding the clean head is allowed. Zero for head contamination, touching wet coated threads with anything except wax, workspace escape or damage. Photographic grading validation remains open.",
   "run_limit": "1600 control steps (80 seconds at 20 Hz)",
   "reset_notes": "Fresh clean bolt, fresh exposed wax, zero film/source counters, all object and robot states and camera buffers restored.",
   "fidelity": "Real-size metric helical thread geometry at the application zone and native contacts. A conservative contact-and-sliding transfer law distributes finite wax into adjacent root surfaces; compliance, transfer coefficient and visual coverage thresholds are provisional and not hardware calibrated. No curing or achieved locking strength is claimed.",
-  "scores": "Prototype; no scored model or full-score demonstration yet",
+  "scores": "Local prototype demo: 0.5; Dream-1 not run",
   "media": ""
 }

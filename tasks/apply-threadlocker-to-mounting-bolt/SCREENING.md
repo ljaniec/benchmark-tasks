@@ -4,7 +4,7 @@ Operation: prepare the engagement threads of a steel mounting bolt with medium-s
 
 [Henkel's application instructions](https://next.henkel-adhesives.com/us/en/products/industrial-adhesives/central-pdp.html/loctite-248/BP000000153639/variation/462476.html) support circumferential application and material in the thread roots. The [technical data sheet](https://datasheets.tdx.henkel.com/LOCTITE-248-en_GL.pdf) supports use of a semi-solid stick. [Henkel's threadlocking overview](https://next.henkel-adhesives.com/uk/en/applications/threadlockers.html) documents industrial maintenance applications, including robots and gearboxes. These sources establish an actual operation; they do not establish an occupation-count threshold for this specific benchmark.
 
-The board snapshot checked on 2026-11-20 contained 4,087 unique tasks. Searches included threadlocker, thread-locker, Loctite, anaerobic adhesive, and adhesive/glue/sealant with fasteners. No direct application task was found. This is a dated search result, not a reservation or proof of universal novelty.
+The board snapshot checked on 2026-11-20 contained 4,105 unique tasks (refreshed at 13:21 UTC). Searches included threadlocker, thread-locker, Loctite, anaerobic adhesive, and adhesive/glue/sealant with fasteners. No direct application task was found. This is a dated search result, not a reservation or proof of universal novelty.
 
 | Closest accepted board task | Relevant difference | Remaining overlap risk |
 | --- | --- | --- |
