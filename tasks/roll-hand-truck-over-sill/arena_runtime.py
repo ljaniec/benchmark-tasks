@@ -13,6 +13,7 @@ import numpy as np
 import spec
 from scipy.spatial.transform import Rotation
 from scorer import Evidence, Scorer
+from wheel_support import support_gap
 
 APP = None
 CAMERAS = {'overhead_cam': 'top_cam', 'left_wrist_cam': 'left_cam', 'right_wrist_cam': 'right_cam'}
@@ -338,7 +339,7 @@ class TrolleyWorld:
         bottom=np.array([[x,y,-spec.AXLE[2]] for x in [0,spec.PLATE_SIZE[0]] for y in [-spec.PLATE_SIZE[1]/2,spec.PLATE_SIZE[1]/2]])@rotation.T+position
         e=Evidence(float(position[0]),max(float(bounds[n][1][0]) for n in ['wheel_left','wheel_right']),
                    max(float(b[0]) for a,b in bounds.values()),float(pitch),float(roll),float(yaw),float(bottom[:,2].min()),
-                   case_on,case_aligned,clear,bool(stable),bool(inside),bool(intact))
+                   case_on,case_aligned,clear,bool(stable),bool(inside),bool(intact),support_gap(poses))
         return e,{'poses':{k:v.tolist() for k,v in poses.items()},'velocities':velocities,
                   'case_local_position':case_position.tolist(),'case_bottom_local':lower.tolist(),
                   'object_bounds':{n:[a.tolist(),b.tolist()] for n,(a,b) in bounds.items()}}

@@ -18,12 +18,13 @@ class Evidence:
     stable:bool
     inside_workspace:bool
     intact:bool
+    wheel_support_gap_m:float
 
 class Scorer:
     def __init__(self):self.score=0.;self.dwell=0;self.invalid=False
     def update(self,e):
         finite=all(math.isfinite(v) for v in asdict(e).values())
-        self.invalid |= not finite or not e.inside_workspace or not e.intact or not e.case_on_plate or abs(e.roll_deg)>15 or abs(e.pitch_deg)>35
+        self.invalid |= not finite or not e.inside_workspace or not e.intact or not e.case_on_plate or e.wheel_support_gap_m>spec.WHEEL_SUPPORT_GAP or abs(e.roll_deg)>15 or abs(e.pitch_deg)>35
         if self.invalid:self.score=0.;self.dwell=0;return 0.
         wheels=e.wheels_max_x<=spec.FINISH_X
         finish=(wheels and e.cart_max_x<=spec.FINISH_X and abs(e.pitch_deg)<=3 and abs(e.roll_deg)<=3
