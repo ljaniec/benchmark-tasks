@@ -12,9 +12,9 @@ from pathlib import Path
 import urllib.request
 
 MODEL = 'dreamlabs/dream-1-beta'
-MAX_ATTEMPTS = 100
+MAX_ATTEMPTS = 150
 RESERVE_USD = .02  # Two wire attempts at a conservative $0.01 each.
-CAP_USD = 2.00
+CAP_USD = 3.00
 
 
 class BudgetExceeded(RuntimeError):

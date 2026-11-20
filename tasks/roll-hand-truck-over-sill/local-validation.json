@@ -1,5 +1,5 @@
 {
-  "date_utc": "2026-11-20T06:10:41.694337+00:00",
+  "date_utc": "2026-11-20T08:15:31.723429+00:00",
   "seed": 0,
   "control_hz": 20,
   "object_jitter": 0,
@@ -23,7 +23,7 @@
       "score": 1.0,
       "invalid": false,
       "dwell": 10,
-      "wall_seconds": 232.379005891009,
+      "wall_seconds": 233.41811684099957,
       "control_hz": 20,
       "physics_hz": 240,
       "executable_sha256": {
@@ -38,8 +38,8 @@
         "spec.py": "c06ba8c41db6a4a71c3276c767e19745971e889565cc9b40c7fac5b3865806e1",
         "run_inspect.py": "6f2f66ff05563dd4958eb940ac9d064df2970cdf62905d4cad51519987fc7b03",
         "inspect_task.py": "4260cd6393db10cc15d3e359eaa89af46219e79ebab906dd073a72295cd0e539",
-        "dream_budget.py": "a687d62c608901314dc78b870cdbff6aa8aee359afd7343fcfb8b8ebcf1b0107",
-        "arena_runtime.py": "df1eea7f44c3a3d89ce25c3a61d97a8d35f1243d0dcf262edd8c1d30571d7101",
+        "dream_budget.py": "6a7296ef0360e3bfbd9cd0d1e6ab095488a126a4d79533af3af3039b27d8744b",
+        "arena_runtime.py": "2a36492d1a74d45d2857178b88f4e0d4ffe00d4061a7345dea4bad839ece2e8d",
         "prepare_arena_compat.py": "0c5acd3c63000254923dc8843243956121b5d149a9db4046380b919f2b82a994"
       }
     },
@@ -48,7 +48,7 @@
       "score": 0.0,
       "invalid": false,
       "dwell": 0,
-      "wall_seconds": 498.298503722006,
+      "wall_seconds": 485.409529164026,
       "control_hz": 20,
       "physics_hz": 240,
       "executable_sha256": {
@@ -63,21 +63,66 @@
         "spec.py": "c06ba8c41db6a4a71c3276c767e19745971e889565cc9b40c7fac5b3865806e1",
         "run_inspect.py": "6f2f66ff05563dd4958eb940ac9d064df2970cdf62905d4cad51519987fc7b03",
         "inspect_task.py": "4260cd6393db10cc15d3e359eaa89af46219e79ebab906dd073a72295cd0e539",
-        "dream_budget.py": "a687d62c608901314dc78b870cdbff6aa8aee359afd7343fcfb8b8ebcf1b0107",
-        "arena_runtime.py": "df1eea7f44c3a3d89ce25c3a61d97a8d35f1243d0dcf262edd8c1d30571d7101",
+        "dream_budget.py": "6a7296ef0360e3bfbd9cd0d1e6ab095488a126a4d79533af3af3039b27d8744b",
+        "arena_runtime.py": "2a36492d1a74d45d2857178b88f4e0d4ffe00d4061a7345dea4bad839ece2e8d",
         "prepare_arena_compat.py": "0c5acd3c63000254923dc8843243956121b5d149a9db4046380b919f2b82a994"
       },
       "model": "dreamlabs/dream-1-beta",
       "dry_run": false,
       "successful_chunks": 41,
-      "adapter_attempts": 63,
-      "recovered_session_expirations": 22,
+      "adapter_attempts": 59,
+      "recovered_session_expirations": 18,
       "tracking_error_rad": {
-        "max": 0.3399158566148126,
-        "mean": 0.027181575874079555
+        "max": 0.07602722077936619,
+        "mean": 0.014613280968369525
       }
     }
   },
+  "audits": {
+    "demo": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 1036,
+          "terminal_score": 1.0,
+          "maximum_score": 1.0,
+          "invalid": false,
+          "dwell": 10,
+          "max_cart_pitch_deg": 14.701360598120862,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": {
+        "poses_and_velocities_match": true,
+        "counters_cleared": true,
+        "initial_camera_bytes_match": true,
+        "hold_steps": 20,
+        "hold_score": 0.0
+      }
+    },
+    "dream": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 2000,
+          "terminal_score": 0.0,
+          "maximum_score": 0.0,
+          "invalid": false,
+          "dwell": 0,
+          "max_cart_pitch_deg": 9.831458693914758e-06,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": null
+    }
+  },
+  "source_hashes_verified": true,
   "reset_after_demo": {
     "poses_and_velocities_match": true,
     "counters_cleared": true,
@@ -85,14 +130,5 @@
     "hold_steps": 20,
     "hold_score": 0.0
   },
-  "source_hashes_verified": true,
-  "score_replay_and_frame_audit": "Both complete episodes passed audit_run.py; all grades match, all native and delivered frames present, sampled delivered frames exactly match the native-image resize.",
-  "camera_observability": "Fixed view retains cart, case and sill through grasp, tip, crossing and release. Wrist views may be occluded by the grasp. No team identifiers in review media.",
-  "publication_change": {
-    "file": "arena_runtime.py",
-    "change": "Removed a trailing blank line after recorded runs; AST verified identical.",
-    "evaluated_sha256": "df1eea7f44c3a3d89ce25c3a61d97a8d35f1243d0dcf262edd8c1d30571d7101",
-    "published_sha256": "0b93bf8438938bd864b2122cf02229350a7544556f7de9a10b969ee42c3dde6d",
-    "ast_identical": true
-  }
+  "first_camera_frame": "Explicit camera reset after restoring all physical poses; initial delivered frame visually checked."
 }

@@ -34,7 +34,7 @@ python scorer.py runs/demo/evidence/episode-00/trace.jsonl
 "$ISAAC_PYTHON" audit_run.py runs/demo --require-full
 ```
 
-Each run records the source snapshot and hashes, actions, evaluator trace, initial poses and velocities, native RGB frames and actual Inspect-delivered frames. Seed is 0 and object jitter is 0. The complete rebuild reset clears all body poses, velocities, joints, counters and camera products. A 200-step hold plus reset took about 57 seconds on the tested machine. The full-score demonstration took 232.4 seconds for the episode and 241.1 seconds including initialization and the reset check. The Dream-1 episode took 498.3 wall seconds (100 simulated seconds). The official adapter recovered 22 expired-session responses; all 2,000 actions completed, with no evaluator error or invalid task event. The truck did not move. This is a single recorded attempt with those service interruptions, not an aggregate performance estimate. The run limit is 2,000 control steps, or 100 simulated seconds. Each process has a 2,400-second timeout and shares an exclusive local GPU lock.
+Each run records the source snapshot and hashes, actions, evaluator trace, initial poses and velocities, native RGB frames and actual Inspect-delivered frames. Seed is 0 and object jitter is 0. The complete rebuild reset clears all body poses, velocities, joints, counters and camera products. Cameras are explicitly reset after restoring the physical starting poses, so frame zero shows the specified hands above the handle. Initial camera hashes also match after the post-motion reset. A 200-step hold plus reset took about 57 seconds on the tested machine. The full-score demonstration took 233.4 seconds for the episode and 242.1 seconds including initialization and the reset check. The Dream-1 episode took 485.4 wall seconds (100 simulated seconds). The official adapter recovered 18 expired-session responses; all 2,000 actions completed, with no evaluator error or invalid task event. The truck did not move. This is a single recorded attempt with those service interruptions, not an aggregate performance estimate. The run limit is 2,000 control steps, or 100 simulated seconds. Each process has a 2,400-second timeout and shares an exclusive local GPU lock.
 
 After local feasibility and observation checks pass, provide `DREAM_API_KEY` privately through the environment and retain the same budget ledger for all paid attempts:
 
@@ -45,7 +45,7 @@ python export_media.py runs/demo/evidence/episode-00 runs/demo-media --name demo
 python export_media.py runs/dream/evidence/episode-00 runs/model-media --name model_run
 ```
 
-Replace `LOG.json` with the actual Inspect log. The spending guard reserves at most USD 0.02 per adapter attempt and caps cumulative reservations at USD 2 across the persistent ledger; reservations are not an invoice. The runner stores frames on every invocation. Exports are H.264 MP4, yuv420p, faststart and below 50 MB. `setup.png` comes from the first overhead frame and is below 10 MB.
+Replace `LOG.json` with the actual Inspect log. The spending guard reserves at most USD 0.02 per adapter attempt and caps cumulative reservations at USD 3 across the persistent ledger; reservations are not an invoice. The runner stores frames on every invocation. Exports are H.264 MP4, yuv420p, faststart and below 50 MB. `setup.png` comes from the first overhead frame and is below 10 MB.
 
 ## Observations and physical judging
 

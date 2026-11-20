@@ -243,7 +243,10 @@ class TrolleyWorld:
         if not self.robot_colliders:raise RuntimeError('Robot collision geometry missing')
         self.fixed_positions={name:np.asarray(self.matrix(self.path('/World/'+name)).ExtractTranslation()) for name in ['sill','floor']}
         for _ in range(4):self.base.sim.render()
-        for name in CAMERAS.values():self.base.scene[name].update(0.,force_recompute=True)
+        for name in CAMERAS.values():
+            # Discard the RGB cache captured before the final pose restoration.
+            self.base.scene[name].reset()
+            self.base.scene[name].update(0.,force_recompute=True)
         self.stage.Export(str(self.output/'reset.usda'))
         self.previous_poses=None
         self.save_frames('00000')

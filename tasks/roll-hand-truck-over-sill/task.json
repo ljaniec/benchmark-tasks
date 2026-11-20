@@ -16,5 +16,5 @@
   "reset_notes": "Return the upright truck, wheel angles, case and robot joints to the specified fixed layout; zero all velocities and scorer counters and recreate all three camera buffers. Nothing consumed.",
   "fidelity": "Full-size rigid cart with freely rotating contact-driven wheels, a separate 1 kg rigid case and a 15 mm sill. Published compact-cart height, wheel diameter, plate size and mass are preserved. Telescoping and folding joints are locked as in use; square rails, rectangular grip, mass distribution, tire friction and bearing drag are approximate. No grasp attachment or automatic cart motion.",
   "scores": "Dream-1 beta: 0.0 (2,000 steps); scripted RGB-only demo: 1.0 (1,036 steps, 10-step dwell). Seed 0, object jitter 0, 20 Hz.",
-  "media": "M-RVF2AU"
+  "media": "M-S8LH8E"
 }
