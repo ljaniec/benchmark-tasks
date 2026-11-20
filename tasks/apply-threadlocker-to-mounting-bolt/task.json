@@ -1,0 +1,18 @@
+{
+  "title": "Apply threadlocker around a machinery mounting bolt",
+  "category": "Impact on jobs",
+  "keywords": [
+    "maintenance",
+    "threadlocker",
+    "material application"
+  ],
+  "instruction": "Prepare the M16 mounting bolt for reassembly. Apply the blue threadlocker around the three-thread engagement band, 4 to 10 mm from its tip, including the thread roots. Keep the head clean and keep the wet band clear of fingers, supports and the carrier. Finish with the applicator withdrawn; the bolt may be held by its clean head.",
+  "context": "Applying threadlocker prevents vibration from loosening fasteners in pumps, gearboxes and other machinery. This task covers application before assembly and curing.",
+  "setup": "Local prototype: a real-size M16 x 80 mm fully threaded steel hex-head bolt, semi-solid blue threadlocker in a rectangular carrier, a starting support and two applicator supports, on a 500 mm workbench with two YAM arms. Full construction is procedural in scene.py; contract and transfer calibration are under development.",
+  "scoring": "Prototype: 0.25 at one-third visible engagement-band and root coverage; 0.5 at two-thirds; 1.0 at 95 percent with the applicator at least 5 mm clear of the bolt and fingers at least 5 mm clear of the band and stable for 10 steps at 20 Hz. Holding the clean head is allowed. Zero for head contamination, touching wet coated threads with anything except wax, workspace escape or damage. Photographic grading validation remains open.",
+  "run_limit": "1600 control steps (80 seconds at 20 Hz)",
+  "reset_notes": "Fresh clean bolt, fresh exposed wax, zero film/source counters, all object and robot states and camera buffers restored.",
+  "fidelity": "Real-size metric helical thread geometry at the application zone and native contacts. A conservative contact-and-sliding transfer law distributes finite wax into adjacent root surfaces; compliance, transfer coefficient and visual coverage thresholds are provisional and not hardware calibrated. No curing or achieved locking strength is claimed.",
+  "scores": "Prototype; no scored model or full-score demonstration yet",
+  "media": ""
+}
