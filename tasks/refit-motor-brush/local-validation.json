@@ -29,13 +29,45 @@
         "hold_steps": 20,
         "hold_score": 0.0,
         "seated": false
-      }
+      },
+      "framework_status": "success",
+      "episode_wall_seconds": 125.04948666000564,
+      "process_wall_seconds": 136.71743295999477,
+      "simulated_seconds": 22.65
+    },
+    "dream": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 1600,
+          "terminal_score": 0.0,
+          "maximum_score": 0.0,
+          "invalid": false,
+          "dwell": 0,
+          "max_frame_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": null,
+      "framework_status": "success",
+      "episode_wall_seconds": 479.76928169799794,
+      "process_wall_seconds": 482.6263214130013,
+      "simulated_seconds": 80.0
     }
   },
   "independent_geometry": {
     "demo": {
       "steps": 453,
       "independent_geometry_checks": 2265,
+      "all_match": true,
+      "method": "Exported brush mesh, toe box, collector cylinder, raw transforms and native clearance hits"
+    },
+    "dream": {
+      "steps": 1600,
+      "independent_geometry_checks": 8000,
       "all_match": true,
       "method": "Exported brush mesh, toe box, collector cylinder, raw transforms and native clearance hits"
     }
@@ -58,6 +90,79 @@
     "task.json": "b493eeb7b0e2497d6e4678c16308a09d26fd3fd895cbc90810dc5415d1d55cc6",
     "DEPENDENCIES.json": "e47da0f09d9d2dba1b070d02da2ba0e28e15d9b83778864db874c93e3509cc40"
   },
-  "paid_trial": "not yet run",
-  "hardware_calibration": "not performed"
+  "paid_trial": {
+    "model": "dreamlabs/dream-1-beta",
+    "seed": 0,
+    "control_hz": 20,
+    "object_jitter": 0,
+    "store_frames": true,
+    "cap_usd": 2.0,
+    "cumulative_attempts_including_smoke": 72,
+    "reserved_upper_bound_usd": 1.44,
+    "new_cloud_compute_usd": 0,
+    "reservation_is_not_invoice": true
+  },
+  "hardware_calibration": "not performed",
+  "source_revision": "e7b1dcc1a15bbffcca666668b59024947654afba",
+  "source_files_note": "Hashes describe the evaluated source snapshot. Post-evaluation changes are documentation/results only: README, validation report, scores/media, reset wording, and clearance wording referring to the existing numeric inspection envelopes. Scene, policy instruction, implemented scoring and executable sources are unchanged.",
+  "camera_audit": {
+    "native_rgb": [
+      640,
+      360
+    ],
+    "policy_rgb": [
+      320,
+      176
+    ],
+    "control_hz": 20,
+    "dream_inputs": [
+      "three RGB cameras",
+      "robot joint and gripper readings"
+    ],
+    "demo_inputs": [
+      "three RGB cameras",
+      "fixed offline action sequence"
+    ],
+    "live_object_state_to_policy": false,
+    "limitations": "The motor hides the separate brush from the initial overhead view; the right wrist sees it. Hands and end shields temporarily occlude contact regions. Physical feeler checks resolve the submillimetre seating rubric; RGB does not measure that gap alone."
+  },
+  "board_screen": {
+    "checked_at_utc": "2026-11-20T01:20:00.966776+00:00",
+    "rows": 3962,
+    "unique": 3876,
+    "matches": 0
+  },
+  "media": {
+    "demo": {
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "width": 640,
+      "height": 1080,
+      "fps": 20,
+      "frames": 454,
+      "seconds": 22.7,
+      "bytes": 1462074,
+      "sha256": "f31c2bf3a56e8db05c1e3f395ae1de8fc5f227eccde47afea42b6f8f1e7fa221",
+      "faststart": true,
+      "fully_decoded": true
+    },
+    "dream": {
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "width": 640,
+      "height": 1080,
+      "fps": 20,
+      "frames": 1601,
+      "seconds": 80.05,
+      "bytes": 3320290,
+      "sha256": "0f4e354cf69f86d8b7eaec9e1194332908b46d0775a10e1b8d51ee34c95bf23a",
+      "faststart": true,
+      "fully_decoded": true
+    },
+    "setup": {
+      "bytes": 104726,
+      "exact_first_model_overhead_frame": true,
+      "sha256": "5f240e5deb702be4777511e1225c2190b50c907ab9a92f7023bfbcf5df7de7b6"
+    }
+  }
 }

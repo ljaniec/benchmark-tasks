@@ -1,6 +1,6 @@
 # Refit a motor brush and restore its spring contact
 
-Local prototype; model and full-score demonstration pending validation.
+Validated on the local DGX: Dream-1 0.0 in 1,600 steps; fixed-action demo 1.0 in 453 steps, with the required ten-step release dwell. Both Inspect evaluations completed successfully. This demonstrates feasibility in the fixed layout, not hardware validation or policy generalization.
 
 This task covers mechanical refitting of a pre-bedded carbon brush after inspection and cleaning. A motor repair technician must place it in its guide and restore pressure against the commutator. This is a useful maintenance stage before reconnecting the electrical shunt, closing the cover and testing the motor. The installed holder, collector and surrounding motor structure are present. It does not claim to complete electrical repair or prove motor operation.
 
@@ -41,7 +41,7 @@ python export_media.py runs/dream/evidence/episode-00 runs/model-media --name mo
 python export_media.py runs/demo/evidence/episode-00 runs/demo-media --name demo
 ```
 
-Replace `LOG.json` with the generated Inspect log. Every run enables frame storage, uses an exclusive local GPU lock, refuses an existing output directory and has a 1,200-second wall timeout. The trial limit is 1,600 control steps at 20 Hz, including model image-history warm-up. Physics runs at 480 Hz. Seed is 0 and object jitter is 0. Measured runtimes will be recorded after validation.
+Replace `LOG.json` with the generated Inspect log. Every run enables frame storage, uses an exclusive local GPU lock, refuses an existing output directory and has a 1,200-second wall timeout. The trial limit is 1,600 control steps at 20 Hz, including model image-history warm-up. Physics runs at 480 Hz. Seed is 0 and object jitter is 0. The final demo took 22.65 simulated seconds and 125.0 seconds of episode wall time; the Dream trial took 80.00 simulated seconds and 479.8 seconds of episode wall time on the local GB10. End-to-end process times were 136.7 and 482.6 seconds, respectively, including startup/cleanup and the demo reset audit.
 
 The Dream guard checks the published model price and conservatively reserves USD 0.02 per adapter attempt, covering one possible transport retry, up to USD 2.00 cumulatively per ledger. Reservations are upper bounds, not invoices; include other account spending when setting a budget. Never replace a ledger to restart its allowance.
 
@@ -63,6 +63,8 @@ The hinge post joins the holder through a 60 x 22 x 14 mm spring bracket; its be
 
 The demonstration accepts the three RGB frames and executes a documented fixed offline action sequence for this zero-jitter layout. It uses no live object-state feedback and is not a general visual-servo policy. Constrained offline inverse kinematics checks every 0.25-second Cartesian waypoint against hardware limits. The brush uses a side approach above the end-shield wall. The other arm grips the pressure lever and follows its hinge arc. Offline joint-target biases based on the specified spring torque, brush weight, robot gains and planned joint velocities compensate controller deflection and damping lag. They are computed before execution, with no measured object state; hardware joint and force limits remain enforced. The largest clipped velocity bias is recorded in the demo transcript. Fixed subdegree approach and submillimetre placement biases come from rehearsal of this one published layout and remain constant during execution. The complete native and policy-delivered frame sequences are stored for audit.
 
+The initial overhead view establishes the motor layout but the motor hides the separate brush; the right wrist sees the brush at pickup. The wrist views expose the lever, guide and final pressure-finger placement as the arms move, with temporary occlusion during contact. Native frames and actual resized policy frames, including representative JPEG-quality-85 samples, were inspected. A submillimetre seating gap is judged with the stated physical feeler check, not inferred from a low-resolution image alone.
+
 ## Physical judging and score
 
 Use a ruler, 0.5 mm feeler gauge, protractor and continuous video. The open box-to-collector gap permits a feeler check of the brush face from the side. The result is the highest current valid tier; earlier successful seating does not survive removal.
@@ -82,10 +84,16 @@ Permanently zero for the brush leaving x=[-0.19,0.91], y=[-0.65,0.65], z=[0.7375
 
 Reset reconstructs the scene, native joints, physics views and cameras; restores authored body poses, robot root/joint states and zero velocities; clears score, dwell and invalid history; and resets all camera timestamps/buffers. The local reset audit compares initial transforms and camera hashes and runs a 20-step zero-score hold. `scorer.py` replays grades; `audit_run.py` checks source snapshots, native gripper limits, frame completeness and correspondence, reset velocities and grades.
 
+## Recorded validation
+
+The ten CPU tests passed. Both final runs passed complete frame-sequence, source-snapshot, native 40 N finger-cap, 75 mm aperture, coupled-jaw and score-replay checks. An independent reconstruction from exported geometry and raw transforms agreed on 10,265 geometric checks across both runs. The completed-demo reset restored poses, velocities, joints, counters, camera timestamps and initial image hashes; a subsequent 20-step hold scored zero. `local-validation.json` records measured results and evaluated source hashes.
+
+The Dream trial completed its allotted steps with score 0.0; this result is reported without attributing a cause. The official adapter handled retryable session-expiry responses, and every request attempt was included in the persistent budget ledger. The smoke and full model trials together reserved at most USD 1.44; that is a conservative reservation, not an invoice. No cloud compute was started.
+
 ## Sources and distinctness
 
 [Morgan's carbon-brush handbook](https://www.morganelectricalmaterials.com/media/ry5jzzqg/technicalhandbookglobalproof_0.pdf) documents fitting, bedding, free brush movement, brush-holder clearance and spring pressure. [Mersen's dimensional guide](https://us.mersen.com/sites/default/files/files_imported/2017-ptt-tds-04-t-a-r-dimensions-mersen.pdf) lists standard brush dimensions and guide tolerances. [Helwig's brush-holder range](https://helwigcarbon.com/brush-holders/) shows the conventional clock spring and pivoting pressure finger, and its use in motor maintenance.
 
-A board search on 20 November 2026 covered 3,861 unique task IDs and found no direct motor-brush operation. The nearest spring phone-holder task clamps an object laterally; the rail-carriage task traverses a detent; the M.2 task holds a sprung board under a fastener; the wiper task changes a hook-mounted blade. This task restores a free sliding electrical contact in a close guide under its pressure finger. Shared elementary spring-handling skills do not establish identical work products. The common benchmark catalogs were also screened. Reviewers determine final distinctness and importance.
+A board search on 20 November 2026 covered 3,876 unique task IDs and found no direct motor-brush operation. The nearest spring phone-holder task clamps an object laterally; the rail-carriage task traverses a detent; the M.2 task holds a sprung board under a fastener; the wiper task changes a hook-mounted blade. This task restores a free sliding electrical contact in a close guide under its pressure finger. Shared elementary spring-handling skills do not establish identical work products. The common benchmark catalogs were also screened. Reviewers determine final distinctness and importance.
 
 Original code is MIT licensed. Robot and simulator dependencies retain upstream licenses and are not redistributed.
