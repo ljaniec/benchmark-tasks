@@ -1,0 +1,98 @@
+{
+  "date_utc": "2026-11-20T06:10:41.694337+00:00",
+  "seed": 0,
+  "control_hz": 20,
+  "object_jitter": 0,
+  "run_limit_steps": 2000,
+  "policy_rgb_shape": [
+    176,
+    320,
+    3
+  ],
+  "native_rgb_shape": [
+    360,
+    640,
+    3
+  ],
+  "no_live_object_state_in_demo": true,
+  "external_robot_asset": "YAM, MIT license",
+  "tests_passed": 7,
+  "runs": {
+    "demo": {
+      "steps": 1036,
+      "score": 1.0,
+      "invalid": false,
+      "dwell": 10,
+      "wall_seconds": 232.379005891009,
+      "control_hz": 20,
+      "physics_hz": 240,
+      "executable_sha256": {
+        "test_contract.py": "8b051353065dc74bd3044f407681da2af608dd519ae92436e0e97daecc3bbe73",
+        "task_station.py": "4588b4244ee83e71d633a21ca4e48f5629f2a64d660c0612a24654a00dea68fc",
+        "export_media.py": "677093225e0a52df409cfa64d6ebfa568dbf47b154e1a4f96ec06c5c2918a9d9",
+        "test_dream_budget.py": "6e177c57bbc8775f4b6b2dac83036ad9b56dc25ff61d22097bba4361e0b0c58d",
+        "demo.py": "36c1d41a6b9eade500868de2eff860866a1d0305fe2bdcaf78a4f93aff2a89ad",
+        "audit_run.py": "86e4af9e836ea44d2cc360b62fcdc334590f3eff8c96381885d931b3f7d79c62",
+        "scene.py": "bf692078ba98a4a4df6cc7878fd9e37a8ea4d61a3bb59d220a6bf998dd55db8d",
+        "scorer.py": "ec8e6855fb98bbb2e51e4e7d04c0d56e90e7da1eb054f39e9eb7859c9231f1e0",
+        "spec.py": "c06ba8c41db6a4a71c3276c767e19745971e889565cc9b40c7fac5b3865806e1",
+        "run_inspect.py": "6f2f66ff05563dd4958eb940ac9d064df2970cdf62905d4cad51519987fc7b03",
+        "inspect_task.py": "4260cd6393db10cc15d3e359eaa89af46219e79ebab906dd073a72295cd0e539",
+        "dream_budget.py": "a687d62c608901314dc78b870cdbff6aa8aee359afd7343fcfb8b8ebcf1b0107",
+        "arena_runtime.py": "df1eea7f44c3a3d89ce25c3a61d97a8d35f1243d0dcf262edd8c1d30571d7101",
+        "prepare_arena_compat.py": "0c5acd3c63000254923dc8843243956121b5d149a9db4046380b919f2b82a994"
+      }
+    },
+    "dream": {
+      "steps": 2000,
+      "score": 0.0,
+      "invalid": false,
+      "dwell": 0,
+      "wall_seconds": 498.298503722006,
+      "control_hz": 20,
+      "physics_hz": 240,
+      "executable_sha256": {
+        "test_contract.py": "8b051353065dc74bd3044f407681da2af608dd519ae92436e0e97daecc3bbe73",
+        "task_station.py": "4588b4244ee83e71d633a21ca4e48f5629f2a64d660c0612a24654a00dea68fc",
+        "export_media.py": "677093225e0a52df409cfa64d6ebfa568dbf47b154e1a4f96ec06c5c2918a9d9",
+        "test_dream_budget.py": "6e177c57bbc8775f4b6b2dac83036ad9b56dc25ff61d22097bba4361e0b0c58d",
+        "demo.py": "36c1d41a6b9eade500868de2eff860866a1d0305fe2bdcaf78a4f93aff2a89ad",
+        "audit_run.py": "86e4af9e836ea44d2cc360b62fcdc334590f3eff8c96381885d931b3f7d79c62",
+        "scene.py": "bf692078ba98a4a4df6cc7878fd9e37a8ea4d61a3bb59d220a6bf998dd55db8d",
+        "scorer.py": "ec8e6855fb98bbb2e51e4e7d04c0d56e90e7da1eb054f39e9eb7859c9231f1e0",
+        "spec.py": "c06ba8c41db6a4a71c3276c767e19745971e889565cc9b40c7fac5b3865806e1",
+        "run_inspect.py": "6f2f66ff05563dd4958eb940ac9d064df2970cdf62905d4cad51519987fc7b03",
+        "inspect_task.py": "4260cd6393db10cc15d3e359eaa89af46219e79ebab906dd073a72295cd0e539",
+        "dream_budget.py": "a687d62c608901314dc78b870cdbff6aa8aee359afd7343fcfb8b8ebcf1b0107",
+        "arena_runtime.py": "df1eea7f44c3a3d89ce25c3a61d97a8d35f1243d0dcf262edd8c1d30571d7101",
+        "prepare_arena_compat.py": "0c5acd3c63000254923dc8843243956121b5d149a9db4046380b919f2b82a994"
+      },
+      "model": "dreamlabs/dream-1-beta",
+      "dry_run": false,
+      "successful_chunks": 41,
+      "adapter_attempts": 63,
+      "recovered_session_expirations": 22,
+      "tracking_error_rad": {
+        "max": 0.3399158566148126,
+        "mean": 0.027181575874079555
+      }
+    }
+  },
+  "reset_after_demo": {
+    "poses_and_velocities_match": true,
+    "counters_cleared": true,
+    "initial_camera_bytes_match": true,
+    "hold_steps": 20,
+    "hold_score": 0.0
+  },
+  "source_hashes_verified": true,
+  "score_replay_and_frame_audit": "Both complete episodes passed audit_run.py; all grades match, all native and delivered frames present, sampled delivered frames exactly match the native-image resize.",
+  "camera_observability": "Fixed view retains cart, case and sill through grasp, tip, crossing and release. Wrist views may be occluded by the grasp. No team identifiers in review media.",
+  "publication_change": {
+    "file": "arena_runtime.py",
+    "change": "Removed a trailing blank line after recorded runs; AST verified identical.",
+    "evaluated_sha256": "df1eea7f44c3a3d89ce25c3a61d97a8d35f1243d0dcf262edd8c1d30571d7101",
+    "published_sha256": "0b93bf8438938bd864b2122cf02229350a7544556f7de9a10b969ee42c3dde6d",
+    "ast_identical": true
+  }
+}
