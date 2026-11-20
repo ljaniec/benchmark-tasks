@@ -35,8 +35,10 @@
   "reference_geometry": {
     "sensor": "https://www.sick.com/media/docs/4/34/634/operating_instructions_wl12g_3_en_de_fr_pt_it_es_ja_zh_im0035634.pdf",
     "bracket": "https://cdn.sick.com/media/pdf/2/32/432/dataSheet_BEF-WG-W12_2013942_en.pdf",
-    "note": "Procedural approximation, not manufacturer CAD. Documented sensor/bracket envelopes; estimated socket construction, rectangular handle, contact coefficients, thread preload and passive cable load. Physical hardware calibration not performed.",
+    "note": "Procedural approximation, not manufacturer CAD. SICK sensor and bracket envelopes, Omron E39-L261 clamp and published 3.0\u20133.5 N m tightening requirement, explicit custom adapter. Contact coefficients, thread compression, mass distribution and passive cable load are estimated. Numerical tool load-path calibration is included; physical hardware calibration has not been performed. Seated hex engagement is approximated by a native sliding key with axial withdrawal; no hand attachment.",
     "sensor_variant": "https://www.sick.com/media/pdf/9/89/389/dataSheet_WL12G-3B2531T01_1041458_en.pdf",
-    "tool_type": "https://hybris-media.wera.de/download/pdfgenerator-datasheets/en/05029464001.pdf"
+    "clamp": "https://www.omron-ap.com/data_pdf/mnu/e39-l261_inst-5630532-1a.pdf?id=3779",
+    "clamp_dimensions": "https://files.omron.eu/downloads/latest/datasheet/en/e3as_series_datasheet_en.pdf?v=1",
+    "tool": "Dimensioned 120 mm lever with native 10 N m/rad spring, 8.1 mm AF socket and calibrated magnifying dial; generic construction, no commercial tool CAD"
   }
 }

@@ -36,11 +36,15 @@ def main():
     (a.output/'source').mkdir()
     for path in source_files:
         shutil.copyfile(path,a.output/'source'/path.name)
+    # Evaluate the archived source itself so later development edits cannot
+    # change a running episode or invalidate its source provenance.
+    sys.path.insert(0,str((a.output/'source').resolve()))
     arena = None
     policy = None
     result = {'policy':a.policy,'steps_limit':a.steps,'episodes':a.epochs,
               'control_hz':20,'object_jitter':0,'seed':0,'exit_code':1}
     try:
+        import spec
         from inspect_robots import eval
         from inspect_robots.scene import Scene
         from inspect_robots.task import Task
@@ -68,6 +72,18 @@ def main():
             assert world.scorer.score == 0 and world.scorer.dwell == 0 and not world.scorer.invalid
             assert world.scorer.aligned == 0 and world.scorer.blocked == 0
             assert not world.scorer.proof and world.scorer.setting is None
+            assert not world.scorer.torque_confirmed and world.scorer.torque_steps == 0
+            assert world.scorer.slip == 0. and world.scorer.torqued_angle is None
+            assert world.scorer.witness_nut_min is None and world.scorer.witness_nut_max is None
+            assert world.previous_nut == 0. and world.previous_slip == 0.
+            assert abs(world.peak_clamp_torque-spec.RESET_TORQUE) < 1.e-6
+            assert abs(world.peak_tool_torque)<1.e-6
+            assert world.physics_callback_count==0
+            assert world.socket_key_active
+            expected_rest = {'yaw':spec.INITIAL_YAW, 'pitch':0., 'nut':0., 'height':0.}
+            assert set(world.friction_contacts) == set(expected_rest)
+            for name, rest in expected_rest.items():
+                assert abs(world.friction_contacts[name].rest-rest) < 1.e-10, name
             for filename in ['reset-state.json','reset-robot-state.json','reset-cameras.json']:
                 assert json.loads((previous/filename).read_text()) == json.loads((world.output/filename).read_text()), filename
             assert set(observation.images) == {'top_cam','left_cam','right_cam'}
@@ -80,10 +96,12 @@ def main():
             for _ in range(20):
                 step = arena.step(Action(target))
                 assert step.reward == 0 and not step.info['invalid']
-            assert not world.last['evidence']['clamp_closed'], 'Reset clamp must remain loose'
+            assert not world.scorer.torque_confirmed, 'Reset cannot acquire a fastening witness'
+            assert world.clamp_data['thread_resistance_nm']<spec.TORQUE_MIN, 'Reset clamp must remain below fastening torque'
             (a.output/'reset-check.json').write_text(json.dumps({
                 'previous_episode':previous.name,'reset_episode':world.output.name,
                 'poses_and_velocities_match':True,'counters_cleared':True,
+                'friction_rest_coordinates_reset':True,
                 'camera_timestamps_reset':True,'initial_camera_bytes_match':True,
                 'hold_steps':20,'hold_score':0.,
                 'clamp_closed':world.last['evidence']['clamp_closed']},indent=2)+'\n')

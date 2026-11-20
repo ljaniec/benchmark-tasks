@@ -11,6 +11,8 @@ import math
 import time
 import numpy as np
 import spec
+import clamp
+from scipy.spatial.transform import Rotation
 from scorer import Evidence, Scorer
 
 APP = None
@@ -79,7 +81,8 @@ class PhotoWorld:
         assembly = Object(name='workbench', prim_path='{ENV_REGEX_NS}/workbench',
                           usd_path=str(usd), object_type=ObjectType.BASE,
                           initial_pose=Pose(position_xyz=(0., 0., 0.), rotation_xyzw=(0., 0., 0., 1.)))
-        rig = station.rig()
+        import task_station
+        rig = task_station.rig()
         embodiment = BimanualYamEmbodiment(enable_cameras=True, rig=rig,
                         gravity_compensation=True, cam_height=360, cam_width=640,
                         robot_contact_offset=.0002, contact_sensors=False)
@@ -92,7 +95,7 @@ class PhotoWorld:
             arm.init_state.joint_vel = {'.*': 0.}
             arm.actuators['gripper'].joint_effort_limit = spec.FINGER_FORCE_LIMIT
             arm.spawn.articulation_props.solver_position_iteration_count = 32
-            arm.spawn.articulation_props.solver_velocity_iteration_count = 8
+            arm.spawn.articulation_props.solver_velocity_iteration_count = 0
             original_spawn = arm.spawn.func
 
             def spawn_arm(prim_path, cfg, *args, _spawn=original_spawn, **kwargs):
@@ -134,6 +137,15 @@ class PhotoWorld:
                     xf = UsdGeom.Xformable(child)
                     xf.MakeMatrixXform().Set(pose)
                     xf.SetResetXformStack(True)
+                fingers={child.GetName():child for child in Usd.PrimRange(prim)
+                         if child.GetName() in ('joint7','joint8') and child.IsA(UsdPhysics.PrismaticJoint)}
+                if len(fingers)!=2:raise RuntimeError('Missing parallel-gripper joints')
+                for finger in fingers.values():
+                    UsdPhysics.PrismaticJoint(finger).GetLowerLimitAttr().Set(-.0375)
+                mimic=PhysxSchema.PhysxMimicJointAPI.Apply(fingers['joint8'],'rotX')
+                mimic.CreateReferenceJointRel().SetTargets([fingers['joint7'].GetPath()])
+                mimic.CreateReferenceJointAxisAttr('rotX');mimic.CreateGearingAttr(-1.)
+                mimic.CreateOffsetAttr(0.);mimic.CreateNaturalFrequencyAttr(0.)
                 return prim
 
             arm.spawn.func = spawn_arm
@@ -149,9 +161,9 @@ class PhotoWorld:
             cfg.sim.enable_scene_query_support = True
             cfg.sim.physics.enable_scene_query_support = True
             cfg.sim.physics.enable_ccd = True
+            # Finite elastic microslip prevents the position drift observed
+            # with damping-only standalone brakes; native force caps remain.
             cfg.sim.physics.solver_type = 1
-            # TGS supports finite-patch torsional finger friction. Zero velocity
-            # iterations avoid the documented TGS joint-drive interaction.
             cfg.sim.physics.min_velocity_iteration_count = 0
             cfg.sim.physics.max_velocity_iteration_count = 0
             # Contact dimensions are millimetres; the default 25 mm anchor
@@ -173,6 +185,21 @@ class PhotoWorld:
         self.env.reset(seed=seed)
         import omni.physics.tensors as tensors
         from isaaclab.sim.utils.stage import get_current_stage_id
+        # This pinned Lab backend leaves Fabric's USD notice listener disabled
+        # after initialization. Variable passive joint resistance must reach
+        # native PhysX, rather than only changing the authored USD values.
+        import usdrt
+        from isaaclab.cloner.fabric_notices import get_bindings
+        notices = get_bindings()
+        fabric_id = usdrt.Usd.Stage.Attach(get_current_stage_id()).GetFabricId().id
+        if notices is None or not notices.validate_with(fabric_id):
+            raise RuntimeError('Cannot enable native physics property updates')
+        notices_before = notices.is_enabled(fabric_id)
+        notices.set_enable(fabric_id, True)
+        if not notices.is_enabled(fabric_id):
+            raise RuntimeError('Physics property update listener remains disabled')
+        (self.output/'physics-update-self-test.json').write_text(json.dumps({
+            'usd_notices_before':notices_before,'usd_notices_enabled':True},indent=2)+'\n')
         self.reset_sim_view = tensors.create_simulation_view('numpy', stage_id=get_current_stage_id())
         self.reset_sim_view.set_subspace_roots('/')
         self.prop_views = {}
@@ -205,6 +232,16 @@ class PhotoWorld:
                                  'joint_velocity':array(arm.data.joint_vel).tolist(),
                                  'joint_names':list(arm.joint_names)}
         (self.output/'reset-robot-state.json').write_text(json.dumps(robot_reset,indent=2)+'\n')
+        gripper_contract={}
+        for side in ['left','right']:
+            arm=self.base.scene[side+'_robot']
+            ids,_=arm.find_joints(constants.FINGER_JOINTS,preserve_order=True)
+            force=arm.root_view.get_dof_max_forces().numpy()[0,ids]
+            limits=arm.root_view.get_dof_limits().numpy()[0,ids,:]
+            if not np.allclose(force,40.) or not np.allclose(limits,[[-.0375,0.],[-.0375,0.]],atol=1e-7):
+                raise RuntimeError('Native gripper force or aperture contract differs from the specification')
+            gripper_contract[side]={'force_caps_n':force.tolist(),'position_limits_m':limits.tolist()}
+        (self.output/'reset-gripper-physics.json').write_text(json.dumps(gripper_contract,indent=2)+'\n')
         self.pads = []
         self.robot_colliders = []
         self.hands = []
@@ -225,15 +262,38 @@ class PhotoWorld:
         for _ in range(4):
             self.base.sim.render()
         for name in CAMERAS.values():
+            # update(0, force_recompute=True) refreshes only outdated buffers
+            # in this backend. Discard env.reset's pre-restoration RGB cache
+            # so the first delivered frame shows the published robot pose.
+            self.base.scene[name].reset()
             self.base.scene[name].update(0., force_recompute=True)
         self.stage.Export(str(self.output/'reset.usda'))
+        self.peak_clamp_torque=spec.RESET_TORQUE
+        self.peak_tool_torque=0.
+        self.previous_nut=0.;self.previous_slip=0.
+        self.friction_contacts={name:clamp.FrictionContact(spec.CONTACT_ANGULAR_STIFFNESS,position,True)
+                                for name,position in [('yaw',spec.INITIAL_YAW),('pitch',0.),('nut',0.)]}
+        self.friction_contacts['height']=clamp.FrictionContact(spec.CONTACT_LINEAR_STIFFNESS,0.)
+        self.socket_key_active=True
         self.update_clamp()
+        self.physics_callback_count=0
+        # This backend steps IPhysxSimulation directly, bypassing the legacy
+        # IPhysx on-step event used by register_callback. Wrap this world's
+        # actual native step so passive material updates cannot silently stop.
+        self.original_physics_step=self.base.sim.backend_manager.step
+        def step_with_material():
+            self.physics_callback_count+=1
+            if self.physics_callback_count%(spec.PHYSICS_HZ//spec.CLAMP_UPDATE_HZ)==0:
+                self.update_clamp()
+            return self.original_physics_step()
+        self.base.sim.backend_manager.step=step_with_material
         from omni.physx import get_physx_scene_query_interface
+        origin=np.asarray(spec.CARD_START)+[0,0,.08]
         probe=get_physx_scene_query_interface().raycast_closest(
-            Gf.Vec3f(spec.CLAMP[0],spec.CLAMP[1],spec.CLAMP[2]+.10),Gf.Vec3f(0,0,-1),.15)
-        if not probe['hit'] or str(probe['rigidBody'])!=self.path('/World/bolt'):
-            raise RuntimeError('Native ray query failed the known-bolt self-test')
-        (self.output/'query-self-test.json').write_text(json.dumps({'known_bolt_hit':True,'distance_m':probe['distance']})+'\n')
+            Gf.Vec3f(*origin),Gf.Vec3f(0,0,-1),.10)
+        if not probe['hit'] or str(probe['rigidBody'])!=self.path('/World/card'):
+            raise RuntimeError('Native ray query failed the known-card self-test')
+        (self.output/'query-self-test.json').write_text(json.dumps({'known_card_hit':True,'distance_m':probe['distance']})+'\n')
         self.save_frames('00000')
         (self.output/'reset-cameras.json').write_text(json.dumps(
             {name:{'shape':list(im.shape),'sha256':hashlib.sha256(im.tobytes()).hexdigest()}
@@ -247,9 +307,8 @@ class PhotoWorld:
         return UsdGeom.Xformable(self.stage.GetPrimAtPath(path)).ComputeLocalToWorldTransform(0)
 
     def bounds(self, path):
-        from pxr import UsdGeom
-        bound = UsdGeom.BBoxCache(0, ['default','render','proxy','guide']).ComputeWorldBound(self.stage.GetPrimAtPath(path)).ComputeAlignedRange()
-        return np.array(bound.GetMin()), np.array(bound.GetMax())
+        from geometry_bounds import world_bounds
+        return world_bounds(self.stage.GetPrimAtPath(path))
 
     def images(self, native=False):
         from PIL import Image
@@ -280,30 +339,66 @@ class PhotoWorld:
 
     def update_clamp(self):
         from pxr import Gf, UsdPhysics, PhysxSchema
-        matrix=self.matrix(self.path('/World/bolt'))
-        rotation=np.asarray(matrix.ExtractRotationMatrix())
-        angle=math.atan2(rotation[0,1],rotation[0,0])
-        # Clockwise viewed from above advances a right-hand M5 thread.
-        advance=-angle*spec.THREAD_PITCH/(2*math.pi)
-        z=float(self.matrix(self.path('/World/washer')).ExtractTranslation()[2])
-        # Reduced thread compression and Coulomb clamp-torque model.
-        compression=max(0.,advance-spec.CLAMP_GAP)
-        force=min(spec.MAX_CLAMP_FORCE,spec.CLAMP_STIFFNESS*compression)
-        torque=.002+spec.NUT_FACTOR*spec.BOLT_DIAMETER*force
+        body_rotation=Rotation.from_quat(self.prop_views['/World/clamp_body'].get_transforms()[0,3:]).as_matrix()
+        bolt_rotation=Rotation.from_quat(self.prop_views['/World/bolt'].get_transforms()[0,3:]).as_matrix()
+        rotation=Rotation.from_euler('y',90,degrees=True).as_matrix()@body_rotation.T@bolt_rotation
+        angle=math.degrees(math.atan2(rotation[1,0],rotation[0,0]))
+        force,torque,cap=clamp.load(-angle)
+        self.peak_clamp_torque=max(self.peak_clamp_torque,torque)
         bolt=UsdPhysics.DriveAPI(self.stage.GetPrimAtPath(self.path('/World/joints/bolt')),'angular')
         bolt.GetMaxForceAttr().Set(torque)
-        cap=spec.FRICTION*force*spec.CLAMP_FRICTION_RADIUS
+        bolt.GetTargetPositionAttr().Set(math.degrees(self.friction_contacts['nut'].update(math.radians(angle),torque)))
         mount=UsdPhysics.DriveAPI(self.stage.GetPrimAtPath(self.path('/World/joints/mount')),'angular')
         mount.GetMaxForceAttr().Set(cap)
-        mount_rotation=np.asarray(self.matrix(self.path('/World/mount')).ExtractRotationMatrix())
-        yaw=math.atan2(mount_rotation[0,1],mount_rotation[0,0])
+        post=self.stage.GetPrimAtPath(self.path('/World/joints/post_clamp'))
+        UsdPhysics.DriveAPI(post,'rotZ').GetMaxForceAttr().Set(spec.FRICTION*force*.006)
+        UsdPhysics.DriveAPI(post,'transZ').GetMaxForceAttr().Set(spec.FRICTION*force)
+        body_pose=self.prop_views['/World/clamp_body'].get_transforms()[0]
+        yaw_joint=math.atan2(body_rotation[1,0],body_rotation[0,0])
+        UsdPhysics.DriveAPI(post,'rotZ').GetTargetPositionAttr().Set(math.degrees(self.friction_contacts['yaw'].update(yaw_joint,spec.FRICTION*force*.006)))
+        UsdPhysics.DriveAPI(post,'transZ').GetTargetPositionAttr().Set(self.friction_contacts['height'].update(float(body_pose[2])-spec.CLAMP_POST[2],spec.FRICTION*force))
+        mount_rotation=Rotation.from_quat(self.prop_views['/World/mount'].get_transforms()[0,3:]).as_matrix()
+        relative_mount=body_rotation.T@mount_rotation
+        pitch=math.atan2(relative_mount[0,2],relative_mount[0,0])
+        mount.GetTargetPositionAttr().Set(math.degrees(self.friction_contacts['pitch'].update(pitch,cap)))
+        socket_rotation=Rotation.from_quat(self.prop_views['/World/socket'].get_transforms()[0,3:]).as_matrix()
+        handle_rotation=Rotation.from_quat(self.prop_views['/World/driver'].get_transforms()[0,3:]).as_matrix()
+        bolt_pose=self.prop_views['/World/bolt'].get_transforms()[0]
+        socket_pose=self.prop_views['/World/socket'].get_transforms()[0]
+        key_offset=bolt_rotation.T@(socket_pose[:3]-bolt_pose[:3])
+        key=UsdPhysics.Joint(self.stage.GetPrimAtPath(self.path('/World/joints/socket_key')))
+        if self.socket_key_active and key_offset[2]>.00075:
+            key.GetJointEnabledAttr().Set(False)
+            self.socket_key_active=False
+        elif not self.socket_key_active:
+            relative_key=bolt_rotation.T@socket_rotation
+            key_angle=math.atan2(relative_key[1,0],relative_key[0,0])
+            index=round(key_angle/(math.pi/3))*(math.pi/3)
+            if (-.002<=key_offset[2]<=-.001 and np.linalg.norm(key_offset[:2])<=.00005
+                    and relative_key[2,2]>.99999 and abs(key_angle-index)<=math.radians(.5)):
+                key.GetLocalRot1Attr().Set(Gf.Quatf(math.cos(index/2),0.,0.,-math.sin(index/2)))
+                key.GetJointEnabledAttr().Set(True)
+                self.socket_key_active=True
+        clutch_relative=socket_rotation.T@handle_rotation
+        clutch_angle=math.atan2(clutch_relative[1,0],clutch_relative[0,0])
+        if self.socket_key_active:
+            self.peak_tool_torque=max(self.peak_tool_torque,-clutch_angle*spec.DRIVER_SPRING_NM_RAD)
+        dial_angle=clutch_angle*spec.DRIVER_SPRING_NM_RAD*math.radians(spec.DIAL_DEG_PER_NM)
+        self.stage.GetPrimAtPath(self.path('/World/socket/needle')).GetAttribute('xformOp:orient').Set(
+            Gf.Quatf(math.cos(dial_angle/2),0.,0.,math.sin(dial_angle/2)))
+        yaw=math.atan2(mount_rotation[1,0],mount_rotation[0,0])
         omega=float(self.prop_views['/World/mount'].get_velocities()[0,5])
         cable=float(np.clip(-spec.CABLE_STIFFNESS_NM_RAD*(yaw-spec.INITIAL_YAW)-spec.CABLE_DAMPING_NMS_RAD*omega,-.03,.03))
         load=PhysxSchema.PhysxForceAPI(self.stage.GetPrimAtPath(self.path('/World/mount')))
         load.GetTorqueAttr().Set(Gf.Vec3f(0.,0.,cable))
-        self.clamp_data={'bolt_angle_deg':math.degrees(angle),'advance_m':advance,'washer_z':z,
-                         'clamp_force_estimate_n':force,'thread_resistance_nm':torque,
-                         'friction_torque_cap_nm':cap,'cable_torque_nm':cable}
+        # This Lab backend steps IPhysxSimulation directly. Commit buffered
+        # USD drive/force edits before its next native step.
+        from omni.physx import get_physx_simulation_interface
+        get_physx_simulation_interface().flush_changes()
+        self.clamp_data={'bolt_angle_deg':angle,'clamp_force_estimate_n':force,
+                         'thread_resistance_nm':torque,'peak_thread_resistance_nm':self.peak_clamp_torque,
+                         'friction_torque_cap_nm':cap,'cable_torque_nm':cable,
+                         'friction_rest_si':{k:v.rest for k,v in self.friction_contacts.items()}}
 
     def measure(self):
         from pxr import Gf, UsdShade
@@ -314,6 +409,7 @@ class PhotoWorld:
         yaw=math.degrees(math.atan2(rot[1,0],rot[0,0]))
         clo,chi=self.bounds(self.path('/World/card'))
         dlo,dhi=self.bounds(self.path('/World/driver'))
+        slo,shi=self.bounds(self.path('/World/socket'))
         from omni.physx import get_physx_scene_query_interface
         query=get_physx_scene_query_interface()
         def occlusion(origin,direction,distance):
@@ -344,10 +440,17 @@ class PhotoWorld:
         q=carb.Float4(*map(float,orientation.GetImaginary()),float(orientation.GetReal()))
         for local,size in [((-.006,0,0),(.030,.0235,.002)),
                            ((.009,0,.02425),(.002,.019,.0465)),
+                           ((.012,.006,.006),(.030,.004,.024)),
+                           ((0,.010,0),(.024,.005,.024)),
                            (spec.SENSOR_CENTER_LOCAL,spec.SENSOR_SIZE)]:
             center=matrix.Transform(Gf.Vec3d(*local))
             half=np.asarray(size)/2+.005
             query.overlap_box(carb.Float3(*map(float,half)),carb.Float3(*map(float,center)),q,overlap,False)
+        clamp_matrix=self.matrix(self.path('/World/clamp_body'))
+        clamp_q=clamp_matrix.ExtractRotationQuat()
+        query.overlap_box(carb.Float3(.0115+.005,.02115+.005,.0115+.005),
+                          carb.Float3(*map(float,clamp_matrix.Transform(Gf.Vec3d(0,.00385,0)))),
+                          carb.Float4(*map(float,clamp_q.GetImaginary()),float(clamp_q.GetReal())),overlap,False)
         hands_clear=not near_robot
         near_card=[]
         def overlap_card(hit):
@@ -360,22 +463,80 @@ class PhotoWorld:
                           carb.Float3(*map(float,card_matrix.ExtractTranslation())),
                           carb.Float4(*map(float,card_q.GetImaginary()),float(card_q.GetReal())),
                           overlap_card,False)
-        tool_clear=distance(mlo,mhi,dlo,dhi)>=.005
-        all_bounds=[self.bounds(self.path(path)) for path in self.objects.values()]
-        inside=all(np.all(lo>=spec.WORKSPACE[0]) and np.all(hi<=spec.WORKSPACE[1]) for lo,hi in all_bounds)
-        position=np.asarray(matrix.ExtractTranslation());intact=np.linalg.norm(position-np.asarray(spec.PIVOT))<.002
+        blo,bhi=self.bounds(self.path('/World/clamp_body'))
+        tool_clear=min(distance(lo,hi,a,b) for lo,hi in [(mlo,mhi),(blo,bhi)]
+                       for a,b in [(dlo,dhi),(slo,shi)])>=.005
+        all_bounds={name:self.bounds(self.path(path)) for name,path in self.objects.items()}
+        inside=all(np.all(lo>=spec.WORKSPACE[0]) and np.all(hi<=spec.WORKSPACE[1]) for lo,hi in all_bounds.values())
+        position=np.asarray(matrix.ExtractTranslation())
+        post_matrix=self.matrix(self.path('/World/clamp_body'))
+        anchor=np.asarray(post_matrix.Transform(Gf.Vec3d(*spec.PLATE_OFFSET)))
+        captive=np.asarray(matrix.Transform(Gf.Vec3d(0,.010,0)))
+        intact=np.linalg.norm(captive-anchor)<.002
         parked=bool(np.all(clo[:2]>=np.array(spec.CARD_START[:2])-.0375) and np.all(chi[:2]<=np.array(spec.CARD_START[:2])+.0375) and abs(clo[2]-(spec.TABLE_Z+.001))<.003)
-        # Quarter-turn-loose reset: the visible bolt index must pass the seat
-        # angle. Retention is judged separately by the hands-off optical test;
-        # internal spring-load estimates are diagnostic only.
-        closed=self.clamp_data['bolt_angle_deg']<=-spec.CLAMP_MIN_TURN_DEG
+        # Visible indexes measure elastic deflection of the calibrated tool.
+        # No bolt angle endpoint grants the fastening proof.
+        socket_matrix=self.matrix(self.path('/World/socket'))
+        handle_matrix=self.matrix(self.path('/World/driver'))
+        bolt_matrix=self.matrix(self.path('/World/bolt'))
+        sr=np.asarray(socket_matrix.ExtractRotationMatrix()).T
+        hr=np.asarray(handle_matrix.ExtractRotationMatrix()).T
+        br=np.asarray(bolt_matrix.ExtractRotationMatrix()).T
+        relative=sr.T@hr
+        slip=math.degrees(math.atan2(relative[1,0],relative[0,0]))
+        slip_step=-clamp.angle_delta(slip,self.previous_slip)
+        self.previous_slip=slip
+        nut=self.clamp_data['bolt_angle_deg']
+        nut_motion=clamp.angle_delta(nut,self.previous_nut)
+        self.previous_nut=nut
+        offset=br.T@(np.asarray(socket_matrix.ExtractTranslation())-np.asarray(bolt_matrix.ExtractTranslation()))
+        engaged=bool(self.socket_key_active and np.linalg.norm(offset[:2])<.001 and -.006<offset[2]<.00075
+                     and np.dot(sr[:,2],br[:,2])>math.cos(math.radians(3)))
+        torque=-math.radians(slip)*spec.DRIVER_SPRING_NM_RAD
+        closed=nut<=-1.  # Exclude reset numerical noise; torque proof establishes retention.
         frame=self.matrix(self.path('/World/frame'))
         up=np.asarray(frame.ExtractRotationMatrix())[2,:]
         tilt=math.degrees(math.acos(float(np.clip(up[2]/np.linalg.norm(up),-1,1))))
         shortcut=any(np.linalg.norm(np.asarray(self.matrix(self.path('/World/'+name)).ExtractTranslation())-pos)>.002
                      for name,pos in self.fixed_positions.items())
-        evidence=Evidence(optical['on'],optical['geometric_hits']>=7 and optical['blocked_by']==['card'],closed,hands_clear,parked,tool_clear,yaw,tilt,bool(inside),bool(intact),bool(shortcut),not near_card)
-        diagnostics={'sensor_xyz':position.tolist(),'sensor_yaw_deg':yaw,'card_xyz':list(self.matrix(self.path('/World/card')).ExtractTranslation()),'driver_xyz':list(self.matrix(self.path('/World/driver')).ExtractTranslation()),'driver_matrix':np.asarray(self.matrix(self.path('/World/driver'))).tolist(),'optical':optical,'clamp':self.clamp_data,'robot_inside_5mm_margin':sorted(set(near_robot)),'pad_centers_usd':[list(self.matrix(p).ExtractTranslation()) for p in self.pads]}
+        evidence=Evidence(optical['on'],optical['geometric_hits']>=7 and optical['blocked_by']==['card'],closed,hands_clear,parked,tool_clear,yaw,tilt,bool(inside),bool(intact),bool(shortcut),not near_card,torque,self.peak_tool_torque,float(slip),float(nut_motion),float(nut),engaged)
+        diagnostics={'sensor_xyz':position.tolist(),'sensor_yaw_deg':yaw,'sensor_rotation':rot.tolist(),'card_xyz':list(self.matrix(self.path('/World/card')).ExtractTranslation()),'driver_xyz':list(self.matrix(self.path('/World/driver')).ExtractTranslation()),'driver_matrix':np.asarray(self.matrix(self.path('/World/driver'))).tolist(),'optical':optical,'clamp':self.clamp_data,'clutch_relative_deg':slip,'socket_offset_local_m':offset.tolist(),'robot_inside_5mm_margin':sorted(set(near_robot)),'pad_centers_usd':[list(self.matrix(p).ExtractTranslation()) for p in self.pads]}
+        # Independent physics diagnostic: input contact moment about the tool
+        # axis. This remains evaluator-only and never reaches either policy.
+        from omni.physx import get_physx_simulation_interface
+        from pxr import PhysicsSchemaTools
+        headers, contacts = get_physx_simulation_interface().get_contact_report()
+        moment = np.zeros(3)
+        origin = np.asarray(handle_matrix.Transform(Gf.Vec3d(0.,0.,spec.DRIVER_HEAD_Z)))
+        count = 0
+        unexpected_tool_contacts=[]
+        for header in headers:
+            paths = [str(PhysicsSchemaTools.intToSdfPath(v)) for v in [header.collider0,header.collider1]]
+            if header.num_contact_data:
+                for i,p in enumerate(paths):
+                    other=paths[1-i]
+                    if p.startswith(self.path('/World/bolt')+'/') and not any(other.startswith(self.path('/World/'+n)+'/') for n in ['socket','clamp_body']):
+                        # Holding the nut itself could imitate a tightening
+                        # witness without producing any fastener preload.
+                        unexpected_tool_contacts.append(other)
+                    if p.startswith(self.path('/World/socket')+'/') and not any(other.startswith(self.path('/World/'+n)+'/') for n in ['bolt','driver']):
+                        unexpected_tool_contacts.append(other)
+                    if p.startswith(self.path('/World/driver')+'/') and 'Arm/' not in other and not other.startswith(self.path('/World/socket')+'/'):
+                        unexpected_tool_contacts.append(other)
+            match = [p.startswith(self.path('/World/driver')+'/') for p in paths]
+            if sum(match) != 1:
+                continue
+            sign = 1. if match[0] else -1.
+            for index in range(header.contact_data_offset,header.contact_data_offset+header.num_contact_data):
+                contact = contacts[index]
+                moment += np.cross(np.asarray(contact.position)-origin,sign*np.asarray(contact.impulse))*spec.PHYSICS_HZ
+                count += 1
+        diagnostics['driver_contact_moment_nm'] = moment.tolist()
+        diagnostics['driver_axial_contact_moment_nm'] = float(moment@sr[:,2])
+        diagnostics['driver_contact_points'] = count
+        diagnostics['unexpected_tool_contacts'] = sorted(set(unexpected_tool_contacts))
+        evidence.torque_path_clear=not unexpected_tool_contacts
+        diagnostics['object_bounds']={name:[lo.tolist(),hi.tolist()] for name,(lo,hi) in all_bounds.items()}
         return evidence,diagnostics
 
     def step(self, action):
@@ -383,18 +544,29 @@ class PhotoWorld:
         if action.shape != (14,) or not np.isfinite(action).all():
             raise ValueError('Expected 14 finite joint/gripper targets')
         self.update_clamp()
+        previous_physics_steps=self.physics_callback_count
         self.env.step(self.torch.tensor(action[None,:], device=self.base.device))
+        if self.physics_callback_count-previous_physics_steps != spec.PHYSICS_HZ//spec.CONTROL_HZ:
+            raise RuntimeError('Passive clamp material did not update at the native physics rate')
+        measured=self.joints()
+        if not np.isfinite(measured).all() or np.max(np.abs(measured))>7.:
+            raise RuntimeError('Native robot dynamics diverged; this is invalid evaluation evidence')
         self.update_clamp()
         evidence, diagnostics = self.measure()
         score = self.scorer.update(evidence)
         row = {'step':self.steps,'score':score,'dwell':self.scorer.dwell,'invalid':self.scorer.invalid,
-               'evidence':asdict(evidence),'joint_targets':action.tolist(),'measured_joints':self.joints().tolist(),**diagnostics}
+               'evidence':asdict(evidence),'joint_targets':action.tolist(),'measured_joints':self.joints().tolist(),
+               'physics_steps':self.physics_callback_count,**diagnostics}
         self.trace.write(json.dumps(row)+'\n')
         self.trace.flush()
         self.steps += 1
         # Render the updated physical LED without advancing physics.
         self.base.sim.render()
-        for key in CAMERAS.values():self.base.scene[key].update(0., force_recompute=True)
+        from isaaclab.sensors.sensor_base import SensorBase
+        cameras=[self.base.scene[key] for key in CAMERAS.values()]
+        for camera in cameras:
+            camera._invalidate_buffers()
+        SensorBase.update_batch(cameras,0.)
         self.save_frames(f'{self.steps:05d}')
         self.last = row
         if self.steps % 50 == 0:
@@ -408,6 +580,7 @@ class PhotoWorld:
         (self.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
         self.trace.close()
         if self.env is not None:
+            self.base.sim.backend_manager.step=self.original_physics_step
             self.stage.Export(str(self.output/'terminal.usda'))
             self.env.close()
             self.env = None

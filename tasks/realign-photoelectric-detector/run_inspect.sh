@@ -9,4 +9,4 @@ export OMNI_KIT_ACCEPT_EULA=YES ACCEPT_EULA=Y
 if [[ $(uname -m) == aarch64 ]]; then
   export LD_PRELOAD="/lib/aarch64-linux-gnu/libgomp.so.1${LD_PRELOAD:+:$LD_PRELOAD}"
 fi
-exec timeout -k 15 1200 "$ISAAC_PYTHON" "$task_dir/run_inspect.py" "$@"
+exec timeout -k 15 3600 "$ISAAC_PYTHON" "$task_dir/run_inspect.py" "$@"

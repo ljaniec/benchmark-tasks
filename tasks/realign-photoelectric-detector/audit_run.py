@@ -19,14 +19,15 @@ def audit(root, require_full=False):
     previous_reset = None
     episodes = sorted((root/'evidence').glob('episode-*'))[:process.get('episodes',999)]
     for number, episode in enumerate(episodes):
+        result = json.loads((episode/'result.json').read_text())
         rows = [json.loads(line) for line in (episode/'trace.jsonl').read_text().splitlines()]
         grade = Scorer()
         for i, row in enumerate(rows):
             assert row['step'] == i, 'Missing or reordered step'
+            assert row.get('physics_steps') == (i+1)*result['physics_hz']//result['control_hz'], 'Missing native material substeps'
             score = grade.update(Evidence(**row['evidence']))
             assert (score,grade.dwell,grade.invalid) == (row['score'],row['dwell'],row['invalid']), 'Grade mismatch'
         assert rows and rows[0]['score'] == 0 and rows[0]['dwell'] == 0, 'Unearned initial score'
-        result = json.loads((episode/'result.json').read_text())
         assert (len(rows),grade.score,grade.invalid) == (result['steps'],result['score'],result['invalid'])
         if require_full:
             assert grade.score == 1. and grade.dwell >= 10 and not grade.invalid, 'Full score missing'
