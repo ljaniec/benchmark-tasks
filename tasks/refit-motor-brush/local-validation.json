@@ -1,0 +1,63 @@
+{
+  "cpu_tests": {
+    "passed": 10
+  },
+  "runs": {
+    "demo": {
+      "episodes": [
+        {
+          "episode": 0,
+          "steps": 453,
+          "terminal_score": 1.0,
+          "maximum_score": 1.0,
+          "invalid": false,
+          "dwell": 10,
+          "max_frame_tilt_deg": 0.0,
+          "reset_velocities_zero": true,
+          "policy_frame_samples_match_native": true
+        }
+      ],
+      "source_snapshots_verified": true,
+      "all_recorded_grades_match": true,
+      "reset_check": {
+        "previous_episode": "episode-00",
+        "reset_episode": "episode-01",
+        "poses_and_velocities_match": true,
+        "counters_cleared": true,
+        "camera_timestamps_reset": true,
+        "initial_camera_bytes_match": true,
+        "hold_steps": 20,
+        "hold_score": 0.0,
+        "seated": false
+      }
+    }
+  },
+  "independent_geometry": {
+    "demo": {
+      "steps": 453,
+      "independent_geometry_checks": 2265,
+      "all_match": true,
+      "method": "Exported brush mesh, toe box, collector cylinder, raw transforms and native clearance hits"
+    }
+  },
+  "source_files": {
+    "test_contract.py": "83494ecda22d10c3ad7eb476c61af7b247fdf37f4d9d7d418e3d7a696e46c808",
+    "export_media.py": "677093225e0a52df409cfa64d6ebfa568dbf47b154e1a4f96ec06c5c2918a9d9",
+    "test_dream_budget.py": "6e177c57bbc8775f4b6b2dac83036ad9b56dc25ff61d22097bba4361e0b0c58d",
+    "demo.py": "052233c3b52c0ac4b29a068b1b6e4974aee399f22aec503adcc5b17f313c34be",
+    "audit_run.py": "54f67396d1997aa37e949fd3be9b692187c27bdfe97a0c2b94ddaf488bb04104",
+    "scene.py": "dc8b9f6f054bb9b5719e018e94ddd764ebec9721746b3dcf0b4bb0b8dea0f159",
+    "scorer.py": "64edea0352fde0b0e43c027605653803912b9d0d85c1865361209773ed7e33f5",
+    "spec.py": "e89b18df3a2799a774d8dac9cd6103c44a2503edb2c4b8c75807c517aa2fbbbc",
+    "run_inspect.py": "596230f676505b2a377df0947feff1a8d956fcf1a8651aaadb09862133f057d4",
+    "measurement.py": "89cf30ed9abb08935967acc5170e46ac3aee4cd4057abe2c551bd6ec2d486126",
+    "inspect_task.py": "bc09d7a0e3c1d348b1a448bad7ba341c8865a59f8d3c35417a47d1724a988eb9",
+    "dream_budget.py": "a687d62c608901314dc78b870cdbff6aa8aee359afd7343fcfb8b8ebcf1b0107",
+    "arena_runtime.py": "3c54f62fdf56525df5dcbc4dbe3cac40834d857d6812c5e0280f460bc88951b2",
+    "prepare_arena_compat.py": "0c5acd3c63000254923dc8843243956121b5d149a9db4046380b919f2b82a994",
+    "task.json": "b493eeb7b0e2497d6e4678c16308a09d26fd3fd895cbc90810dc5415d1d55cc6",
+    "DEPENDENCIES.json": "e47da0f09d9d2dba1b070d02da2ba0e28e15d9b83778864db874c93e3509cc40"
+  },
+  "paid_trial": "not yet run",
+  "hardware_calibration": "not performed"
+}
