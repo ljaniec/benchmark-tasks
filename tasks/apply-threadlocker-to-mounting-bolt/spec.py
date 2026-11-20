@@ -14,8 +14,8 @@ HEAD_AF=.024
 HEAD_HEIGHT=.010
 BOLT_START=(.320,.150,.504)
 TOOL_START=(.280,-.200,.540)
-WAX_OFFSET=.042
-WAX_SIZE=(.004,.010,.010)
+WAX_OFFSET=.044
+WAX_SIZE=(.008,.010,.010)
 WAX_DENSITY=1030.
 TOOL_MASS=.050
 # Midpoint quadrature of the actual thread profile, plus solid hex head.

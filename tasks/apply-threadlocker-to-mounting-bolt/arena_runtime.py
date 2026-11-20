@@ -340,7 +340,7 @@ class ThreadlockerWorld:
             for i in range(header.contact_data_offset,header.contact_data_offset+header.num_contact_data):
                 c=contacts[i];point=np.asarray(c.position);impulse=np.asarray(c.impulse);normal=np.asarray(c.normal)
                 if not wax_contact:
-                    self.coating.check_nonapplicator_contact(br.inv().apply(point-bolt[:3]))
+                    self.coating.check_nonapplicator_contact(br.inv().apply(point-bolt[:3]),paths)
                     continue
                 relative=wv[:3]+np.cross(wv[3:],point-wax[:3])-bv[:3]-np.cross(bv[3:],point-bolt[:3])
                 tangent=relative-normal*np.dot(relative,normal)

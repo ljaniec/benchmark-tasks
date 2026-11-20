@@ -17,15 +17,15 @@ w=None;report={'calibration_only':True,'robot_feasibility':False,'native_steps':
 try:
  w=arena_runtime.ThreadlockerWorld(a.output/'scene')
  ids=np.array([0],np.uint32)
- start={'bolt':[.40,0,.62,0,0,0,1],'tool':[.330,0,.627,0,0,0,1],'wax':[.372,0,.627,0,0,0,1]}
+ start={'bolt':[.40,0,.62,0,0,0,1],'tool':[.330,0,.627,0,0,0,1],'wax':[.330+spec.WAX_OFFSET,0,.627,0,0,0,1]}
  for name,pose in start.items():
   v=w.prop_views['/World/'+name];v.set_transforms(np.asarray([pose],np.float32),ids);v.set_velocities(np.zeros((1,6),np.float32),ids)
  wrapped=w.base.sim.backend_manager.step;counter=0;max_force=0.
  def fixture_step():
   global counter,max_force
   t=counter/spec.PHYSICS_HZ;counter+=1
-  x=.330 if t<2 else .330+(.3488-.330)*min((t-2)/1,1)
-  if t>9:x=.3488-(.3488-.330)*min(t-9,1)
+  x=.330 if t<2 else .330+(.3448-.330)*min((t-2)/1,1)
+  if t>9:x=.3448-(.3448-.330)*min(t-9,1)
   angle=6*math.pi*np.clip((t-3)/6,0,1)
   z=.621+.002*min(max(int((t-3)/2),0),2)
   for name,target,rotation in [('bolt',np.array([.40,0,.62]),Rotation.from_euler('z',angle)),('tool',np.array([x,0,z]),Rotation.identity())]:

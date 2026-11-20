@@ -18,8 +18,8 @@ class Coating:
         self.area=np.sqrt(self.radius**2*(1+dz**2)+da**2)*(2*np.pi/spec.ANGLE_CELLS)*(spec.BOLT_LENGTH/spec.AXIAL_CELLS)
         self.film=np.zeros_like(self.area)
         self.initial_volume=float(np.prod(spec.WAX_SIZE));self.remaining_volume=self.initial_volume
-        self.head_contaminated=False;self.film_disturbed=False;self.native_contacts=0;self.sliding_contacts=0
-    def check_nonapplicator_contact(self,point):
+        self.head_contaminated=False;self.film_disturbed=False;self.disturbance=None;self.native_contacts=0;self.sliding_contacts=0
+    def check_nonapplicator_contact(self,point,colliders=None):
         """Wet material must not be touched by fingers, supports or the carrier.
 
         This is an observable cleanliness constraint, not simulated dry adhesion.
@@ -31,6 +31,8 @@ class Coating:
         a=int((np.arctan2(point[1],point[0])%(2*np.pi))/(2*np.pi)*spec.ANGLE_CELLS)%spec.ANGLE_CELLS
         k=min(spec.AXIAL_CELLS-1,int(point[2]/spec.BOLT_LENGTH*spec.AXIAL_CELLS))
         self.film_disturbed |= bool(self.film[a,k]>=spec.FILM_VISIBLE_M)
+        if self.film_disturbed and self.disturbance is None:
+            self.disturbance={'local_point_m':point.tolist(),'colliders':colliders}
     def deposit(self,point,normal_force_n,sliding_m,*,native_contact):
         point=np.asarray(point,float)
         if not np.isfinite(point).all() or not np.isfinite([normal_force_n,sliding_m]).all():raise ValueError('Nonfinite contact')
@@ -55,6 +57,7 @@ class Coating:
         visible_heights=self.height[blue]
         ratio=lambda m:float((self.area*m*blue).sum()/(self.area*m).sum())
         return {'coverage':ratio(band),'root_coverage':ratio(root),'head_clean':not self.head_contaminated,'film_disturbed':self.film_disturbed,
+                'first_disturbance':self.disturbance,
                 'coated_axial_interval_mm':[float(visible_heights.min()*1000),float(visible_heights.max()*1000)] if visible_heights.size else None,
                 'used_volume_m3':float((self.film*self.area).sum()),'remaining_volume_m3':self.remaining_volume,
                 'native_contacts':self.native_contacts,'sliding_contacts':self.sliding_contacts}
