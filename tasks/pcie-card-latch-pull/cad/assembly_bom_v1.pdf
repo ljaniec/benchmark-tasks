@@ -1,0 +1,50 @@
+%PDF-1.4
+1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj
+2 0 obj<< /Type /Pages /Kids [3 0 R] /Count 1 >>endobj
+3 0 obj<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>endobj
+4 0 obj<< /Length 1791 >>stream
+BT /F1 9 Tf 40 760 Td 11 TL
+(PCIe card latch-pull bench: assembly BOM \(v1\)) Tj T*
+() Tj T*
+(Bill of materials:) Tj T*
+(  1  Dell Precision 3660 Tower, side cover off, PCIe door open, laid on its side) Tj T*
+(     \(own system board with spring-return x16 latch, own CPU heatsink, 2 DDR5 UDIMMs\)) Tj T*
+(  1  NVIDIA T400 4GB low profile card in the primary x16 slot, full-height bracket) Tj T*
+(  1  conductive polypropylene antistatic tray 300 x 180 x 15 mm) Tj T*
+(  1  push-pull digital force gauge, 0-50 N, 0.01 N resolution) Tj T*
+(  1  rubber bench mat 440 x 640 x 3 mm) Tj T*
+(  1  green vinyl tape, 40 mm wide) Tj T*
+(  1  orange paint pen) Tj T*
+(  1  tail_lift_gauge_v1 \(5 mm and 10 mm steps\), 1 flat_check_wedge_v1 \(10 deg\)) Tj T*
+() Tj T*
+(Key positions \(mm, table frame, origin = world origin on mat\):) Tj T*
+(  Card turned 90 deg: plane at x 180, long axis along +y, shroud face toward -x) Tj T*
+(  Card tail end / gold finger bottom: x 180.0, y -30.0) Tj T*
+(  Card: x 165 to 181, y -30 to 126; bracket end at y 125.9) Tj T*
+(  Green band: x 165 to 181, y 65 to 105 \(95-135 mm from tail\)) Tj T*
+(  Orange latch tab: x 183 to 202, y -9 to 1 \(under the card overhang, beside the PCB back face\)) Tj T*
+(  Gold fingers: x 179 to 181, y 22 to 111 \(52.5-141.5 mm from tail\)) Tj T*
+(  System board \(modelled, approximate\): x 116 to 360, y -120 to 124) Tj T*
+(  Chassis wall plate \(modelled\): x 115 to 365, y -150 to 145) Tj T*
+(  CPU heatsink \(modelled, approximate\): x 220 to 315, y 0 to 95) Tj T*
+(  Antistatic tray: x 150 to 450, y 145 to 325) Tj T*
+(  Mat: x 60 to 500, y -300 to 340) Tj T*
+() Tj T*
+(Success: tail end >= 5 mm up, fingers >= 10 mm above slot top, card flat) Tj T*
+(in tray within 10 deg. Template: layout_template_v1.dxf \(1:1 mm\).) Tj T*
+ET
+endstream
+endobj
+5 0 obj<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000056 00000 n 
+0000000111 00000 n 
+0000000235 00000 n 
+0000002076 00000 n 
+trailer<< /Size 6 /Root 1 0 R >>
+startxref
+2144
+%%EOF
