@@ -1,0 +1,20 @@
+{
+  "title": "Stop a monitor arm from sinking",
+  "category": "Societal relatability",
+  "keywords": [
+    "desk setup",
+    "monitor arm",
+    "counterbalance",
+    "hex key",
+    "bimanual"
+  ],
+  "instruction": "Adjust the sinking monitor arm so it stays put after release at two working heights.",
+  "context": "A desk arm can sag after a screen change. Rebalancing the installed arm restores normal height adjustment.",
+  "setup": "A desk-mounted 300 mm aluminum monitor arm carries an unpowered 535 × 305 × 35 mm display with a plastic bezel, glass face and steel VESA plate. The display weighs 4.2 kg. The steel grommet and post are fixed to the desk. The lift pivot is 287.5 mm above the tabletop and the underbalanced arm starts at its 21° lower stop. A steel 6 mm hex key with a 24 × 30 × 25 mm grip stands tip-down in an ABS desk holder with a 36 × 36 mm footprint. The two test heights are 62 mm below and above the horizontal arm reference.",
+  "scoring": "With both hands clear and the key resting in its holder, score 0.25 for holding the screen at either working height for 0.5 seconds, or 0.5 for holding it for 2 seconds. Score 1.0 for two 2-second holds, one at each working height. During each hold the screen must be within 12 mm of the target and vary by at most 5 mm from its lowest to highest position. The last hold must remain valid at completion. A dropped tool, damaged hardware or external support invalidates the corresponding outcome.",
+  "run_limit": "720 control steps (36 seconds at 20 Hz)",
+  "reset_notes": "Return the arm to its baseline underbalanced setting, put the key back and restore the robot, mechanism velocities and camera frames before starting a fresh episode.",
+  "fidelity": "The grommet-mounted arm, weighted display, socket and key have native collision. The 6 mm bit has a beveled tip and fits a 6.32 mm socket with a tapered entry. A passive linkage keeps the screen upright. The simulated gas spring applies torque through its lever geometry and physical adjuster. Spring progression, friction and pitch are provisional. Cables and unused swivel axes are omitted.",
+  "scores": "Dream-1 beta: 0.0; demo: 1.0",
+  "media": "M-5QFQ8Z"
+}
