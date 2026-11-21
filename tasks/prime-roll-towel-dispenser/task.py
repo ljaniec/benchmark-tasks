@@ -74,14 +74,12 @@ def _hands(base):
     for side in ["left", "right"]:
         robot = base.scene[side + "_robot"]
         links = link_poses(robot)
-        z = links["gripper"][:3, 2]
-        z = z / np.linalg.norm(z)
-        x = links["tip_left"][:3, 3] - links["tip_right"][:3, 3]
-        x = x - z * (x @ z)
-        norm = np.linalg.norm(x)
-        x = x / norm if norm > 1e-5 else links["gripper"][:3, 0]
+        # The gripper link's local X axis is the prismatic closing
+        # direction. Tip body origins are offset along other axes and
+        # their connecting vector is skewed as the gap closes.
+        grip = links["gripper"][:3, :3]
         tips.append(np.asarray(tcp_world(robot)) - origin)
-        axes.append(np.column_stack((x, np.cross(z, x), z)))
+        axes.append(grip)
         ids = robot.find_joints(["joint7", "joint8"], preserve_order=True)[0]
         apertures.append(float(np.abs(_np(robot.data.joint_pos)[0, ids]).sum()))
     return np.array(tips), np.array(axes), np.array(apertures)
@@ -200,7 +198,7 @@ def demo():
             Waypoint(2., pickup, FINGER_OPEN, "straddle the edge", yaw),
             Waypoint(1.2, pickup, FINGER_CLOSED, "pinch", yaw),
             Waypoint(1.6, (x, y, z), FINGER_CLOSED, "tilt palm clear of the roll", feed_pitch),
-            Waypoint(2.2, (NIP_X - .014, y, NIP_Z + .026), FINGER_CLOSED, "turn the paper down", feed_pitch),
+            Waypoint(2.2, (NIP_X - .014, y, NIP_Z + LEAD_LENGTH + .008), FINGER_CLOSED, "turn the paper down", feed_pitch),
             Waypoint(1., (NIP_X - .001, y, NIP_Z + LEAD_LENGTH + .001), FINGER_CLOSED, "set the edge into the nip", feed_pitch),
             Waypoint(1., (NIP_X - .001, y, NIP_Z + LEAD_LENGTH + .001), FINGER_OPEN, "release the paper", feed_pitch),
             Waypoint(2., (x - .060, y, z + .048), FINGER_OPEN, "back away", yaw),
