@@ -61,12 +61,29 @@ class Contract(unittest.TestCase):
         for _ in range(spec.DWELL_STEPS):
             s.update(evidence())
         self.assertEqual(s.score, 1.)
-        # Door swings past the 5° reopen limit after release → permanent zero.
-        self.assertEqual(s.update(evidence(door_yaw_rad=spec.PUSH_OPEN_LIMIT + 0.01,
+        # Door swings past the reopen limit after release → permanent zero, even if re-closed.
+        self.assertEqual(s.update(evidence(door_yaw_rad=-(spec.REOPEN_LIMIT + 0.01),
                                            door_closed=False, lever_locked=False,
                                            base_locked=False, latch_engaged=False,
                                            latch_overlap_m=0.)), 0.)
         self.assertTrue(s.invalid)
+        self.assertEqual(s.update(evidence()), 0.)
+
+    def test_release_inside_closed_band_is_not_a_reopen(self):
+        s = Scorer()
+        near_edge = -(spec.DOOR_CLOSED_TOL - math.radians(.5))
+        s.update(evidence(door_yaw_rad=near_edge, lever_locked=False, base_locked=False,
+                          latch_engaged=False, latch_overlap_m=0.))
+        self.assertFalse(s.invalid)
+        drift = -(spec.DOOR_CLOSED_TOL + math.radians(2))
+        self.assertEqual(s.update(evidence(door_yaw_rad=drift, door_closed=False, lever_locked=False,
+                                           base_locked=False, latch_engaged=False,
+                                           latch_overlap_m=0.)), 0.)
+        self.assertFalse(s.invalid)
+
+    def test_reopen_limit_is_outside_closed_band(self):
+        self.assertGreater(spec.REOPEN_LIMIT, spec.DOOR_CLOSED_TOL)
+        self.assertAlmostEqual(spec.REOPEN_LIMIT, math.radians(12))
 
     def test_open_start_is_not_closed(self):
         self.assertGreater(abs(spec.DOOR_START_YAW - spec.DOOR_CLOSED_YAW), spec.DOOR_CLOSED_TOL)

@@ -35,8 +35,9 @@ LATCH_OVERLAP_MIN = .004
 # Prismatic extension along door +X (authored seat is outside the stile; spring target ~20 mm).
 LATCH_SEAT_X = .014
 LATCH_EXTEND_MIN = .010  # prismatic slide beyond seat
-# Push-test: after release, a brief outward impulse must not open the door past tol.
-PUSH_OPEN_LIMIT = math.radians(5)
+# After a closed, hands-clear release, opening past this angle from fully closed zeros the trial.
+# Must stay above DOOR_CLOSED_TOL so a door released anywhere inside the closed band cannot trip it.
+REOPEN_LIMIT = DOOR_CLOSED_TOL + math.radians(5)
 
 DOOR_MASS = 2.4
 LEVER_MASS = .045

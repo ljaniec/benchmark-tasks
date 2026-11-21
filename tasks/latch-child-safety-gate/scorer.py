@@ -25,7 +25,8 @@ class Scorer:
         self.score = 0.
         self.dwell = 0
         self.invalid = False
-        # After the door has been closed and the hands leave it, a reopen >5° zeros the trial.
+        # Set once the door is closed (within 7°) with both hands clear; a later reopen past
+        # REOPEN_LIMIT (12° from fully closed) then zeros the trial permanently.
         self._released_closed = False
 
     def update(self, e: Evidence):
@@ -33,7 +34,7 @@ class Scorer:
         self.invalid |= (not finite) or (not e.inside_workspace) or (not e.intact)
         if e.door_closed and e.hands_clear:
             self._released_closed = True
-        if self._released_closed and abs(e.door_yaw_rad - spec.DOOR_CLOSED_YAW) > spec.PUSH_OPEN_LIMIT:
+        if self._released_closed and abs(e.door_yaw_rad - spec.DOOR_CLOSED_YAW) > spec.REOPEN_LIMIT:
             self.invalid = True
         if self.invalid:
             self.score = 0.

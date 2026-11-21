@@ -2,7 +2,10 @@
 
 Everyday household task: swing a walk-through child gate shut and engage both maker-required locks. Built for the Robocurve YAM / Isaac Lab-Arena stack.
 
-**Status:** RGB demo score 1.0 and Dream-1 run score 0.0 recorded; media uploaded as `M-JJ8CZJ`.
+**Status:** both videos recorded and uploaded as media `M-JJ8CZJ`.
+
+- RGB demo: **1.0** at step 650 (32.5 s of the 80 s limit); the trace regrades to 1.0 with the current `scorer.py`.
+- Dream-1: **0.0**. The run ended at step 224 when Dream-1 sent a right-gripper command of −0.054, outside the 0–1 range the Inspect Robots Dream adapter accepts. A repeat run stopped the same way at step 416 (−0.063).
 
 ## Why this task
 
@@ -10,7 +13,7 @@ Pressure-mounted walk-through gates are ordinary parenting hardware. The [Regalo
 
 Board screening on 20 November 2026 (4,168 unique IDs) found **no** baby / child / stair / safety-gate neighbour. Closest household latches (child-proof drawer, infant car-seat handle) are different mechanisms.
 
-Category is **Societal relatability**: closing and locking a child gate is a recognizable household routine that most parents perform, not a niche trade skill.
+Category is **Societal relatability**: closing and locking a child gate is a recognizable household routine that parents repeat many times a day, not a niche trade skill. A household robot that uses a gated doorway has to leave the gate secured the same way, or a toddler can push it open.
 
 ## Geometry and physics
 
@@ -29,7 +32,7 @@ Generic reconstruction of the Easy Step class (not manufacturer CAD):
 - **0.5** plus top lever down (within 8°) and ≥4 mm latch/catch overlap.
 - **1.0** plus base lock down (within 12°), hands ≥5 mm clear, stable for 10 frames at 20 Hz.
 - Workspace escape, moved fixed scenery or damage → permanent 0.
-- After the door has been closed and the hands leave it, a reopen of more than **5°** from fully closed → permanent 0 for that trial (implemented in `scorer.py`).
+- Once the door has been within 7° of closed with both hands clear, opening it to more than **12°** from fully closed (5° beyond the closed band) → permanent 0 for that trial, even if it is closed again (`Scorer.update` in `scorer.py`, `spec.REOPEN_LIMIT`).
 
 Physical judging: overhead + latch-side video and a millimetre scale at the catch.
 
@@ -51,7 +54,7 @@ python scorer.py runs/demo/evidence/episode-00/trace.jsonl
 Dream (only after a full-score demo; shared GPU lock; ledger required):
 
 ```bash
-bash run_inspect.sh --policy dream --steps 1200 --output runs/dream \
+bash run_inspect.sh --policy dream --steps 1600 --output runs/dream \
   --budget-ledger /path/to/persistent/dream-budget.jsonl
 ```
 
