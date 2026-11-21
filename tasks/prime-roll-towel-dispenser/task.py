@@ -120,10 +120,14 @@ def reset(env):
     _feed, _paper = Feed(), None
     if os.environ.get("TOWEL_TRACE"):
         Path(os.environ["TOWEL_TRACE"]).write_text("")
-    _draw(env.unwrapped)
-    # The stock reset renders before the task's paper mesh hook.
+    base = env.unwrapped
+    _draw(base)
+    # Invalidate the frames recorded by the stock reset before replacing
+    # the paper. Render the restored scene before it reaches the policy.
+    for camera in ("top_cam", "left_cam", "right_cam"):
+        base.scene[camera].reset()
     for _ in range(4):
-        env.unwrapped.sim.render()
+        base.sim.render()
 
 
 @m.on_step
@@ -219,7 +223,7 @@ def demo():
         else:
             # Look through the open feed bay toward the hanging edge.
             # The fixed wrist pose keeps the fingers away from the outlet.
-            path.append(Waypoint(3., (.320, .110, .940), FINGER_OPEN,
-                                 "show the outlet from the wrist", Pitch(math.radians(30.), -45.)))
+            path.append(Waypoint(3., (.320, .110, .915), FINGER_OPEN,
+                                 "show the outlet from the wrist", Pitch(math.radians(45.), -30.)))
         plans[side] = path
     return plans

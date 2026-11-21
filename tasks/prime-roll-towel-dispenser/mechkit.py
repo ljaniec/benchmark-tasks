@@ -872,7 +872,7 @@ def _patch_embodiment(module) -> None:
         obs = reset(self, *a, **k)
         for fn in _RESET:
             fn(self._env)
-        return obs
+        return self._observation() if _RESET else obs
 
     cls._task_step, cls.reset = task_step_hook, reset_hook
     cls._mechkit = True
