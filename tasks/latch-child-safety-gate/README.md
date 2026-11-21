@@ -1,8 +1,8 @@
 # Close and lock a pressure-mounted child safety gate across a hallway
 
-Everyday household safety task: swing a walk-through child gate shut and engage both maker-required locks. Built for the Robocurve YAM / Isaac Lab-Arena stack.
+Everyday household task: swing a walk-through child gate shut and engage both maker-required locks. Built for the Robocurve YAM / Isaac Lab-Arena stack.
 
-**Status:** source and CPU contract tests ready. Full-score RGB demo and Dream-1 evaluation are pending (DGX currently occupied by an unrelated job).
+**Status:** RGB demo score 1.0 and Dream-1 run score 0.0 recorded; media uploaded as `M-JJ8CZJ`.
 
 ## Why this task
 
@@ -10,7 +10,7 @@ Pressure-mounted walk-through gates are ordinary parenting hardware. The [Regalo
 
 Board screening on 20 November 2026 (4,168 unique IDs) found **no** baby / child / stair / safety-gate neighbour. Closest household latches (child-proof drawer, infant car-seat handle) are different mechanisms.
 
-Category is **Safety and alignment**: the useful outcome is a secured barrier, not a niche trade skill.
+Category is **Societal relatability**: closing and locking a child gate is a recognizable household routine that most parents perform, not a niche trade skill.
 
 ## Geometry and physics
 
@@ -19,16 +19,17 @@ Generic reconstruction of the Easy Step class (not manufacturer CAD):
 - Opening width 762 mm; door 406 mm; height 762 mm; ~51 mm bar spacing; 19 mm tube.
 - Rectangular 22 × 90 × 25 mm top handle.
 - Native revolute door hinge, revolute top lever, prismatic spring latch, revolute base lock.
-- Door starts open 70°; lever raised; base lock horizontal.
+- Door starts open **35°**; lever raised; base lock horizontal.
 - Finger caps: 75 mm aperture, 40 N per finger.
 - Physics 240 Hz, control 20 Hz; friction 0.65/0.55 scene, 1.2/1.0 pads.
 
 ## Score ladder
 
-- **0.25** door within 3° of closed.
-- **0.5** plus top lever down and ≥4 mm latch/catch overlap.
-- **1.0** plus base lock down, hands ≥5 mm clear, stable for 10 frames at 20 Hz.
+- **0.25** door within **7°** of closed.
+- **0.5** plus top lever down (within 8°) and ≥4 mm latch/catch overlap.
+- **1.0** plus base lock down (within 12°), hands ≥5 mm clear, stable for 10 frames at 20 Hz.
 - Workspace escape, moved fixed scenery or damage → permanent 0.
+- After the door has been closed and the hands leave it, a reopen of more than **5°** from fully closed → permanent 0 for that trial (implemented in `scorer.py`).
 
 Physical judging: overhead + latch-side video and a millimetre scale at the catch.
 

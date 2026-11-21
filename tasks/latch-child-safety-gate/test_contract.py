@@ -54,10 +54,26 @@ class Contract(unittest.TestCase):
         self.assertEqual(s.update(evidence(intact=False)), 0.)
         self.assertTrue(s.invalid)
 
+    def test_reopen_after_release_zeros_trial(self):
+        s = Scorer()
+        # Closed with hands clear arms the reopen rule.
+        self.assertEqual(s.update(evidence()), 1.0 if spec.DWELL_STEPS <= 1 else .5)
+        for _ in range(spec.DWELL_STEPS):
+            s.update(evidence())
+        self.assertEqual(s.score, 1.)
+        # Door swings past the 5° reopen limit after release → permanent zero.
+        self.assertEqual(s.update(evidence(door_yaw_rad=spec.PUSH_OPEN_LIMIT + 0.01,
+                                           door_closed=False, lever_locked=False,
+                                           base_locked=False, latch_engaged=False,
+                                           latch_overlap_m=0.)), 0.)
+        self.assertTrue(s.invalid)
+
     def test_open_start_is_not_closed(self):
         self.assertGreater(abs(spec.DOOR_START_YAW - spec.DOOR_CLOSED_YAW), spec.DOOR_CLOSED_TOL)
         self.assertGreater(abs(spec.LEVER_START - spec.LEVER_LOCKED), spec.LEVER_LOCKED_TOL)
         self.assertGreater(abs(spec.BASE_START - spec.BASE_LOCKED), spec.BASE_LOCKED_TOL)
+        self.assertAlmostEqual(abs(spec.DOOR_START_YAW), math.radians(35))
+        self.assertAlmostEqual(spec.DOOR_CLOSED_TOL, math.radians(7))
 
 
 if __name__ == '__main__':

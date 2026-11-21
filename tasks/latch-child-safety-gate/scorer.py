@@ -25,10 +25,16 @@ class Scorer:
         self.score = 0.
         self.dwell = 0
         self.invalid = False
+        # After the door has been closed and the hands leave it, a reopen >5° zeros the trial.
+        self._released_closed = False
 
     def update(self, e: Evidence):
         finite = all(math.isfinite(v) if isinstance(v, float) else True for v in asdict(e).values())
         self.invalid |= (not finite) or (not e.inside_workspace) or (not e.intact)
+        if e.door_closed and e.hands_clear:
+            self._released_closed = True
+        if self._released_closed and abs(e.door_yaw_rad - spec.DOOR_CLOSED_YAW) > spec.PUSH_OPEN_LIMIT:
+            self.invalid = True
         if self.invalid:
             self.score = 0.
             self.dwell = 0
