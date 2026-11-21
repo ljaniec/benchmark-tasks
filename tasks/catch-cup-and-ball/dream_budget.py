@@ -4,9 +4,7 @@ Credentials come from DREAM_API_KEY in the process environment. The ledger holds
 no credentials, frames, or robot/object state. A reservation is never refunded,
 including on failed requests, and covers the SDK's one transport retry.
 
-Planning note (user-confirmed 2026-11-20): live Dream balance about USD 9.08;
-observed full-run cost usually well under USD 0.30. Ledger reservations remain
-conservative ($0.02/attempt) and are not invoices.
+Ledger reservations are conservative ($0.02 per attempt).
 """
 from datetime import datetime, timezone
 import fcntl
@@ -17,7 +15,7 @@ import urllib.request
 
 MODEL = 'dreamlabs/dream-1-beta'
 RESERVE_USD = .02  # Two wire attempts at a conservative $0.01 each.
-CAP_USD = .90  # Per-task reservation ceiling; expected billed ~USD 0.30/run (user 2026-11-20).
+CAP_USD = .90  # Reservation ceiling for this task's bounded trial.
 MAX_ATTEMPTS = int(round(CAP_USD / RESERVE_USD))
 
 

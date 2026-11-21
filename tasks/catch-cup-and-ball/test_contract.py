@@ -91,6 +91,15 @@ class Contract(unittest.TestCase):
             for _ in range(spec.DWELL_STEPS + 1):
                 self.assertEqual(s.update(evidence()), 0.)
 
+    def test_fixture_collision_is_distinct_from_cup_contact_or_nearby_paths(self):
+        ball = '/World/ball'
+        fixtures = ('/World/stand_sleeve', '/World/floor', '/World/pedestal_right')
+        self.assertTrue(spec.ball_hit_fixture((ball + '/shape', fixtures[0] + '/wall_03'), ball, fixtures))
+        self.assertTrue(spec.ball_hit_fixture((fixtures[1] + '/shape', ball + '/shape'), ball, fixtures))
+        self.assertFalse(spec.ball_hit_fixture((ball + '/shape', '/World/toy/cup_wall_03'), ball, fixtures))
+        self.assertFalse(spec.ball_hit_fixture((ball + '/shape', '/World/floor_marker/shape'), ball, fixtures))
+        self.assertFalse(spec.ball_hit_fixture(('/World/toy/handle', fixtures[0] + '/wall'), ball, fixtures))
+
 
 if __name__ == '__main__':
     unittest.main()

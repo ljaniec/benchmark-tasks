@@ -11,17 +11,30 @@ standard benchmark for learning dynamic motor skills on robot arms (Kober and Pe
 search for motor primitives in robotics", 2009/2011). It needs things that quasi-static
 pick-and-place does not test:
 
-- The ball is only reachable through the string: the arm has to put energy into a 0.55 m pendulum
-  by moving the handle at the right rhythm (the swing period is about 1.5 s).
+- The arm moves the handle rhythmically to put energy into the 0.55 m pendulum.
+  Its swing period is about 1.5 s.
 - At the top of the swing the string goes slack and the ball flies freely; the cup has to be under
   it when it comes down, with the toy upright.
 - Touching the ball with the gripper, or letting it hit the stand or the floor, ends the trial.
 
 ## Geometry and physics
 
-All values are in `spec.py` and `scene.py`. The toy follows a commercial handmade wooden
-cup-and-ball (7.5 in long, 3.5 in cup, 1.25 in ball, 21 in string, 120 g); wall, depth and handle
-thickness are not published and are estimated.
+All scene dimensions are in `spec.py` and `scene.py`. Prepare the toy with a digital scale,
+calipers and a ruler. Use ordinary wood stock, a turned dowel, an unfinished wooden craft ball
+and cotton cord. Finish the cup and ball with smooth, dry lacquer in contrasting colors.
+
+1. Turn the cup blank to 88.9 ± 1 mm diameter and 50 ± 1 mm height. Bore a centered
+   76 ± 1 mm opening to a depth of 40 ± 1 mm. Keep the bottom flat and smooth the rim and bore.
+2. Bond a 24 ± 0.5 mm wood dowel concentrically below the cup with 140.5 ± 1 mm of dowel exposed.
+   Select wood stock that gives 109 ± 8 g for the finished cup and handle together.
+3. Select a 31.75 ± 0.5 mm wooden ball weighing 11 ± 1 g. Fix a 2.4 ± 0.2 mm cotton cord into
+   a shallow hole at its surface. Secure the other end against the right side of the handle
+   10 ± 1 mm below the cup. Under a 1 N pull, adjust the exposed cord to 533 ± 2 mm from its
+   exit at the handle knot to its exit on the ball; this measurement excludes the knots and
+   any cord inside the wood. Mark the two exits so the gauge check can be repeated.
+4. Measure the finished parts after the finish dries. Stand the handle in the sleeve with the
+   cord through the side slot and let the ball hang freely. The ball center should settle at
+   about 442 mm above the floor. Repeat the same fit and hanging check at reset.
 
 - Cup: 88.9 mm outer and 76 mm inner diameter, 50 mm tall, 40 mm deep (10 mm floor), red lacquered
   wood. Modelled as a 20-sided wall and a floor disc.
@@ -55,19 +68,20 @@ means the handle within 30° of vertical.
   cup's rim.
 - **1.0** with the toy lifted and upright, the ball has stayed in the cup for 20 consecutive
   control steps (1 s).
-- If a robot part touches the ball (or, in real trials, the string), the ball comes within 1 mm
-  of the floor, the stand or a pedestal (so it can't be set down and scooped up), the toy falls
-  below 0.30 m, the toy or ball leaves x -0.4 to 1.2 m, y -1.2 to 0.8 m, z up to 1.6 m, or a
-  fixture moves more than 3 mm, the trial scores 0 for good.
+- The trial scores zero for good if a robot touches the ball (or touches the string in a
+  physical trial), the ball visibly hits the floor, stand or a pedestal, the toy falls below
+  0.30 m, the toy or ball leaves x −0.4 to 1.2 m, y −1.2 to 0.8 m, or z above 1.6 m,
+  or a fixture moves at least 3 mm. Contact between the ball and its own cup is permitted.
 
 Scores are latched except the invalidating conditions. PhysX gives a sphere no rolling
 resistance, so a caught ball can keep circling the cup's floor; the 1 s criterion only asks that
 it stay inside.
 
-Physical judging: a camera beside the stand gives the ball's height relative to the rim and
-whether it stays in the cup; a slow-motion clip shows any gripper contact with the ball or the
-string. Real trials are safe: the toy weighs 120 g and the ball 11 g; keep people outside the
-0.6 m swing radius.
+Film from beside the stand to judge ball height relative to the rim and the one-second hold.
+Use a second oblique view and slow motion at 60 fps or faster to check visible contact with the
+robot or fixtures. A bounce, deflection, or visible contact surface is enough. Close passes earn
+the score they otherwise achieve. In simulation, a physical contact impulse at any physics
+substep supplies the fixture-contact flag. Keep people outside the swing area.
 
 ## External robot asset
 
@@ -75,6 +89,11 @@ The external YAM robot asset is MIT licensed (I2RT YAM via the pinned YAM Isaac 
 It is not redistributed here. See `DEPENDENCIES.json` and retain upstream `LICENSE.i2rt`.
 
 ## Run
+
+The revised evaluation uses Python 3.12.16, Isaac Sim 6.1.0.0, Isaac Lab 17.0.2,
+Isaac Lab-Arena 0.3.0 at `c7edf3a9d5` and Inspect Robots 0.60.0. Set
+`ISAAC_PYTHON`, `ARENA_ROOT` and `INSPECT_OVERLAY` for the installed runtime and
+the dependencies listed in `DEPENDENCIES.json`.
 
 ```bash
 "$ISAAC_PYTHON" -m unittest discover -s . -p 'test_*.py'
@@ -91,9 +110,13 @@ bash run_inspect.sh --policy dream --steps 600 --output runs/dream \
   --budget-ledger /path/to/persistent/dream-budget.jsonl
 ```
 
-Runtime per trial on one GPU, including scene start-up: about 1.3 minutes for the demo (ball in
-the cup at step 290, full score at step 310, plus the reset check), under 1 minute for the hold
-check and about 2 minutes for a 600-step Dream-1 run. Seed 0, no object jitter. Demo observations
+The revised demo scored 1.0 in 309 steps, with the ball held in the cup for 20 consecutive
+steps. It took 102.1 seconds through the end of the episode. A separate ball drop
+registered contact with the floor and invalidated the trial even though the ball had
+already bounced above the floor by the next control observation. The repeat reset restored
+the body poses, zero velocities, score counters and starting RGB frames exactly.
+Dream-1 beta scored 0.0 in 600 steps and took 192.6 seconds. Use seed 0 and no object jitter.
+Demo observations
 are three RGB cameras only; Dream also receives standard joint/gripper readings. No object poses
 or scorer state reach the policy.
 

@@ -5,6 +5,7 @@ rebuilds the environment, including every body, the string joint, scorer counter
 """
 from pathlib import Path
 from dataclasses import asdict
+from functools import lru_cache
 import json
 import hashlib
 import math
@@ -37,6 +38,7 @@ class CupBallWorld:
         self.trace = (self.output/'trace.jsonl').open('w')
         self.prop_views = {}
         self.ball_contacts = None
+        self.fixture_subscription = None
         if APP is None:
             from isaaclab.app import AppLauncher
             APP = AppLauncher(headless=True, enable_cameras=True, device='cpu').app
@@ -262,6 +264,7 @@ class CupBallWorld:
         self.fixed_positions={name:np.asarray(self.matrix(self.path('/World/'+name)).ExtractTranslation()) for name in scene.FIXED}
         self.touch = {'robot': False, 'fixture': False}
         self.prop_views = views
+        self.monitor_fixture_contacts()
         self.update_string()
         for _ in range(4):self.base.sim.render()
         for name in CAMERAS.values():
@@ -325,9 +328,34 @@ class CupBallWorld:
         forces = np.asarray(self.ball_contacts.get_contact_force_matrix(dt=1/spec.PHYSICS_HZ))
         if forces.size and float(np.abs(forces).max()) > 0.:
             self.touch['robot'] = True
-        ball = self.prop_views['/World/ball'].get_transforms()[0][:3].astype(float)
-        if self.fixture_gap(ball)[0] - spec.BALL_R <= spec.TOUCH_MARGIN:
-            self.touch['fixture'] = True
+
+    def monitor_fixture_contacts(self):
+        """Latch a physical ball impact against any fixture, including static meshes."""
+        from omni.physx import get_physx_simulation_interface
+        from pxr import PhysicsSchemaTools
+
+        ball_root = self.path('/World/ball')
+        fixture_roots = tuple(self.path('/World/' + name) for name in FIXTURES)
+        self.fixture_contact_pairs = set()
+
+        @lru_cache(maxsize=256)
+        def collider_path(identifier):
+            return str(PhysicsSchemaTools.intToSdfPath(identifier))
+
+        def collect(headers, contacts):
+            for header in headers:
+                if not header.num_contact_data:
+                    continue
+                pair = tuple(collider_path(identifier) for identifier in (header.collider0, header.collider1))
+                if not spec.ball_hit_fixture(pair, ball_root, fixture_roots):
+                    continue
+                start = header.contact_data_offset
+                stop = start + header.num_contact_data
+                if any(math.hypot(*contacts[i].impulse) > 0. for i in range(start, stop)):
+                    self.touch['fixture'] = True
+                    self.fixture_contact_pairs.add(tuple(sorted(pair)))
+
+        self.fixture_subscription = get_physx_simulation_interface().subscribe_contact_report_events(collect)
 
     def images(self, native=False):
         from PIL import Image
@@ -372,6 +400,8 @@ class CupBallWorld:
                      for name,p in self.fixed_positions.items())
         gap, nearest = self.fixture_gap(ball[:3])
         touch_robot, touch_fixture = self.touch['robot'], self.touch['fixture']
+        fixture_contact_pairs = sorted(self.fixture_contact_pairs)
+        self.fixture_contact_pairs.clear()
         self.touch = {'robot': False, 'fixture': False}
         e = Evidence(float(handle_end[2] - spec.sleeve_rim_z()), float(tilt), float(ball[2] - rim[2]),
                      bool(spec.in_cup(local)), bool(touch_robot), bool(touch_fixture),
@@ -379,7 +409,8 @@ class CupBallWorld:
         velocities = {name: self.prop_views['/World/'+name].get_velocities()[0].tolist() for name in ['toy', 'ball']}
         return e, {'poses': {k: v.tolist() for k, v in poses.items()}, 'velocities': velocities,
                    'ball_in_toy_frame_m': local.tolist(), 'string_chord_m': float(np.linalg.norm(ball[:3] - tie)),
-                   'ball_fixture_gap_m': gap - spec.BALL_R, 'nearest_fixture': nearest}
+                   'ball_fixture_gap_m': gap - spec.BALL_R, 'nearest_fixture': nearest,
+                   'fixture_contact_pairs': fixture_contact_pairs}
 
     def step(self,action):
         action=np.asarray(action,dtype=np.float32)
@@ -398,6 +429,7 @@ class CupBallWorld:
         return row
 
     def close(self):
+        self.fixture_subscription = None
         result={'steps':self.steps,'score':self.scorer.score,'invalid':self.scorer.invalid,'dwell':self.scorer.dwell,
                 'wall_seconds':time.monotonic()-self.started,'control_hz':spec.CONTROL_HZ,'physics_hz':spec.PHYSICS_HZ}
         (self.output/'result.json').write_text(json.dumps(result,indent=2)+'\n');self.trace.close()

@@ -11,7 +11,7 @@ class Evidence:
     ball_above_rim_m: float     # ball centre above the cup rim's centre
     ball_in_cup: bool           # ball centre inside the cup, below the rim
     ball_touched_robot: bool    # any robot link touched the ball during the last control step
-    ball_touched_fixture: bool  # the ball came within 1 mm of the floor, stand or a pedestal
+    ball_touched_fixture: bool  # the ball made physical contact with the floor, stand or a pedestal
     toy_z_m: float
     inside_workspace: bool
     intact: bool

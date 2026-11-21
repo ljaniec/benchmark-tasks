@@ -12,8 +12,8 @@ FINGER_FORCE_LIMIT = 40.
 PAD_TORSIONAL_RADIUS = .002
 
 # Handmade wooden cup-and-ball (RoyaltyRoute, Amazon ASIN B00DPSU8OC): 7.5 in overall, 3.5 in cup,
-# 1.25 in ball on a 21 in string tied to the top of the handle, 120 g. Wall, depth and handle
-# thickness are not published and are estimates.
+# 1.25 in ball on a 21 in string tied to the top of the handle, 120 g.
+# Build to these dimensions using the repeatable preparation in README.md.
 OVERALL_LEN = .1905
 CUP_OUTER_R = .04445
 CUP_INNER_R = .0380
@@ -63,7 +63,6 @@ LIFT_CLEAR = .010
 UPRIGHT_DEG = 30.
 # Caught: the ball's centre stays inside the cup's inner wall and below the rim for DWELL_STEPS frames.
 # PhysX gives a sphere no rolling resistance, so a caught ball can keep circling the cup's floor.
-TOUCH_MARGIN = .001
 DROP_Z = .300
 
 WORKSPACE = ((-.40, -1.20, -.01), (1.20, .80, 1.60))
@@ -81,6 +80,15 @@ def tie_world(toy_pos):
 def ball_start():
     x, y, z = tie_world(TOY_START)
     return (x, y, z - STRING_LEN - BALL_R)
+
+
+def ball_hit_fixture(colliders, ball_root, fixture_roots):
+    """Identify a ball/fixture pair from the native collision report."""
+    for index, collider in enumerate(colliders):
+        if collider == ball_root or collider.startswith(ball_root + '/'):
+            other = colliders[1 - index]
+            return any(other == root or other.startswith(root + '/') for root in fixture_roots)
+    return False
 
 
 def sleeve_rim_z():
