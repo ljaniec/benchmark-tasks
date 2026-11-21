@@ -205,7 +205,7 @@ def demo():
         ]
         if side == "right":
             p = np.asarray(LEVER_PIVOT)
-            for _ in range(4):
+            for _ in range(5):
                 for duration, degrees, dz, label in [
                     (1.2, 0, .052, "above lever"),
                     (1.0, 0, .024, "touch lever"),
