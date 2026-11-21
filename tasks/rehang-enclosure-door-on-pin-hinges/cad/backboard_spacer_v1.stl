@@ -1,0 +1,86 @@
+solid backboard_spacer_v1
+  facet normal 0.000000e+00 0.000000e+00 -1.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 0.0000
+      vertex 311.6000 70.0000 0.0000
+      vertex 456.6000 70.0000 0.0000
+    endloop
+  endfacet
+  facet normal 0.000000e+00 0.000000e+00 -1.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 0.0000
+      vertex 456.6000 70.0000 0.0000
+      vertex 456.6000 -130.0000 0.0000
+    endloop
+  endfacet
+  facet normal 0.000000e+00 0.000000e+00 1.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 15.0000
+      vertex 456.6000 -130.0000 15.0000
+      vertex 456.6000 70.0000 15.0000
+    endloop
+  endfacet
+  facet normal 0.000000e+00 0.000000e+00 1.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 15.0000
+      vertex 456.6000 70.0000 15.0000
+      vertex 311.6000 70.0000 15.0000
+    endloop
+  endfacet
+  facet normal 0.000000e+00 -1.000000e+00 0.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 0.0000
+      vertex 456.6000 -130.0000 0.0000
+      vertex 456.6000 -130.0000 15.0000
+    endloop
+  endfacet
+  facet normal 0.000000e+00 -1.000000e+00 0.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 0.0000
+      vertex 456.6000 -130.0000 15.0000
+      vertex 311.6000 -130.0000 15.0000
+    endloop
+  endfacet
+  facet normal 0.000000e+00 1.000000e+00 0.000000e+00
+    outer loop
+      vertex 456.6000 70.0000 0.0000
+      vertex 311.6000 70.0000 0.0000
+      vertex 311.6000 70.0000 15.0000
+    endloop
+  endfacet
+  facet normal 0.000000e+00 1.000000e+00 -0.000000e+00
+    outer loop
+      vertex 456.6000 70.0000 0.0000
+      vertex 311.6000 70.0000 15.0000
+      vertex 456.6000 70.0000 15.0000
+    endloop
+  endfacet
+  facet normal -1.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 0.0000
+      vertex 311.6000 -130.0000 15.0000
+      vertex 311.6000 70.0000 15.0000
+    endloop
+  endfacet
+  facet normal -1.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex 311.6000 -130.0000 0.0000
+      vertex 311.6000 70.0000 15.0000
+      vertex 311.6000 70.0000 0.0000
+    endloop
+  endfacet
+  facet normal 1.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex 456.6000 -130.0000 0.0000
+      vertex 456.6000 70.0000 0.0000
+      vertex 456.6000 70.0000 15.0000
+    endloop
+  endfacet
+  facet normal 1.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex 456.6000 -130.0000 0.0000
+      vertex 456.6000 70.0000 15.0000
+      vertex 456.6000 -130.0000 15.0000
+    endloop
+  endfacet
+endsolid backboard_spacer_v1
