@@ -292,11 +292,19 @@ def cyl_distance(points, c_pos, c_rot, radius, height) -> float:
 
 
 TOUCH = 0.001  # the gripper touches the food: any of its volume within 1 mm of the carrot or of a slice still on it
+# Bare-hand rule only near the blade: safe repositioning of the carrot away from the blade is allowed.
+FOOD_NEAR_BLADE_Y = KO + CARROT_R + 0.020  # local |y - YB| within this counts as still at the cutting station
 
 
 def food_parts(n_cut: int) -> list:
     """(name, radius, height) of the carrot's core and the slices not yet cut off."""
     return [("carrot", CARROT_R, CORE_H), *[(n, CARROT_R, DISC_H) for n in DISC_NAMES[n_cut:]]]
+
+
+def food_near_blade(c_pos, m_pos, m_rot) -> bool:
+    """True when the food body is still on the deck approach to the blade (not safely away)."""
+    v = np.asarray(m_rot, float).T @ (np.asarray(c_pos, float) - np.asarray(m_pos, float))
+    return bool(abs(float(v[1]) - YB) <= FOOD_NEAR_BLADE_Y and float(v[2]) <= DECK_Z + KO_H + 0.040)
 
 
 def in_keepout(points, m_pos, m_rot) -> bool:
@@ -479,15 +487,18 @@ def _follow(env) -> None:
     m_pos, m_rot, _ = _pose(base, origin, "mandoline")
     arms = _arms(base, origin)
     _EP["arms"] = arms
-    # the gripper in the keep-out box, or touching the food, or the mandoline pushed away or tipped: latched
+    # Keep-out box, bare grip on food still at the blade, or mandoline pushed/tipped: latched.
+    # Safe handling of the carrot away from the blade does not void the trial.
     grips = {side: gripper_points(tcp, r, half) for side, (tcp, r, half) in arms.items()}
     in_box = any(in_keepout(pts, m_pos, m_rot) for pts in grips.values())
     touching = ""
     for name, radius, height in food_parts(_EP["n_cut"]):
         c_pos, c_rot, _ = _pose(base, origin, name)
+        if not food_near_blade(c_pos, m_pos, m_rot):
+            continue
         for side, pts in grips.items():
             if cyl_distance(pts, c_pos, c_rot, radius, height) < TOUCH:
-                touching = f"{side} gripper touches the carrot at step {_EP['step']}"
+                touching = f"{side} gripper touches the carrot near the blade at step {_EP['step']}"
     if not _EP["violation"]:
         if in_box:
             _EP["violation"] = f"gripper in the keep-out box at step {_EP['step']}"

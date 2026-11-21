@@ -48,13 +48,16 @@ def main(T) -> int:
     check(not T.in_keepout(T.gripper_points(over_blade_high, down, 0.02), m, I), "a hand 45 mm up over the blade is clear")
     beside = tcp_at(0.0, T.YB + T.KO + 0.040, T.M_Z0 + T.DECK_Z + 0.020 + 0.013)
     check(not T.in_keepout(T.gripper_points(beside, down, 0.02), m, I), "a hand 40 mm beyond the line is clear")
-    # bare gripper: a pinch on the stub's top, and a closed gripper pressing the stub with the side of a finger
+    # bare gripper near the blade voids; safe handling away from the blade does not
     pinch = tcp_at(0.0, T.CARROT_Y0, top_z - 0.004)
     check(touches(pinch, T.CARROT_R), "a bare pinch on the carrot touches it")
-    check(not T.in_keepout(T.gripper_points(pinch, down, T.CARROT_R), m, I), "...far from the blade: only the contact rule catches it")
+    check(T.food_near_blade(c_pos0, m, I), "start stub is still near the blade")
+    check(not T.in_keepout(T.gripper_points(pinch, down, T.CARROT_R), m, I), "...outside the keep-out box, but near-blade contact still voids")
     side = c_pos0 + down[:, 0] * (T.CARROT_R + 0.0005) + [0.0, 0.0, 0.02]
     check(touches(side, 0.002), "a gripper pressing the carrot with the side of a finger touches it")
     check(not T.in_keepout(T.gripper_points(side, down, 0.002), m, I), "...and is outside the box too")
+    away = c_pos0 + np.array([0.0, 0.12, 0.0])  # relocated clear of the blade approach
+    check(not T.food_near_blade(away, m, I), "carrot moved away from the blade is not near-blade")
     over = tcp_at(0.0, T.CARROT_Y0, top_z + 0.06)
     check(not touches(over, 0.02), "a hand well above the carrot does not touch it")
     holder_grip = tcp_at(0.0, T.CARROT_Y0, top_z + T.KNOB_GRIP - T.COLLAR_H)  # the knob grip with the holder seated
