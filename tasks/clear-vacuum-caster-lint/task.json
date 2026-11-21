@@ -1,0 +1,20 @@
+{
+  "title": "Clear a robot vacuum's jammed front caster",
+  "category": "Societal relatability",
+  "keywords": [
+    "robot vacuum",
+    "maintenance",
+    "caster",
+    "jam clearing",
+    "functional check"
+  ],
+  "instruction": "Clear the material jamming the front caster, refit the original parts, and show that the wheel turns freely.",
+  "context": "Hair and lint can stop a vacuum's front caster from rolling and can mark flooring. Regular cleaning restores the original wheel without replacing parts.",
+  "setup": "Place the powered-off robot vacuum upside down on a workbench. The approximately 337 mm diameter polymer chassis has two rubber drive wheels and a removable front caster with a 33 mm rubber tread and a 4 × 31 mm steel axle. The rubber tread has six paint marks at 60-degree intervals. A 2 g wad of folded lint starts packed between the installed wheel and fork, with its loose end visible. The chassis center is x=487 mm, y=0. The installed stem center is x=358, y=0, z=823 mm. A 165 × 84 mm mat, a 74 × 74 mm lint tray, a 77 × 44 mm polymer keyway holder and a 49 × 53 mm wheel rest sit in front of the chassis. The holder captures the metal stem at x=292, y=-94, z=775.5 mm. Its open end has a shallow 30 × 20 mm pocket for loose lint. The separate tray center is x=198, y=-115 mm. The rails straddle x=246, y=72 mm. Coordinates are x away from the arms, y toward the left arm, z up.",
+  "scoring": "0.25 once the original fork and wheel are lifted at least 30 mm above the seat. 0.5 if the lint is detached and comes to rest in the holder's catch pocket or the separate lint tray. Score 1.0 after refitting the original fork, axle and wheel, then flicking the wheel and showing at least 15 degrees of net tread rotation in 0.5 seconds after all fingertips clear the axle center by 42 mm. Use the tread index and count ten frames at 20 Hz. The initial release speed must be 20 to 172 degrees per second. Missing parts, damage or an article outside x=100 to 640 mm or y=-340 to 310 mm earns zero.",
+  "run_limit": "1,200 control steps (60 seconds at 20 Hz)",
+  "reset_notes": "Secure the upside-down vacuum. Refit the original fork and wheel. Load the folded lint to the pictured witness depth with its loose end exposed. Empty the trays, return both grippers to ready, and restart with seed 0 and zero object jitter.",
+  "fidelity": "The full underside remains in place. The original caster and wheel-and-axle detach against native spring clips. Packed debris is represented by two compliant faces with an internal spring. The wheel turns on a native bearing and is slowed by contact with the debris. Dimensions for the small retention features, spring rates and debris compliance are approximations.",
+  "scores": "Dream-1 beta: 0.0 in 400 steps. Scripted demo: 1.0 at step 1,175.",
+  "media": "M-S6CPMK"
+}
