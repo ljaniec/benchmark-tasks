@@ -186,10 +186,17 @@ def demo():
     for side, index in (("left", 0), ("right", 1)):
         x, y, z = LEADER_RESET[index]
         yaw = Pitch(math.pi / 2 if side == "right" else -math.pi / 2, -22.)
+        # Fixed compensation for the reproducible left/right tracking
+        # offset measured during the 200-step development grasp. The
+        # controller still uses only the preset scene geometry and time.
+        if side == "left":
+            pickup = (x + .003, y - .004, z - .001)
+        else:
+            pickup = (x - .0035, y + .004, z - .0015)
         path = [
             Waypoint(2., (x - .055, y, z + .045), FINGER_OPEN, "reach the visible edge", yaw),
-            Waypoint(2., (x, y, z + .002), FINGER_OPEN, "straddle the edge", yaw),
-            Waypoint(1.2, (x, y, z + .002), FINGER_CLOSED, "pinch", yaw),
+            Waypoint(2., pickup, FINGER_OPEN, "straddle the edge", yaw),
+            Waypoint(1.2, pickup, FINGER_CLOSED, "pinch", yaw),
             Waypoint(3.0, (NIP_X - .010, y, NIP_Z + .023), FINGER_CLOSED, "turn the paper down", yaw),
             Waypoint(1.5, (NIP_X, y, NIP_Z + LEAD_LENGTH + .002), FINGER_CLOSED, "set the edge into the nip", yaw),
             Waypoint(1., (NIP_X, y, NIP_Z + LEAD_LENGTH + .002), FINGER_OPEN, "release the paper", yaw),
