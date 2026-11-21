@@ -1,5 +1,5 @@
 {
-  "title": "Slide a high-chair tray in to fit a seated toddler manikin: hold the front release while pushing, and stop at the last position that doesn't touch it",
+  "title": "Slide a high-chair tray in to fit a seated toddler manikin, stopping at the last position that doesn't touch it",
   "category": "Societal relatability",
   "keywords": [
     "childcare",
@@ -14,7 +14,7 @@
   "scoring": "Read from the tray's side pointers against the armrest ticks and the locking fingers' height in their slots (in real trials: the pointer/tick alignment plus a light pull on the tray). A finger is locked in a slot when it is within 4 mm of the slot's centre along the rail and its top is at least 3 mm up inside the slot; both fingers must be locked in the same slot. 0.25 when the tray has moved at least 10 mm in from position 1; 0.5 when both fingers are locked in position 2 or 3; 1.0 when both fingers are locked in position 3, both grippers are at least 5 mm clear of the tray and its release bail, and the tray and bail stay under 10 mm/s and 2 deg/s for ten consecutive 20 Hz frames. If the tray, the release bail or a gripper ever comes within 1 mm of the manikin, the tray drops below z=600, the tray leaves the published workspace, or fixed scenery moves more than 3 mm, the trial scores 0 for good. Anything else, including doing nothing, scores 0.",
   "run_limit": "1,200 control steps (60 seconds at 20 Hz)",
   "reset_notes": "Tray locked in position 1 with the release bail at rest; all velocities zero; cameras and counters restored.",
-  "fidelity": "Full-size rigid chair, tray and manikin with real colliders: the release bail is a native revolute joint with a 6 degree stop and a return-spring drive, and the fingers, slots, channels and rails all hold by contact, so the tray moves only while the button is held up and locks only when both fingers physically rise into slots. Simplified: the geometry is proportioned after the Graco Made2Grow rather than taken from its CAD; the real tray's alternative release (two squeeze handles underneath) is omitted; the manikin is rigid and fixed (no soft tissue or movement), and touching it is judged by a 1 mm proximity threshold rather than force; plastic friction (0.35 static, 0.30 dynamic) and the spring rate are estimates without hardware calibration.",
+  "fidelity": "Full-size rigid chair, tray and manikin. The release bail is a revolute joint with a 6 degree stop and a return spring; fingers, slots and rails hold by contact, so the tray moves only while the button is held and locks only when both fingers rise into slots. Simplified: geometry proportioned after the Graco Made2Grow, not its CAD; its squeeze-handle release is omitted; the manikin is rigid and fixed, contact is judged by a 1 mm gap; friction and spring rate are uncalibrated estimates.",
   "scores": "Dream-1 run: 0.0 (the tray never moved; the run stopped at step 1,088 of 1,200 when its request budget ran out); demo: 1.0 (full score at step 252)",
   "media": "M-KFWDLC"
 }
