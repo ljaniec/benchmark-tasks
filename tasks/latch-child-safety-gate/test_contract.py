@@ -1,0 +1,64 @@
+"""CPU-only contract tests for the child-safety-gate scorer and dimensions."""
+import math
+import unittest
+import spec
+from scorer import Evidence, Scorer
+
+
+def evidence(**kwargs):
+    base = dict(
+        door_yaw_rad=0.,
+        lever_rad=0.,
+        base_lock_rad=0.,
+        latch_overlap_m=.006,
+        door_closed=True,
+        lever_locked=True,
+        base_locked=True,
+        latch_engaged=True,
+        hands_clear=True,
+        stable=True,
+        inside_workspace=True,
+        intact=True,
+    )
+    base.update(kwargs)
+    return Evidence(**base)
+
+
+class Contract(unittest.TestCase):
+    def test_aperture_cap(self):
+        self.assertAlmostEqual(spec.finger_joint_position(.075), -.03745)
+        with self.assertRaises(ValueError):
+            spec.finger_joint_position(.076)
+
+    def test_gate_dimensions_match_easy_step_class(self):
+        self.assertAlmostEqual(spec.GATE_HEIGHT, .762)
+        self.assertAlmostEqual(spec.DOOR_WIDTH, .406)
+        self.assertAlmostEqual(spec.OPENING_WIDTH, .762)
+        self.assertGreater(spec.HANDLE_SIZE[1], .05)
+
+    def test_partial_and_full_ladder(self):
+        s = Scorer()
+        self.assertEqual(s.update(evidence(door_closed=False, lever_locked=False, base_locked=False,
+                                           latch_engaged=False, latch_overlap_m=0.)), 0.)
+        self.assertEqual(s.update(evidence(lever_locked=False, base_locked=False,
+                                           latch_engaged=False, latch_overlap_m=0.)), .25)
+        self.assertEqual(s.update(evidence(base_locked=False)), .5)
+        for _ in range(spec.DWELL_STEPS):
+            score = s.update(evidence())
+        self.assertEqual(score, 1.)
+        self.assertEqual(s.dwell, spec.DWELL_STEPS)
+
+    def test_invalid_zeros_all_tiers(self):
+        s = Scorer()
+        s.update(evidence())
+        self.assertEqual(s.update(evidence(intact=False)), 0.)
+        self.assertTrue(s.invalid)
+
+    def test_open_start_is_not_closed(self):
+        self.assertGreater(abs(spec.DOOR_START_YAW - spec.DOOR_CLOSED_YAW), spec.DOOR_CLOSED_TOL)
+        self.assertGreater(abs(spec.LEVER_START - spec.LEVER_LOCKED), spec.LEVER_LOCKED_TOL)
+        self.assertGreater(abs(spec.BASE_START - spec.BASE_LOCKED), spec.BASE_LOCKED_TOL)
+
+
+if __name__ == '__main__':
+    unittest.main()
