@@ -1,0 +1,86 @@
+solid cradle_rail_near
+facet normal 0.000000 0.000000 -1.000000
+ outer loop
+  vertex 0.0000 0.0000 0.0000
+  vertex 0.0000 5.0000 0.0000
+  vertex 114.0000 0.0000 0.0000
+ endloop
+endfacet
+facet normal 0.000000 0.000000 -1.000000
+ outer loop
+  vertex 114.0000 0.0000 0.0000
+  vertex 0.0000 5.0000 0.0000
+  vertex 114.0000 5.0000 0.0000
+ endloop
+endfacet
+facet normal 0.000000 0.000000 1.000000
+ outer loop
+  vertex 0.0000 0.0000 9.0000
+  vertex 114.0000 0.0000 9.0000
+  vertex 0.0000 5.0000 9.0000
+ endloop
+endfacet
+facet normal 0.000000 -0.000000 1.000000
+ outer loop
+  vertex 114.0000 0.0000 9.0000
+  vertex 114.0000 5.0000 9.0000
+  vertex 0.0000 5.0000 9.0000
+ endloop
+endfacet
+facet normal 0.000000 -1.000000 0.000000
+ outer loop
+  vertex 0.0000 0.0000 0.0000
+  vertex 114.0000 0.0000 0.0000
+  vertex 0.0000 0.0000 9.0000
+ endloop
+endfacet
+facet normal 0.000000 -1.000000 0.000000
+ outer loop
+  vertex 114.0000 0.0000 0.0000
+  vertex 114.0000 0.0000 9.0000
+  vertex 0.0000 0.0000 9.0000
+ endloop
+endfacet
+facet normal 0.000000 1.000000 0.000000
+ outer loop
+  vertex 0.0000 5.0000 0.0000
+  vertex 0.0000 5.0000 9.0000
+  vertex 114.0000 5.0000 0.0000
+ endloop
+endfacet
+facet normal 0.000000 1.000000 -0.000000
+ outer loop
+  vertex 114.0000 5.0000 0.0000
+  vertex 0.0000 5.0000 9.0000
+  vertex 114.0000 5.0000 9.0000
+ endloop
+endfacet
+facet normal -1.000000 0.000000 0.000000
+ outer loop
+  vertex 0.0000 0.0000 0.0000
+  vertex 0.0000 0.0000 9.0000
+  vertex 0.0000 5.0000 0.0000
+ endloop
+endfacet
+facet normal -1.000000 0.000000 0.000000
+ outer loop
+  vertex 0.0000 5.0000 0.0000
+  vertex 0.0000 0.0000 9.0000
+  vertex 0.0000 5.0000 9.0000
+ endloop
+endfacet
+facet normal 1.000000 0.000000 0.000000
+ outer loop
+  vertex 114.0000 0.0000 0.0000
+  vertex 114.0000 5.0000 0.0000
+  vertex 114.0000 0.0000 9.0000
+ endloop
+endfacet
+facet normal 1.000000 0.000000 -0.000000
+ outer loop
+  vertex 114.0000 5.0000 0.0000
+  vertex 114.0000 5.0000 9.0000
+  vertex 114.0000 0.0000 9.0000
+ endloop
+endfacet
+endsolid cradle_rail_near
