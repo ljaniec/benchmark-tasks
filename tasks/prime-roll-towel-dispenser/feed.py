@@ -24,6 +24,8 @@ class Feed:
     leader: np.ndarray = field(default_factory=lambda: LEADER_RESET.copy())
     grip_to_point: dict = field(default_factory=dict)
     previous_apertures: np.ndarray = field(default_factory=lambda: np.full(2, 0.075))
+    swept_apertures: np.ndarray = field(default_factory=lambda: np.full(2, 0.075))
+    armed: np.ndarray = field(default_factory=lambda: np.ones(2, dtype=bool))
     seated: bool = False
     travel: float = 0.
     stroke_depth: float = 0.
@@ -50,15 +52,25 @@ class Feed:
                 relaxed[1] = SAMPLE_Y[free] + self.leader[held, 1] - SAMPLE_Y[held]
                 self.leader[free] += .25 * (relaxed - self.leader[free])
             for hand in range(2):
-                if hand in self.grip_to_point or not (apertures[hand] <= .0055 < self.previous_apertures[hand]):
+                if apertures[hand] >= .020:
+                    if apertures[hand] >= self.previous_apertures[hand]:
+                        self.swept_apertures[hand] = apertures[hand]
+                    self.armed[hand] = True
+                if (hand in self.grip_to_point or not self.armed[hand]
+                        or not apertures[hand] <= .008 < self.previous_apertures[hand]):
                     continue
+                self.armed[hand] = False
+                half_gap = self.swept_apertures[hand] / 2
                 for point_id in np.argsort(np.linalg.norm(self.leader - tcp[hand], axis=1)):
                     if any(j == point_id for j, _ in self.grip_to_point.values()):
                         continue
                     delta = axes[hand].T @ (self.leader[point_id] - tcp[hand])
-                    if (abs(delta[0]) <= .003 and abs(delta[1]) <= .014
-                            and -.018 <= delta[2] <= .008
+                    # The pads sweep this gap on closing. Once held,
+                    # the edge lies between their inner faces.
+                    if (abs(delta[0]) <= min(half_gap, .012) and abs(delta[1]) <= .011
+                            and -.018 <= delta[2] <= .010
                             and abs(axes[hand, 0, 0]) >= .85):
+                        delta[0] = np.clip(delta[0], -.001, .001)
                         self.grip_to_point[hand] = (point_id, delta)
                         break
 

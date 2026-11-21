@@ -143,7 +143,7 @@ def update(env):
                                     "lever_deg": math.degrees(lever_angle), "leader": _feed.leader.tolist(),
                                     "grips": list(_feed.grip_to_point), "seated": _feed.seated,
                                     "exposed_m": _feed.exposed, "damage": _feed.damaged,
-                                    "dwell": _feed.dwell, "score": _feed.score}) + "\n")
+                                    "dwell": _feed.dwell, "axes": axes.tolist(), "score": _feed.score}) + "\n")
 
 
 def score(objects):
@@ -185,7 +185,9 @@ def demo():
     plans = {}
     for side, index in (("left", 0), ("right", 1)):
         x, y, z = LEADER_RESET[index]
-        yaw = Pitch(math.pi / 2 if side == "right" else -math.pi / 2, -22.)
+        heading = math.pi / 2 if side == "right" else -math.pi / 2
+        yaw = Pitch(heading, -22.)
+        feed_pitch = Pitch(heading, -62.)
         # Fixed compensation for the reproducible left/right tracking
         # offset measured during the 200-step development grasp. The
         # controller still uses only the preset scene geometry and time.
@@ -197,9 +199,10 @@ def demo():
             Waypoint(2., (x - .055, y, z + .045), FINGER_OPEN, "reach the visible edge", yaw),
             Waypoint(2., pickup, FINGER_OPEN, "straddle the edge", yaw),
             Waypoint(1.2, pickup, FINGER_CLOSED, "pinch", yaw),
-            Waypoint(3.0, (NIP_X - .010, y, NIP_Z + .023), FINGER_CLOSED, "turn the paper down", yaw),
-            Waypoint(1.5, (NIP_X, y, NIP_Z + LEAD_LENGTH + .002), FINGER_CLOSED, "set the edge into the nip", yaw),
-            Waypoint(1., (NIP_X, y, NIP_Z + LEAD_LENGTH + .002), FINGER_OPEN, "release the paper", yaw),
+            Waypoint(1.6, (x, y, z), FINGER_CLOSED, "tilt palm clear of the roll", feed_pitch),
+            Waypoint(2.2, (NIP_X - .014, y, NIP_Z + .026), FINGER_CLOSED, "turn the paper down", feed_pitch),
+            Waypoint(1., (NIP_X - .001, y, NIP_Z + LEAD_LENGTH + .001), FINGER_CLOSED, "set the edge into the nip", feed_pitch),
+            Waypoint(1., (NIP_X - .001, y, NIP_Z + LEAD_LENGTH + .001), FINGER_OPEN, "release the paper", feed_pitch),
             Waypoint(2., (x - .060, y, z + .048), FINGER_OPEN, "back away", yaw),
         ]
         if side == "right":
