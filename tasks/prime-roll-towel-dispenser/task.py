@@ -215,6 +215,11 @@ def demo():
                     a = math.radians(degrees)
                     tip = p + [-LEVER_LENGTH * math.cos(a), 0., LEVER_LENGTH * math.sin(a) + dz]
                     path.append(Waypoint(duration, tuple(tip), FINGER_CLOSED, label, yaw))
-            path.append(Waypoint(2., (.21, -.21, 1.025), FINGER_OPEN, "hands clear", yaw))
+            path.append(Waypoint(2., (.21, -.21, 1.025), FINGER_OPEN, "hand clear", yaw))
+        else:
+            # Look through the open feed bay toward the hanging edge.
+            # The fixed wrist pose keeps the fingers away from the outlet.
+            path.append(Waypoint(3., (.320, .110, .940), FINGER_OPEN,
+                                 "show the outlet from the wrist", Pitch(math.radians(30.), -45.)))
         plans[side] = path
     return plans
