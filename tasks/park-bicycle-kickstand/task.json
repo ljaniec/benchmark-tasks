@@ -1,0 +1,20 @@
+{
+  "title": "Park a bicycle on its kickstand",
+  "category": "Societal relatability",
+  "keywords": [
+    "bicycle",
+    "parking",
+    "kickstand",
+    "support",
+    "bimanual"
+  ],
+  "instruction": "Park the bicycle on its kickstand and leave it standing independently.",
+  "setup": "A 16.78 kg steel bicycle with 668 × 54 mm tires and a 1,195 mm wheelbase rests on a 920 × 1,990 × 40 mm level platform. Deck top is z = 440 mm. The wheelbase midpoint is at x = 390 mm and y = 0. The top tube leans five degrees against a 65 × 235 × 68 mm rubber bumper. The 300 mm spring stand starts folded. The painted parking region spans x = 100 to 740 mm and y = −900 to 900 mm. Two YAM arms stand on separate 240 × 240 × 600 mm pedestals at x = −50 mm and y = ±305 mm. Positive x points from the arms toward the bicycle.",
+  "scoring": "0.25 once the frame clears the bumper by 10 mm, 0.5 if the stand is also deployed. Score 1.0 for at least 30 mm of bumper clearance, both tires and the shoe on the deck, an 8–14 degree lean onto the stand, speed below 12 mm/s, and fingertips at least 12 mm clear and at x < 200 mm for ten frames. Zero if the frame tips beyond 17 degrees, a tire rises over 15 mm, or a contact patch leaves the marked area.",
+  "run_limit": "500 control steps (25 seconds at 20 Hz)",
+  "fidelity": "The bicycle has full size, mass, two rolling wheels, a steering fork, and a native kickstand hinge with weight-bearing shoe contact. The push spring uses an approximate passive over-center torque curve. The parking deck and starting support are fixed and visible. The drivetrain is cosmetic.",
+  "scores": "Dream-1 beta scored 0.0 in 400 steps. Scripted demo scored 1.0 at step 333.",
+  "media": "M-GP5DT4",
+  "context": "A rider parks a bicycle on its own stand so it stays upright when released.",
+  "reset_notes": "Return both tires to the marks. Center the fork and fold the stand. Rest the top tube lightly against the bumper. Return both arms to ready and reset at seed 0 with object jitter disabled."
+}
