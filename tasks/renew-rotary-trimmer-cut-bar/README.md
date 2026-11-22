@@ -12,7 +12,7 @@ The external I2RT YAM robot asset, including the arms, parallel grippers and mes
 
 ## Run and score
 
-Activate the installed IsaacLab-Arena environment. The fixed seed is 0. A full trial has 380 controls at 20 Hz, or 19 seconds of simulated motion. The scripted controller follows fixed poses and does not use simulator object observations.
+Activate the installed IsaacLab-Arena environment. Use seed 0 and zero object jitter. A full trial has 380 controls at 20 Hz, or 19 seconds of simulated motion. The scripted controller follows fixed poses. Dream-1 receives the three 320 × 176 RGB views and the robot's joint and gripper readings. The native views are 640 × 360. Fixture and bar geometry are available to the scorer.
 
 ```sh
 python -m pytest -q test_scorer.py
@@ -24,4 +24,19 @@ inspect-robots run --embodiment yam_arena --policy yam_scripted \
   --log-dir rollout
 ```
 
-Use the terminal `task_score` in Inspect’s results. The same command can be passed through `python audit_trimmer.py run` with `TRIMMER_AUDIT_DIR` set to an existing directory to capture the three policy-sized and native views and check a same-seed reset. The scoring code reads fixture and bar geometry for judging.
+Run the model with the same setup and seed.
+
+```sh
+inspect-robots run --embodiment yam_arena --policy dream \
+  -P model=dreamlabs/dream-1-beta -P record=false -P timeout_s=90 \
+  -E "task=$PWD/task.py" -E control_hz=20 -E object_jitter=0 \
+  -E cam_width=320 -E cam_height=176 --seed 0 --max-steps 380 \
+  --store-frames --no-prompt --grader none --scorer task_score \
+  --instruction "Turn the trimmer's worn cutting bar to a fresh face. Seat it flush and close the cutting guide." \
+  --log-dir model-rollout
+jq -r '.results.metrics.task_score' rollout/adhoc_*.json model-rollout/adhoc_*.json
+```
+
+The scripted demonstration reaches full score at control 368 and finishes at 1.0. It took 116.7 seconds on an NVIDIA L40S using Inspect Robots 0.60.0, Isaac Sim 6.1.0.0, Isaac Lab 17.0.2 and PyTorch 2.11.0 with CUDA 12.8. Dream-1 finished its 380 controls in 127.8 seconds and scored 0.0.
+
+Pass the scripted arguments to `python audit_trimmer.py run` with `TRIMMER_AUDIT_DIR` set to an existing directory for a repeated reset check using all three policy-sized and native views. The check compares physical state, velocities, rates, counters, timestamps and camera poses. Image checks compare the restored scene with the initial views and verify that distinct mid-episode views fail the comparison.

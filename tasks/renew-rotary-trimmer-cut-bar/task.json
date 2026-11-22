@@ -1,0 +1,19 @@
+{
+  "title": "Turn a rotary trimmer's cutting bar to a fresh face",
+  "category": "Societal relatability",
+  "keywords": [
+    "rotary paper trimmer",
+    "cutting bar",
+    "maintenance",
+    "guide"
+  ],
+  "instruction": "Turn the trimmer's worn cutting bar to a fresh face. Seat it flush and close the cutting guide.",
+  "context": "A scored backing bar needs a fresh face under the rotary blade. The same bar provides four working faces, each of which has to sit flush across the length of the cutting path.",
+  "setup": "Place the manual trimmer flat. The 348 × 242 mm rigid deck carries a narrow track, a 322 mm hinged plastic guide, and a parked blade carriage. The 312 × 8 × 8 mm polymer bar starts grooved face up and shifted 48 mm along the track. Its outer end is raised on a 70 × 16 mm plastic service lever. Open the guide to 98 degrees.",
+  "scoring": "After the intact bar is fully removed, 0.25. Award 0.5 when an unused face is up and both ends are aligned within 1.7 mm across the track and 3 mm along it. Award 1.0 when both ends sit within 0.9 mm of the deck surface, the guide closes to within 5 degrees and both hands remain at least 35 mm away for 0.5 s. A dropped bar outside the work area or damaged assembly receives zero.",
+  "run_limit": "380 control steps (19 seconds at 20 Hz)",
+  "reset_notes": "Open the cutting guide and park the blade carriage at the marked end. Place the bar with the grooved face up and one end resting on the service lever. Reset both arms, task state, velocities and camera buffers.",
+  "fidelity": "The full-length rigid polymer bar has four faces and a visible score groove. The track and hinged rail preserve the published maintenance sequence with estimated cross-sections and clearance. The reset begins after the near end has been pried up. The guarded blade assembly is parked and no cutting action or paper physics is modeled.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-XQK2JB"
+}
