@@ -9,7 +9,7 @@ from yam_arena.urdf import axis_angle_matrix
 import mechkit as m
 
 
-PIVOT = np.array((.420,-.045,TABLE_TOP+.052))
+PIVOT = np.array((.420,-.045,TABLE_TOP+.054))
 HEAD_WIDTH = .280
 START_PITCH_DEG = 67.
 MOUTH_X = -.074
