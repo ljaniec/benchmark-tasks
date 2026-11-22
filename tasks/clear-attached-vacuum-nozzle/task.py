@@ -22,6 +22,9 @@ TRAY = np.array((.250,-.218,TABLE_TOP))
 TRAY_HALF = np.array((.094,.079))
 BUMPER = np.array((-.093,.117,.025))
 CARD_VERTICES = g.card_mesh().v
+RIGHT_ELEVATION = -10.
+RIGHT_HEADING = 0.
+GRASP_FROM_CENTER = .023
 scorer = Scorer()
 
 
@@ -102,10 +105,12 @@ class WristPose(float):
         return pose
 
 
-def grip(elevation):
+def grip(elevation, heading=0.):
     radians = math.radians(elevation)
-    jaw = np.array((0.,-1.,0.))
-    approach = np.array((math.cos(radians),0.,math.sin(radians)))
+    yaw = math.radians(heading)
+    swing = np.array(((math.cos(yaw),-math.sin(yaw),0.),(math.sin(yaw),math.cos(yaw),0.),(0.,0.,1.)))
+    jaw = swing @ np.array((0.,-1.,0.))
+    approach = swing @ np.array((math.cos(radians),0.,math.sin(radians)))
     return WristPose(np.column_stack((jaw,np.cross(approach,jaw),approach)))
 
 
@@ -121,12 +126,13 @@ def demo():
 
     axis = g.pitch(g.START_PITCH_DEG)
     left_pose = grip(-82.)
-    right_pose = grip(-72.)
+    right_pose = grip(RIGHT_ELEVATION,RIGHT_HEADING)
+    tray_pose = grip(-72.)
     left_axis = left_pose.rotation[:,2]
     right_axis = right_pose.rotation[:,2]
     bumper = lambda angle: g.PIVOT+g.pitch(angle)@BUMPER-.010*left_axis
     held = bumper(g.START_PITCH_DEG)
-    card = g.PIVOT+axis@(g.CARD_CENTER-np.array((0.,0.,.019)))-.010*right_axis
+    card = g.PIVOT+axis@(g.CARD_CENTER-np.array((0.,0.,GRASP_FROM_CENTER)))-.010*right_axis
     withdraw = card-.059*axis[:,2]
     right_home, right_rotation = ik.tcp_pose(READY, station.BASES['right'])
     left_home, left_rotation = ik.tcp_pose(READY, station.BASES['left'])
@@ -146,11 +152,12 @@ def demo():
         waypoint(2.75,right_home,FINGER_OPEN,'wait until the nozzle is held',WristPose(right_rotation)),
         waypoint(1.35,card-.046*right_axis,-.036,'approach the paperboard edge',right_pose),
         waypoint(.80,card,-.036,'straddle the protruding fold',right_pose),
-        waypoint(.75,card,-.024,'grip the paperboard',right_pose),
-        waypoint(1.35,withdraw,-.024,'draw the fold out of the nozzle',right_pose),
-        waypoint(1.25,TRAY+(0.,0.,.120),-.024,'move over the collection tray',right_pose),
-        waypoint(.60,TRAY+(0.,0.,.073),-.024,'lower the fragment to the tray',right_pose),
-        waypoint(.55,TRAY+(0.,0.,.073),-.039,'let the fragment fall into the tray',right_pose),
+        waypoint(.75,card,-.028,'grip the paperboard',right_pose),
+        waypoint(1.35,withdraw,-.028,'draw the fold out of the nozzle',right_pose),
+        waypoint(.55,(.265,-.080,TABLE_TOP+.140),-.028,'raise the extracted fold clear',right_pose),
+        waypoint(.70,TRAY+(0.,0.,.120),-.028,'move over the collection tray',tray_pose),
+        waypoint(.60,TRAY+(0.,0.,.073),-.028,'lower the fragment to the tray',tray_pose),
+        waypoint(.55,TRAY+(0.,0.,.073),-.039,'let the fragment fall into the tray',tray_pose),
         waypoint(.8,right_home,FINGER_OPEN,'leave the card and nozzle clear',WristPose(right_rotation)),
     ]
     return {'left':left,'right':right}

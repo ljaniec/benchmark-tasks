@@ -56,8 +56,7 @@ def canister():
     return m.fixed('canister',center,visuals,colliders,LOOKS)
 
 
-def vacuum():
-    plastic, plastic_c = solids((
+HEAD_BLOCKS = (
         ('head_shroud',(.122,HEAD_WIDTH,.024),(-.061,0.,-.013),'sole'),
         ('front_skirt',(.037,HEAD_WIDTH,.020),(-.104,0.,-.044),'flex'),
         ('rear_skirt',(.036,HEAD_WIDTH,.020),(-.036,0.,-.044),'flex'),
@@ -65,7 +64,11 @@ def vacuum():
         ('right_edge',(.032,.096,.018),(MOUTH_X,-.092,-.043),'sole'),
         ('upper_shoulder',(.030,.028,.026),(-.093,.117,.011),'sole'),
         ('left_bumper',(.021,.049,.015),(-.093,.117,.025),'rubber'),
-    ))
+)
+
+
+def vacuum():
+    plastic, plastic_c = solids(HEAD_BLOCKS)
     neck=m.cylinder(.025,.052,(-.008,0.,-.010),axis='y')
     head=m.hinge('head','Y',(0.,0.,0.),0.,86.,plastic+(('neck',neck,'sole'),),
                  plastic_c+(m.col_hull('neck_contact',neck),),mass=.38,gravity=True,
