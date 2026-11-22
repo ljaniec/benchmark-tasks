@@ -1,0 +1,19 @@
+{
+  "title": "Clear a blockage from an attached vacuum floor nozzle",
+  "category": "Societal relatability",
+  "keywords": [
+    "vacuum floor nozzle",
+    "jam clearance",
+    "bimanual",
+    "maintenance"
+  ],
+  "instruction": "Hold the raised floor nozzle steady. Pull out the wedged paperboard, put it in the tray, and lower the connected nozzle.",
+  "context": "A blocked floor nozzle stops picking up debris. Clearing the visible blockage from the connected head lets the nozzle return to its normal position without taking the vacuum apart.",
+  "setup": "On a 747.5 mm high bench, place the unplugged plastic canister (300 mm diameter × 285 mm high) with its rubber hose and 32 mm metal wand attached to a 280 × 122 mm plastic floor head raised to 67°. Insert 26 mm of a 62 × 58 mm folded 350 g/m² paperboard scrap, with a 23 mm ridge, into the soleplate opening. Place the rigid plastic tray with a 188 × 158 mm clear opening by the mouth. The README gives the positioning coordinates.",
+  "scoring": "Award 0.25 after the original fold moves at least 10 mm out through the nozzle's mouth with the head at least 50 degrees from flat. Award 0.5 when the fold stays fully in the tray for 0.5 seconds. Award 1.0 after the connected nozzle is released sole-down within 5 degrees with both hands at least 25 mm from the shell and clear of the fold and the fold still in the tray for 0.5 seconds. A dropped or damaged assembly earns zero.",
+  "run_limit": "320 control steps (16 seconds at 20 Hz)",
+  "reset_notes": "Return the nozzle and original paperboard to their starting positions and empty the tray. Restore default arm and part positions, velocities, episode history and all three camera buffers.",
+  "fidelity": "The 280 mm floor head, 32 mm wand and hose stay connected to the unpowered canister. Spring-backed strips approximate the mouth's grip on the rigid folded paperboard. Some head dimensions and the skirt stiffness are estimates. The head starts raised in a service configuration. Airflow is not modeled.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-Q9C5UB"
+}

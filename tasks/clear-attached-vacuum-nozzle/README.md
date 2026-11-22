@@ -2,7 +2,7 @@
 
 Hold the raised floor nozzle steady. Pull out the wedged paperboard, put it in the tray, and lower the connected nozzle. The complete vacuum is unplugged. The 280 mm floor tool, 32 mm wand, hose and canister remain connected for the trial. The blockage procedure calls for checking the assembled cleaning equipment when a vacuum stops picking up. [Floor tool specification](https://numatic.com/products/280mm-proflo-combi-floor-tool/) · [Blockage procedure](https://cdn.numatic.com/wp-content/uploads/910074-HENRY-HETTY-620W-EURO.pdf)
 
-The head starts at 67° with the suction mouth visible. The worktop is 747.5 mm high, with the head pivot at x = 420 mm and y = −45 mm, 54 mm above the worktop. The tray's clear area is 188 × 158 mm, centered at x = 250 mm and y = −285 mm. The 280 × 122 mm plastic floor tool has a rigid shroud, soft leading and trailing strips, and an 88 mm wide central channel. Put the 300 mm diameter plastic canister at x = 652 mm and y = −404 mm, with the flexible hose running from the canister to the 32 mm metal wand behind the head. The bench supports the assembly at its reset marks.
+Measure x forward and y to the robot’s left from the midpoint of the arm bases. Start with the head at 67° and the suction mouth visible. The worktop is 747.5 mm high, with the head pivot at x = 420 mm and y = −45 mm, 54 mm above the worktop. The tray's clear area is 188 × 158 mm, centered at x = 250 mm and y = −285 mm. The 280 × 122 mm plastic floor tool has a rigid shroud, soft leading and trailing strips, and an 88 mm wide central channel. Put the 300 mm diameter plastic canister at x = 652 mm and y = −404 mm, with the flexible hose running from the canister to the 32 mm metal wand behind the head. Support the wand at its marked height and keep the unpowered canister on its reset mark. The simulation fixes the wand and canister at those locations.
 
 Make the obstruction from 350 g/m² paperboard. Cut the stock 62 mm wide and crease across its width, forming a flattened diamond profile 58 mm long with a 23 mm ridge halfway along. The two flat tips are 8–10 mm thick. Mark 26 mm from one tip and insert to the mark, leaving 32 mm visible. The fold should stay in place with the nozzle at 67°. Use the same uncrushed shape or remake it to the same dimensions for every trial.
 
@@ -25,3 +25,14 @@ inspect-robots run --embodiment yam_arena --policy yam_scripted \
 ```
 
 Set `NOZZLE_AUDIT_DIR` to an existing directory and use the scripted arguments with `python audit_nozzle.py run` to save three policy and native camera views and verify the reset.
+
+## Evaluation results
+
+Both runs used seed 0, zero jitter, three delivered RGB streams at 320 × 176, and 320 control steps at 20 Hz. The Dream-1 adapter also received ordinary robot joint and gripper readings. The simulation advanced at 480 Hz. Inspect Robots 0.60.0, Isaac Lab 17.0.2, Isaac Sim 6.1.0.0 and PyTorch 2.11.0+cu128 were used.
+
+| Run | Terminal score | Wall time |
+| --- | ---: | ---: |
+| Scripted demonstration | 1.0 | 126.3 s |
+| Dream-1 | 0.00 | 108.0 s |
+
+For the model run use the same embodiment, scene, rates, seed, jitter and instruction with `--policy dream -P model=dreamlabs/dream-1-beta -P record=false -P timeout_s=90`. Both runs record the `task_score` metric and the original camera frames.
