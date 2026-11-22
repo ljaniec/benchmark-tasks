@@ -103,7 +103,7 @@ def obstruction():
     world_rotation=pitch(START_PITCH_DEG)
     position=PIVOT+world_rotation@CARD_CENTER
     return m.free('folded_paperboard',position,(('card',mesh,'flake'),),(m.col_hull('card_contact',mesh),),
-                  LOOKS,.006,friction=(.47,.33),start_quat=tuple(matrix_to_quat_xyzw(world_rotation)))
+                  LOOKS,.0025,friction=(.47,.33),start_quat=tuple(matrix_to_quat_xyzw(world_rotation)))
 
 
 OBJECTS=(canister(),vacuum(),obstruction())

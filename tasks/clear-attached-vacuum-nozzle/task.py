@@ -21,6 +21,7 @@ GRIPPER['effort'] = 40.
 TRAY = np.array((.250,-.218,TABLE_TOP))
 TRAY_HALF = np.array((.094,.079))
 BUMPER = np.array((-.093,.117,.025))
+CARD_VERTICES = g.card_mesh().v
 scorer = Scorer()
 
 
@@ -71,7 +72,7 @@ def observe(env):
     point = (card.pos-g.PIVOT) @ axis
     draw = float(g.CARD_CENTER[2]-point[2])
     passed = bool(angle>=50. and .010<=draw<=.066 and abs(point[0]-g.MOUTH_X)<=.026 and abs(point[1])<=.028)
-    vertices = card.to_world(g.card_mesh().v)
+    vertices = card.to_world(CARD_VERTICES)
     relative = vertices-TRAY
     in_tray = bool(np.all(np.abs(relative[:,:2]) <= TRAY_HALF) and relative[:,2].min()>=.006
                    and relative[:,2].max()<=.039 and np.linalg.norm(card.lin_vel)<=.020)
