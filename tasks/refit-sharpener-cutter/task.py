@@ -20,7 +20,7 @@ INSTRUCTION='Seat the replacement cutter, turn its retaining ring clockwise, and
 GRIPPER['effort']=40.
 OBJECTS=[*g.OBJECTS]
 scorer=Scorer()
-COLLAR_RELEASE_APERTURE=-.025
+COLLAR_RELEASE_APERTURE=-.043
 COLLAR_GRIP_OFFSET_Y=.012
 X_AXIS=np.array((1.,0.,0.))
 CRANK_KNOB=np.array((-.043,0.,-.051))
@@ -120,9 +120,9 @@ def demo():
         w(1.2,ring,-.020,'seat the replacement cutter in its bore',face),
         w(.58,mid_ring,-.020,'begin the retaining turn',WristPose(roll(g.LOCK_ANGLE/2.)@front)),
         w(.57,locked_ring,-.020,'turn the retaining collar',final),
-        w(.48,locked_ring,COLLAR_RELEASE_APERTURE,'release the retained assembly',final),
-        w(.54,locked_ring+(0.,.060,.018),-.031,'move across the clear side of the collar',final),
-        w(.51,locked_ring+(-.080,.060,.018),-.031,'withdraw from the collar',final),
+        w(.62,locked_ring,COLLAR_RELEASE_APERTURE,'open the jaws around the retained assembly',final),
+        w(.59,locked_ring+(-.063,0.,0.),COLLAR_RELEASE_APERTURE,'withdraw axially from the collar',final),
+        w(.32,locked_ring+(-.080,.040,.018),COLLAR_RELEASE_APERTURE,'clear the crank',final),
         w(1.10,left_home,FINGER_OPEN,'return the assembly hand to rest',WristPose(left_rotation)),
     ]
     right=[
