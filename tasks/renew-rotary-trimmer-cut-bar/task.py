@@ -192,7 +192,8 @@ def demo():
     left_down = np.diag((-1.,1.,-1.))
     take = supported_center + correction @ take_ref
     taking_pose = WristPose(correction @ left_down)
-    release = TARGET + take_ref + (0.,0.,.008)
+    # Center the released ends inside the stop-to-stop clearance measured in the smoke.
+    release = TARGET + take_ref + (0.,-.0015,.008)
     rest, rest_rotation = ik.tcp_pose(READY,station.BASES["left"])
     # Push a free section of the guide after the bar has settled.
     handle = np.array((-.017,.106,.0305))
