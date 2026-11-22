@@ -108,11 +108,11 @@ def demo():
     proof,drive_finish=crank_pose(59.)
     w=motion.Waypoint
     left=[
-        w(1.4,incoming-(.054,0.,0.),-.03,'approach the cutter assembly',face),
-        w(.7,incoming,-.03,'straddle the retaining collar',face),
-        w(.65,incoming,-.017,'hold the collar',face),
-        w(1.2,ring,-.017,'seat the replacement cutter in its bore',face),
-        w(1.15,ring,-.017,'turn the retaining collar',final),
+        w(1.4,incoming-(.054,0.,0.),-.034,'approach the cutter assembly',face),
+        w(.7,incoming,-.034,'straddle the retaining collar',face),
+        w(.65,incoming,-.020,'hold the collar',face),
+        w(1.2,ring,-.020,'seat the replacement cutter in its bore',face),
+        w(1.15,ring,-.020,'turn the retaining collar',final),
         w(.68,ring,-.031,'release the retained assembly',final),
         w(.80,ring-(.080,0.,0.),-.031,'withdraw from the collar',final),
         w(1.10,left_home,FINGER_OPEN,'return the assembly hand to rest',WristPose(left_rotation)),

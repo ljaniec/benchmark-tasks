@@ -68,7 +68,9 @@ def cartridge():
     sleeve=m.slider('cutter_sleeve','X',SLEEVE_START_M,.001,
                     (('cutter_guard',guide,'steel'),),(m.col_hull('cutter_guard_contact',guide),),
                     damping=1.2,mass=.088,effort=23.,friction=.04,armature=1.e-6)
-    grip=m.cylinder(.022,.016,(-.011,0.,0.),axis='x',segments=12)
+    grip_profile = ((-.017,-.027),(.017,-.027),(.022,-.022),(.022,.022),
+                    (.017,.027),(-.017,.027),(-.022,.022),(-.022,-.022))
+    grip = m.prism([(-z,y) for y,z in grip_profile],-.019,-.007).turned(90.,'y')
     hub=m.cylinder(.0162,.030,(-.0035,0.,0.),axis='x')
     ears=tuple((f'collar_ear_{i}',arc_band(EAR_RADIUS,a-EAR_ANGLE,a+EAR_ANGLE,*EAR_AXIAL),'polymer')
                for i,a in enumerate((0.,180.)))
