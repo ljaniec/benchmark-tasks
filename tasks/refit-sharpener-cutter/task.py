@@ -20,6 +20,8 @@ INSTRUCTION='Seat the replacement cutter, turn its retaining ring clockwise, and
 GRIPPER['effort']=40.
 OBJECTS=[*g.OBJECTS]
 scorer=Scorer()
+COLLAR_RELEASE_APERTURE=-.025
+COLLAR_GRIP_OFFSET_Y=.012
 X_AXIS=np.array((1.,0.,0.))
 CRANK_KNOB=np.array((-.043,0.,-.051))
 
@@ -88,14 +90,18 @@ def demo():
         grip_rotation.sharpener_pose=True
         motion.grip_rotation=grip_rotation
 
-    front=np.array(((0.,0.,1.),(0.,1.,0.),(-1.,0.,0.)))
+    front=np.array(((0.,0.,1.),(0.,-1.,0.),(1.,0.,0.)))
     face=WristPose(front)
     final=WristPose(roll(g.LOCK_ANGLE)@front)
     wrist_pitch=axis_angle_matrix(np.array((0.,1.,0.)),math.radians(11.))
     drive_rotation=np.column_stack(((0.,-1.,0.),(0.,0.,-1.),(1.,0.,0.)))
     drive_rotation=wrist_pitch @ drive_rotation
-    ring=g.BORE+(-.021,0.,0.)
+    ring_center=g.BORE+(-.021,0.,0.)
+    side_offset=np.array((0.,COLLAR_GRIP_OFFSET_Y,0.))
+    ring=ring_center+side_offset
     incoming=ring+(g.SLEEVE_START_M,0.,0.)
+    mid_ring=ring_center+roll(g.LOCK_ANGLE/2.)@side_offset
+    locked_ring=ring_center+roll(g.LOCK_ANGLE)@side_offset
     left_home,left_rotation=ik.tcp_pose(READY,station.BASES['left'])
     right_home,right_rotation=ik.tcp_pose(READY,station.BASES['right'])
     def crank_pose(degrees):
@@ -112,9 +118,11 @@ def demo():
         w(.7,incoming,-.034,'straddle the retaining collar',face),
         w(.65,incoming,-.020,'hold the collar',face),
         w(1.2,ring,-.020,'seat the replacement cutter in its bore',face),
-        w(1.15,ring,-.020,'turn the retaining collar',final),
-        w(.68,ring,-.031,'release the retained assembly',final),
-        w(.80,ring-(.080,0.,0.),-.031,'withdraw from the collar',final),
+        w(.58,mid_ring,-.020,'begin the retaining turn',WristPose(roll(g.LOCK_ANGLE/2.)@front)),
+        w(.57,locked_ring,-.020,'turn the retaining collar',final),
+        w(.48,locked_ring,COLLAR_RELEASE_APERTURE,'release the retained assembly',final),
+        w(.54,locked_ring+(0.,.060,.018),-.031,'move across the clear side of the collar',final),
+        w(.51,locked_ring+(-.080,.060,.018),-.031,'withdraw from the collar',final),
         w(1.10,left_home,FINGER_OPEN,'return the assembly hand to rest',WristPose(left_rotation)),
     ]
     right=[
