@@ -1,37 +1,28 @@
 # Prime a commercial roll-towel dispenser after a refill
 
-A fresh roll is already seated in an open wall-mounted dispenser. Position its loose leader at the roller nip and work the return lever until an intact, straight tail hangs from the outlet. The task ends at the feed check while the housing is open for inspection.
+Feed the loose leader from a seated fresh roll through the open dispenser. Leave a straight 50 mm or longer tail below the outlet and let go of the lever. The exposed tail is the check a custodian makes before closing the cover. O*NET lists supplying restrooms as a core duty of janitors and cleaners. The dispenser instructions describe placing the paper between the rollers and working the lever for initial feed. [O*NET duties](https://www.onetonline.org/link/details/37-2011.00) · [Dispenser loading instructions](https://tork-images.essity.com/images-c5/305/159305/original/83tr-hwrt-lever-dispenser-manual.pdf)
 
-Restocking public washrooms is a core duty of janitors and cleaners. O*NET 37-2011.00 lists supplying restrooms and BLS OEWS counted 2,209,760 US jobs in this occupation in May 2025. Employment is reported for the occupation. The San Jamar Element loading sheet documents placing the paper in between the two rollers and operating the lever to feed it through before shutting the cover.
+## Setup and reset
 
-- [O*NET 37-2011.00](https://www.onetonline.org/link/summary/37-2011.00)
-- [BLS May 2025 employment release](https://www.bls.gov/news.release/pdf/ocwage.pdf)
-- [San Jamar Element paper loading instructions](https://cdnimg.webstaurantstore.com/documents/pdf/101838_elementinstruction.pdf)
-- [Manufacturer's dimensional sheet](https://www.webstaurantstore.com/documents/specsheets/element-sell-sheet.pdf)
+Use the standard two-arm YAM workbench. Mount the 318 mm wide, 324 mm high ABS housing on an 18 × 410 × 410 mm fixed mounting plate. The 195 × 310 × 6 mm open cover is below the feed bay. Fit a 203 mm wide, nominally 150 mm diameter hardwound paper roll on the spindle at x = 461 mm and z = 1065 mm. Positive x points away from the arms, positive y to their left and positive z up. The outlet lower lip is at z = 820 mm. Its front and rear edges are at x = 399 and 438 mm.
 
-The [accepted twin-roll tissue task](https://tasks.robocurve.org/board?task=TK-22CFQJ) relocates a usable roll, installs a refill and selects the correct outlet. Its tissue tail starts threaded. The [accepted soap refill](https://tasks.robocurve.org/board?task=TK-Z3X5F5) works a latch and seats a rigid refill. This task tests the alignment and feed of a wide, loose paper web into a roller pair. An empty lever stroke leaves the outlet empty.
+Set the idler arm and feed lever at their released stops. Center the roll on its spindle and lay the square, connected leader on the two removable loading rails. Their top surfaces are at z = 980.6 mm. The reset edge protrudes 15 mm past the front of the rails, at x = 311 mm and z = 981.5 mm. The sheet starts clear of the rollers. The two roller axes sit at x = 408 and 448 mm and z = 934 mm. The front 6 × 250 mm and rear 9 × 283 mm steel axles carry 39.6 mm diameter rubber bands. Pulling down the rectangular tab opens the idler to its 58° stop. The hinged carrier, preloaded spring and sprung idler bearing set the nip when the arm closes. The sprung feed lever is on the opposite side. The detailed centers, dimensions and material assignments are specified by the scene in `task.py`.
 
-## Scene and approximation
+The reset restores the arm and dispenser poses, the web and roller joint states, velocities, score counters and the camera buffers. Use a new square leader or rewind the paper and cut it across a straightedge for a repeat on the physical fixture.
 
-The housing is a full-width unbranded reconstruction. See task.json for the reset, dimensions and directions and task.py for every collider. The thick mounting panel is secured to a stand behind the housing. The cradle and roll start fixed. The return lever is a native hinge with limits from −38 to 0 degrees, spring 1.5 N m/rad, damping 0.05 N m s/rad, mass 80 g and estimated dry drag 0.016 N m. The roller pair has fixed collision geometry.
+## Scoring a trial
 
-The paper model represents the free edge by two sample points 150 mm apart and 40 mm up from the tip. A gripper can acquire a point only on closing around the thin web, aligned with its normal. Both edges have to enter the nip together, with at most 8 mm of height difference. Once seated, the modeled roller transmission advances the paper 84 mm per radian of downward lever rotation beyond 2 degrees of backlash. A stroke must return within 1 degree of the top before it can advance further. The roll does not unwind continuously under its own weight. The paper shape is visible but simplified, with no force feedback, buckling, roller deformation, measured transmission ratio or material tearing calibration. A pair of grippers pulling the samples out of their allowable separation produces an invalid outcome. The grasp and feed checks were exercised in the recorded simulation. The feed ratio and tear threshold are estimates.
+Inspect the paper path from the open feed bay. Both edges must pass through the actual closed nip, with the loading arm within 3° of rest. Check that the free edge deviates by no more than 8 mm from square across the width. This earns 0.25. Measure exposed paper vertically below the outlet lip. Observe the paper moving during the lever stroke while both marked roller surfaces turn. Award 0.5 at 15 mm of exposed paper and 10 mm of lever-driven advance. Award 1.0 at 50 mm exposed and 35 mm of lever-driven advance, with both hands clear and the lever within 3° of rest for 0.5 seconds. An unthreaded web, torn leader or damaged setup earns zero. A ruler next to the outlet and slow-motion review of the two roller marks can verify the result.
 
-The ABS housing is 318 × 324 × 198 mm with 8 mm sides at y = ±155 mm. An 18 × 410 × 410 mm rigid mount is centered at (557, 0, 952.5) mm. The open ABS cover is 195 × 310 × 6 mm with center (247, 0, 813) mm. The cellulose roll has a cardboard core 36 mm in diameter and the shaft spans 218 mm. The two nominal 39.6 mm diameter rubber rollers run along y. The right-hand ABS lever has a 75 mm arm and a 32 mm diameter rounded end. The feed outlet is centered at x = 428 mm, with its lower lip at z = 821 mm. Place the fixed assembly and arms as shown in the setup frame.
+## Run and reproduce
 
-Use a secured dispenser with the lid open and a fresh, square paper edge. Center the roll on the cradle and pull a loose leader down to the starting point in task.json. Check seating from the open front by looking for both sides of the leading edge inside the nip, with their height difference at most 8 mm. For partial credit at 0.5, measure at least 15 mm of the connected paper extending below the lip. For full credit, use the ruler to confirm at least 50 mm along the paper below the lip, within 3 degrees of released lever rest and both fingertips clear of the paper and lever for 0.5 seconds. Record the outlet in a low side view when judging a physical trial. A torn or detached leader earns zero. Reset the lever to rest and use a fresh intact leader between trials.
-
-## Inspect commands
-
-Use the official YAM/Arena simulation environment. Source the installed Arena environment and run from the task directory. The demonstration plays fixed waypoint targets through yam_scripted, with no live object poses or scoring feedback. The evaluation uses overhead and two wrist RGB views and standard robot joint and gripper readings. The scorer's geometric samples stay within the simulation.
+Point `ARENA_ENV` to the installed YAM/Arena environment script and run from the task folder. The scripted demonstration plays fixed waypoints. The Dream-1 adapter uses the three camera streams and standard robot joint and gripper readings. The scorer's geometry and contact audit are outside the model input.
 
 ```bash
 source "$ARENA_ENV"
-inspect-robots list embodiments
-inspect-robots list policies
-python -m unittest test_feed
+python -m unittest test_web_contact
 bash run_demo.sh 200 smoke
-bash run_demo.sh 1200 demo
+bash run_demo.sh 1000 demo
 inspect-robots run --embodiment yam_arena --policy dream \
   -P model=dreamlabs/dream-1-beta -P record=false \
   -E "task=$PWD/task.py" -E object_jitter=0 -E control_hz=20 \
@@ -40,10 +31,16 @@ inspect-robots run --embodiment yam_arena --policy dream \
   --instruction 'Start the new roll in the open paper-towel dispenser. Feed a straight, unbroken tail through the outlet and leave the lever released.'
 ```
 
-Set `ARENA_ENV` to the installed Arena environment script before running the commands. The paid policy uses the Dream SDK's standard credential environment variable. The run limit is 1,200 steps. The submitted Dream-1 evidence is a 400-step bounded run with no seating (0.0). The scripted run scored 1.0 in 722 steps (36.1 simulated seconds; approximately 2 minutes on an NVIDIA L40S including setup and recording). The tail extended 64.5 mm below the outlet and the scored release persisted for 10 control steps.
+Use seed 0, object jitter zero and 20 Hz. The task allows up to 1,200 controls, or 60 seconds of simulated time. The scripted waypoint sequence lasts 46.95 seconds and the bounded Dream-1 command allows 20 seconds. The overhead and two wrist RGB streams are 320 × 176 at the policy interface. After closing and releasing the pressure arm, the demo brings the right wrist to a side view beneath the outlet while the left arm finishes the feed.
 
-Evidence uses seed 0, no object jitter, 20 Hz and 320 × 176 policy frames from the three cameras. Native camera frames are 640 × 360. The top view shows the starting paper and hand placement, the left wrist views the nip and outlet, and the right wrist shows lever travel. The lowered paper is partly obscured by the front lip in the overhead view. A reset after the demonstration restored the paper, counters, joint positions, root poses and velocities. The fresh RGB frames reproduced the initial scene with small rendering differences. The gripper drive effort setting is 40 N per finger, the scripted opening command is 74.9 mm, and the stock start opening is 93.9 mm. I2RT specifies a 95 mm throw for the YAM linear gripper.
+The recorded demonstration scored 1.0 in 905 controls, 45.25 seconds of simulated time and about 280 seconds of simulator wall time including reset verification. The outlet had 51.4 mm of exposed towel. The web advanced 184.2 mm during lever motion and simultaneous counterrotation. Native contact records show both gripper pads touching the paper during the pickup and both rollers touching the web during feed. The right wrist shows the tail below the outlet. The repeat reset passed for physical state, counters, timestamps and the three RGB buffers.
 
-The recorded environment used Inspect Robots 0.60.0, the Dream adapter 0.1.0, YAM Arena revision `0059d02`, and Isaac Lab-Arena revision `c7edf3a9d5`.
+Dream-1 beta completed the bounded 400-control trial and scored 0.0 on the same executable source. The episode covered 20 simulated seconds and took about 137 seconds of wall time. The demo and Dream videos show the delivered RGB streams at 20 frames per second. The setup image is the first delivered overhead frame.
 
-The external YAM robot USD and meshes are MIT licensed and used through the official [YAM Isaac Lab-Arena adapter](https://github.com/kairosiann/yam-isaac-lab-arena), which carries the I2RT license notice. They are installed separately. The procedural dispenser geometry and simulation code use MIT. The local copy of mechkit.py comes from the MIT-licensed brake-pads-caliper example in the benchmark repository.
+The tested environment used Python 3.12.16, Isaac Sim 6.1.0.0, IsaacLab 17.0.2, the PhysX backend 6.0.0, Inspect Robots 0.60.0, the Inspect Dream adapter 0.1.0 and YAM Arena 0.1.0. The Arena checkout was at `c7edf3a9d5`. The launcher saves Inspect logs and frames, the measurement trace, source hashes and repeat-reset evidence. To replay the numerical score, read `results.metrics.task_score` in the Inspect JSON and compare it with the terminating row of `trace.jsonl`.
+
+## Simulation approximations and license
+
+The roller transmission is torque-limited and advances from the physical lever stroke. The lever applies no drive on its return. Paper is a connected set of colliding panels with bending hinges and a 1.4 mm effective collision thickness. The roller advances the sheet through contact while the idler presses against it. Paper stiffness, rubber friction, the lever ratio and bearing loads are estimated. The web can bend along the feed direction. Twist, in-plane wrinkling and tearing are omitted.
+
+The external YAM robot USD and meshes are MIT licensed and used through [YAM Isaac Lab-Arena](https://github.com/kairosiann/yam-isaac-lab-arena), which carries the I2RT notice. Install the robot model separately. The procedural scene and supporting code use the MIT license. `mechkit.py` is reused from the repository’s MIT-licensed brake caliper task.

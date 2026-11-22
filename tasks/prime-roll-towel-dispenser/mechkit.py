@@ -791,6 +791,7 @@ def set_visible(path: str, visible: bool) -> None:
 
 _STEP: list = []
 _RESET: list = []
+_BEFORE_RESET: list = []
 
 
 def on_step(fn):
@@ -802,6 +803,12 @@ def on_step(fn):
 def on_reset(fn):
     """Run ``fn(env)`` after every reset, once the scene has settled."""
     _RESET.append(fn)
+    return fn
+
+
+def on_before_reset(fn):
+    """Run `fn(env)` before a repeated reset settles the existing scene."""
+    _BEFORE_RESET.append(fn)
     return fn
 
 
@@ -869,6 +876,8 @@ def _patch_embodiment(module) -> None:
         _SEED[0] = k.get("seed")
         if self._env is not None:
             _restore_touched(self._env)
+            for fn in _BEFORE_RESET:
+                fn(self._env)
         obs = reset(self, *a, **k)
         for fn in _RESET:
             fn(self._env)
