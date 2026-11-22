@@ -1,0 +1,19 @@
+{
+  "title": "Clear a blockage from a vacuum extension tube",
+  "category": "Societal relatability",
+  "keywords": [
+    "vacuum maintenance",
+    "tool use",
+    "confined access",
+    "bimanual"
+  ],
+  "instruction": "Clear the blockage from the vacuum tube. Leave the debris in the tray and return the clearing rod to its rest.",
+  "context": "Packing foam lodged in a vacuum extension restricts airflow. Clearing the detached tube restores the bore for cleaning. The task exercises aligning a blunt rod through a narrow opening, steadying the tube during the push and containing the released debris.",
+  "setup": "The station desk is 747.5 mm high. With x away from the arms and y to their left, the detached 422 mm stainless extension has a 32 mm outer diameter and 30 mm bore. The tube axis is at x = 280 mm and z = 850.5 mm, with mouths at y = -38 mm and y = 384 mm. Two 60 by 30 by 87 mm hardwood saddle bases support it at y = 40 mm and y = 289 mm, each with a 36 mm opening between 19 mm high sides. An orange packing-foam plug 23 mm long and 32.8 mm across when relaxed is centred 50 mm inside the catch end. A blunt 484 by 10 mm wooden shaft has a 32 by 35 by 30 mm rectangular handle centred at x = 332 mm, y = -553.5 mm and z = 850.5 mm. Its hardwood saddles have 48 by 30 by 98 mm bases with 24 mm openings between 8 mm high sides and are at y = -422 mm and y = -154 mm. The empty plastic catch tray has a 180 by 190 mm interior, an 8 mm raised floor and a 29 mm rim above its floor and its centre at x = 280 mm and y = 470 mm.",
+  "scoring": "Award the highest condition held for the final 0.5 s. Give 0.25 if the lodged plug protrudes at least 5 mm past a tube mouth. Give 0.5 if the intact plug is completely out and rests in the catch tray with both grippers at least 35 mm clear of it. Give 1.0 if the plug stays in the tray, the tube and rod rest in their own two saddles and both grippers remain at least 35 mm clear of the tube, rod and debris. Give 0.0 for all other outcomes or if the tube, rod or plug is damaged or leaves the marked work area.",
+  "run_limit": "440 control steps (22 seconds at 20 Hz)",
+  "reset_notes": "Clear the catch tray and set the tube and rod on their two saddle pairs. Compress the original 23 mm foam plug and put it back with its centre 50 mm inside the catch-side mouth. Use the same size and orientation each time.",
+  "fidelity": "The detached tube matches the reference extension's 422 mm length and 32 mm outer diameter. The bore and mass are estimated from its wall thickness. Contact facets approximate the steel bore, and four sprung pads approximate foam compression. The rod, tube and foam interact through contact. The setup represents the clearing step after disconnecting the tube from an unplugged vacuum.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-HQ4SWV"
+}
