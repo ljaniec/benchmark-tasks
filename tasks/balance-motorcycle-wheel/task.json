@@ -1,0 +1,20 @@
+{
+  "title": "Balance a motorcycle wheel after a tire change",
+  "category": "Other",
+  "keywords": [
+    "wheel balancing",
+    "vehicle maintenance",
+    "adhesive wheel weights",
+    "hands-off stability",
+    "bimanual"
+  ],
+  "instruction": "Press a balance weight onto each rim face, then release the wheel at each marked position and check that it stays put.",
+  "context": "Tire installers balance the mounted wheel after a tire change to reduce vibration. On a free axle, an unbalanced wheel rolls heavy-side down. Spread the correction across the two rim faces and verify the result against the fixed scale with hands and tools clear.",
+  "setup": "Use an installed 652 mm diameter motorcycle front wheel with 120 mm wide rubber tire, aluminum rim and hub, cross-spokes, and two 305 mm steel brake discs. Mount its horizontal Y-axis axle on bolted steel uprights 380 mm ahead of the YAM bases and 830 mm above the floor. The stand sits on a wooden service deck beneath the wheel. Read the 43 × 22 mm red sidewall index against the fixed blue scales, with release marks at 0, 45, 90 and 135 degrees. A green index 90 degrees ahead is an additional orientation reference. The wheel starts at its heavy-side-down rest with the index at 270 degrees. Put a 14.174 g, 17.2 × 15 × 7 mm steel adhesive weight on each applicator. The nylon applicators have 26 × 31 mm press faces, small magnets and 19 mm wide rectangular handles. Place the loaded tools on two 76 × 64 mm trays at x=238 mm and y=±256 mm, with both weights flat on the tray surfaces. The robot starts with open jaws above the trays. All material and placement details are recorded with the scene.",
+  "scoring": "Score 0.25 after an original strip lies flush on its rim face and survives 20 degrees of wheel motion with the applicator separated, ending hands off. For 0.5, both strips must remain mounted and the wheel must drift no more than 12 degrees in each of four distinct 4.5-second hands-off releases from the marked positions. Hold the index within 1 degree of the release mark for 0.5 seconds before each release. For 1.0, maximum drift is 5 degrees at all four marks and the last release remains valid for another 0.5 seconds. Hands and applicators must be 20 mm clear of the wheel for a release. Read the index, verify the weights and check clearance in video. A tilted or displaced axle, a part off the deck or an external device supporting the wheel earns zero.",
+  "run_limit": "1,600 control steps (80 seconds at 20 Hz)",
+  "reset_notes": "Balance the mounted wheel with the matched weights centered 232 mm from the axle. Remove those weights to reproduce the starting imbalance and reload the applicators on their trays. Reset poses, velocities, all robot joints, adhesive and scoring state, and camera buffers.",
+  "fidelity": "A passive native axle carries the rim, tire, hub and brake discs. Colliding steel blocks represent compact preweighed adhesive weights. Qualified native pressure creates a compliant bond on the rim face. Magnetic retention and tape stiffness use lumped force models. The tire uses segmented rigid collision geometry. Starting imbalance is calibrated and weights are preloaded.",
+  "scores": "Dream-1 beta run: 0.0. Scripted demo: 1.0.",
+  "media": "M-AB3HFN"
+}

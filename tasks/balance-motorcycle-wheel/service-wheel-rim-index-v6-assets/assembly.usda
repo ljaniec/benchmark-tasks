@@ -1,0 +1,13 @@
+#usda 1.0
+(defaultPrim = "ServiceStand"; metersPerUnit = 1; upAxis = "Z")
+def Xform "ServiceStand"
+{
+    def Xform "Wheel" (prepend references = @wheel.usda@) {}
+    def Xform "Stand" (prepend references = @stand.usda@) {}
+    def PhysicsRevoluteJoint "Axle"
+    {
+        rel physics:body1 = </ServiceStand/Wheel>
+        uniform token physics:axis = "Y"
+        point3f physics:localPos0 = (0.38, 0, 0.83)
+    }
+}
