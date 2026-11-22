@@ -71,11 +71,11 @@ def cartridge():
     lock=m.hinge('lock_collar','X',(0.,0.,0.),-7.,76.,collar_parts,collar_collision,parent='cutter_sleeve',mass=.033,
                   friction=.021,damping=.012,effort=.22,armature=1.e-6,inertia=(1.1e-5,9.e-6,9.e-6))
     crank, crank_col=solids((
-        ('crank_web',(.012,.016,.061),(-.020,0.,-.022),'steel'),
+        ('crank_web',(.012,.016,.061),(-.033,0.,-.022),'steel'),
         ('crank_knob',(.035,.022,.022),(-.043,0.,-.051),'polymer'),
-        ('reference_dot',(.013,.008,.006),(-.017,.010,-.030),'marker'),
+        ('reference_dot',(.013,.008,.006),(-.033,.010,-.030),'marker'),
     ))
-    shaft=m.cylinder(.006,.090,(.024,0.,0.),axis='x')
+    shaft=m.cylinder(.006,.104,(.017,0.,0.),axis='x')
     axle=m.hinge('crank','X',(0.,0.,0.),-375.,375.,crank+(('drive_shaft',shaft,'steel'),),
                   crank_col,parent='cutter_sleeve',mass=.066,
                   friction=.026,damping=.018,effort=.36,armature=1.e-6,inertia=(4.e-5,4.e-5,7.e-6))
