@@ -18,7 +18,7 @@ from yam_arena.station import TABLE_TOP
 SCENE = 'station'
 INSTRUCTION = 'Hold the raised floor nozzle steady. Pull out the wedged paperboard, put it in the tray, and lower the connected nozzle.'
 GRIPPER['effort'] = 40.
-TRAY = np.array((.250,-.218,TABLE_TOP))
+TRAY = np.array((.250,-.285,TABLE_TOP))
 TRAY_HALF = np.array((.094,.079))
 BUMPER = np.array((-.093,.117,.025))
 CARD_VERTICES = g.card_mesh().v
