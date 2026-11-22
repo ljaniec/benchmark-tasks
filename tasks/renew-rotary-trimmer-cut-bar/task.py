@@ -199,8 +199,9 @@ def demo():
     handle = np.array((-.017,.106,.0305))
     from_pivot = handle-GUIDE_AXIS
     top = CUTTER+GUIDE_AXIS+rot(1,OPEN_DEG) @ from_pivot
+    outside_handle = top + (.032,0.,.011)
     middle = CUTTER+GUIDE_AXIS+rot(1,56.) @ from_pivot
-    middle += (.008,0.,.014)
+    middle += (.006,0.,.011)
     bottom = CUTTER+handle+(0.,0.,.0115)
     camera = WristPose(rot(2,25.) @ rot(1,-10.) @ np.diag((-1.,1.,-1.)))
     waypoint = motion.Waypoint
@@ -225,9 +226,10 @@ def demo():
         waypoint(.90,release,-.0015,"lower the bar near the deck",left_pose),
         waypoint(.70,release,-.008,"release into the track",left_pose),
         waypoint(.50,release+(0.,0.,.133),-.003,"withdraw vertically above the bar",left_pose),
-        waypoint(.82,top+(0.,0.,.034),-.003,"above the guide handle",left_pose),
-        waypoint(.62,middle,-.003,"tip the guide from its stop",left_pose),
-        waypoint(1.35,bottom,-.003,"close the cutting guide",left_pose),
-        waypoint(.80,bottom+(0.,0.,.070),-.003,"release the guide",left_pose),
+        waypoint(.53,outside_handle+(0.,0.,.022),-.003,"move above and outside the guide handle",left_pose),
+        waypoint(.37,outside_handle,-.003,"approach outside the guide handle",left_pose),
+        waypoint(.85,middle,-.003,"push the open guide from the side",left_pose),
+        waypoint(1.15,bottom,-.003,"close the cutting guide",left_pose),
+        waypoint(.84,bottom+(0.,0.,.075),-.003,"release the guide",left_pose),
     ]
     return {"left":left,"right":right}
