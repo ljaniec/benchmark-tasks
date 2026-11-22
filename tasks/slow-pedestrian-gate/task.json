@@ -1,0 +1,19 @@
+{
+  "title": "Slow a self-closing pedestrian gate and make sure it latches",
+  "category": "Societal relatability",
+  "keywords": [
+    "self-closing gate",
+    "accessibility",
+    "hydraulic adjustment",
+    "physical latch"
+  ],
+  "instruction": "Slow the gate's main closing speed, release the hold-open hook, and let the gate swing into its latch on its own.",
+  "context": "A gate that closes too quickly gives pedestrians less time to clear the opening. The task ends with a timed, unassisted swing and a latched gate.",
+  "setup": "World coordinates are metres with x away from the arms, y left and z up. The welded steel gate is 910 mm wide and 980 mm high, with a 40 × 40 × 2 mm perimeter and nine 20 × 20 × 1.5 mm pickets. Its hinge axis is at (0.220, -0.330). The leaf starts at 90° and stationary against the steel hold-open hook on its fixed post. The hook has a fixed 22 × 27 × 26 mm rectangular grip tab. Three 75 mm square steel posts support the installed gate, strike and hook. Use the Locinox TIGER/PUMA closer and lower hinge as the physical reference and a National Hardware V29 N342-600 latch with a 9.5 mm strike. The speed valve sits at (0.212, -0.317, 0.844) at the fast witness and takes a 3 mm hex tip. The unadjusted sweep takes about 1.85 seconds. The separate final closing phase stays preset. The free 72 g driver has a 26 × 15 × 40 mm rectangular grip centred 203 mm from its tip and a slim 6.35 mm steel shaft. It starts vertical with the tip at (0.164, -0.222, 0.762), in a steel rack with 7.8 mm square guide openings at z = 0.789 and 0.826. Two YAM arms are fixed on 174 × 146 mm steel pedestals with base centres at (0, +0.305, 0.750) and (0, -0.305, 0.875). A fixed overhead view frames both arms, with both standard wrist views retained. The setup has no loose items besides the driver. See the README for physical assembly.",
+  "scoring": "Start timing at the visible release of the hook from 90 ±0.5°. A hands-off return from 90° to 12° in at least 4.0 but less than 5.0 seconds earns 0.25 if the latch also catches within two seconds. A return through the measured arc in 5.0–8.0 seconds earns 0.5. Award 1.0 when the latch additionally catches within the next two seconds and stays engaged, the gate within 0.5° of closed, for 0.5 seconds. For a repeat, use fixed 90° and 12° angle marks, video timing and a view of the latch. Contact with the swinging gate, movement of a fixed part, or tipping over 15° invalidates that trial. The driver tip must stay inside the work envelope x=[−0.25,1.25], y=[−0.65,0.65], z=[0.65,1.245] m.",
+  "run_limit": "1,000 controls (50 seconds at 20 Hz)",
+  "reset_notes": "Restore the prescribed fast valve position, put the driver in the rack and let the fixed hook hold the stationary gate at 90°. Reset the fixed robot bases, arm joints and velocities, props, cameras and score history.",
+  "fidelity": "The installed gate, recessed tool socket, holdback hook and keeper use contact and native joints. A passive hydraulic torque law reproduces separate main and final closing phases. The model uses estimated valve load and damping, a simplified latch profile and no internal hydraulic fluid. The timing and latch retention are checked separately.",
+  "scores": "Dream-1 run: 0.0 (600 controls); scripted demo: 1.0 (441 controls).",
+  "media": "M-FNAX4J"
+}
