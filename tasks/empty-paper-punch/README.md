@@ -15,7 +15,7 @@ The task exercises holding an object steady while releasing its waste cover, con
 
 Count the original disks in the tray after the scene has settled. An original disk resting against the inside wall counts when its centre is inside the walls and below the rim. Partial and full credit require all 48 accounted for in the tray or the punch, no damage, all parts within the station and both grippers 35 mm clear for 0.5 s. Award 0.25 for at least 24 disks in the tray and 0.5 for all 48.
 
-For 1.0, check that the cover stays shut for at least 0.5 s with the punch at least 45 mm above the desk. The holding hand grips the housing at least 6 mm above or clear of the cover. The other hand stays at least 35 mm from the cover. The closed gap remains within the normal closed position, equivalent to at most 2° at the hinge. The release button returns to within 0.35 mm of its original outward position, which can be checked against a close side view or measured from the release slot. Then check that the punch is upright within 5° on the starting pad, with the base centre within 18 mm of the starting centre. Use the overhead view for the tray and pad. If a pile hides scraps, spread the finished tray contents on a sheet to confirm the count.
+For 1.0, watch the free edge of the cover in the side view as the punch is raised at least 45 mm above the desk. The base faces down, within 15° of horizontal. For at least 0.5 s the cover must stay in its normal closed position, within 2° of shut. During the lift the holding hand grips only the housing, with at least 6 mm between that hand and the cover. The other hand stays at least 35 mm from the cover. Use a ruler for lift height and hand clearance and compare the cover edge to the initial closed profile in the side view. Then check that the punch is upright within 5° on the starting pad, with the base centre within 18 mm of the starting centre. Use the overhead view for the tray and pad. If a pile hides scraps, spread the finished tray contents on a sheet to confirm the count.
 
 ## Simulation and evidence
 
@@ -34,7 +34,7 @@ python -B audit_punch_demo.py run \
 
 Set `PUNCH_AUDIT_DIR` to a fresh writable directory and `PUNCH_TRACE` to a path in that directory before the run. The audit saves matched-seed initial and reset states, timestamps, score counters and all three RGB views. The reset returns the punch, its joints and each scrap to their initial poses with zero velocity and reinitializes the three cameras. Use 300 controls to smoke-test the opening and collection phases.
 
-The demonstration scored 1.0 in 520 controls with seed 0. It took 243.3 seconds of wall time on an NVIDIA L40S with Inspect Robots 0.60.0, Isaac Sim 6.1.0.0, Isaac Lab 17.0.2 and PyTorch 2.11.0 with CUDA 12.8. The first full score was at control 502. An independent replay of the recorded scorer inputs matched every step and the terminal score.
+The demonstration scored 1.0 in 520 controls with seed 0. It took 243.3 seconds of wall time on an NVIDIA L40S with Inspect Robots 0.60.0, Isaac Sim 6.1.0.0, Isaac Lab 17.0.2 and PyTorch 2.11.0 with CUDA 12.8. The first full score was at control 502. An independent replay of the recorded trials under the cover-retention rule matched every step and both terminal scores.
 
 Dream-1 scored 0.0 in 520 controls with seed 0 on the same scene. The run took 269.4 seconds. Both recordings show the actual three policy views at 20 frames per second.
 

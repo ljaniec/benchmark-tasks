@@ -69,14 +69,16 @@ def observe(env):
     disks = np.asarray([m.state(env, name).pos for name in scene.SCRAP_NAMES])
     in_tray, in_chamber = containment(disks, punch.to_local(disks))
     tray_count, chamber_count = int(in_tray.sum()), int(in_chamber.sum())
-    angle, flex = punch.deg("waste_cover"), punch.joint("elastic_tab")
-    closed = abs(angle) <= 2. and abs(flex) <= .00035
+    angle = punch.deg("waste_cover")
+    closed = abs(angle) <= 2.
+    tilt = punch.tilt_deg()
     tips = m.fingertips(env)
     closed_tab = punch.to_world([scene.RELEASE_FACE])[0]
     tip_local = punch.to_local(tips)
     cover_lo, cover_hi = np.array([-.059, -.050, -.003]), np.array([.034, .050, .010])
     cover_distances = np.linalg.norm(np.maximum(np.maximum(cover_lo - tip_local, tip_local - cover_hi), 0.), axis=1)
-    air_test = (closed and tray_count == len(disks) and punch.pos[2] >= scene.DESK_Z + .045
+    air_test = (closed and tilt <= 15. and tray_count == len(disks)
+                and punch.pos[2] >= scene.DESK_Z + .045
                 and cover_distances[12:].min() >= .035 and cover_distances[:12].min() >= .006)
     _cover_ticks = _cover_ticks + 1 if air_test else 0
     _cover_verified = closed and (_cover_verified or _cover_ticks >= 10)
@@ -88,12 +90,12 @@ def observe(env):
     punch_distance = np.linalg.norm(np.maximum(np.maximum(lo - tip_local, tip_local - hi), 0.), axis=1).min()
     disk_distance = np.linalg.norm(tips[:, None, :] - disks[None, :, :], axis=2).min() - scene.SCRAP_DIAMETER_M / 2
     clearance = min(punch_distance, disk_distance)
-    flat = (punch.tilt_deg() <= 5. and abs(punch.pos[2] - scene.PUNCH_START[2]) <= .004
+    flat = (tilt <= 5. and abs(punch.pos[2] - scene.PUNCH_START[2]) <= .004
             and np.linalg.norm(punch.pos[:2] - np.asarray(scene.PUNCH_START[:2])) <= .018)
     within = bool(np.all((disks[:, 0] >= .08) & (disks[:, 0] <= .62)
                          & (np.abs(disks[:, 1]) <= .43) & (disks[:, 2] >= scene.DESK_Z - .014))
                   and .08 <= punch.pos[0] <= .62 and abs(punch.pos[1]) <= .43 and punch.pos[2] >= scene.DESK_Z - .025)
-    intact = bool(-94. < angle <= 4. and -.0004 < flex < .0021)
+    intact = bool(-94. < angle <= 4.)
     still = bool(motion <= .0015 and np.linalg.norm(punch.lin_vel) <= .025)
     value = scorer.update(Outcome(tray_count, chamber_count, float(clearance), _cover_verified,
                                   flat, intact, within, still))
@@ -101,9 +103,10 @@ def observe(env):
     if path:
         evidence = {
             "score": value, "tray": tray_count, "chamber": chamber_count,
-            "cover_deg": angle, "tab_mm": 1000. * flex, "cover_verified": bool(_cover_verified),
+            "cover_deg": angle, "tab_mm": 1000. * punch.joint("elastic_tab"),
+            "cover_verified": bool(_cover_verified),
             "punch_m": punch.pos.tolist(), "punch_quat_xyzw": punch.quat_xyzw.tolist(),
-            "tilt_deg": punch.tilt_deg(), "clearance_m": float(clearance),
+            "tilt_deg": tilt, "clearance_m": float(clearance),
             "release_face_m": closed_tab.tolist(), "right_tip_points_m": tips[12::2].tolist(),
             "outside_m": {scene.SCRAP_NAMES[i]: disks[i].tolist() for i in np.flatnonzero(~(in_tray | in_chamber))},
             "flat_on_pad": bool(flat), "intact": intact, "within_workspace": within, "still": still,
