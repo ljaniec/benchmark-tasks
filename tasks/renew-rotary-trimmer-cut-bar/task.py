@@ -30,6 +30,7 @@ GRASP_Y = -.149
 LOOKS = {
     "deck": m.Look(m.rgb(.26,.40,.45),roughness=.65),
     "rail": m.Look(m.rgb(.14,.23,.27),roughness=.58),
+    "guard": m.Look(m.rgb(.37,.57,.61),roughness=.31,opacity=.57),
     "base": m.Look(m.rgb(.15,.16,.17),roughness=.71),
     "bar": m.Look(m.rgb(.93,.66,.22),roughness=.61),
     "line": m.Look(m.rgb(.31,.24,.15),roughness=.80),
@@ -59,7 +60,7 @@ def deck():
     ]
     visual, collider = solids(rows)
     guide = (
-        ("guide_bar",(.032,.322,.010),(.008,0.,.024),"rail"),
+        ("guide_bar",(.032,.322,.010),(.008,0.,.024),"guard"),
         ("guarded_carriage",(.040,.027,.022),(.007,-.137,.040),"deck"),
         ("handle_plate",(.023,.019,.007),(-.017,.106,.027),"rail"),
         ("near_ear",(.034,.008,.008),(.037,-.161,.023),"rail"),
@@ -191,6 +192,7 @@ def demo():
     middle = CUTTER+GUIDE_AXIS+rot(1,56.) @ from_pivot
     middle += (.008,0.,.014)
     bottom = CUTTER+handle+(0.,0.,.0115)
+    camera = WristPose(rot(2,25.) @ rot(1,-10.) @ np.diag((-1.,1.,-1.)))
     waypoint = motion.Waypoint
     right = [
         waypoint(1.50,upper,FINGER_OPEN,"approach the raised bar end",start),
@@ -200,7 +202,7 @@ def demo():
         waypoint(1.45,pass_bar,-.0015,"turn a fresh side up",turned),
         waypoint(3.35,pass_bar,-.0015,"hold while the other hand takes the bar",turned),
         waypoint(.65,pass_bar,-.009,"open the first grip",turned),
-        waypoint(1.20,(.271,-.238,.927),-.009,"clear the deck",WristPose(down)),
+        waypoint(1.20,(.225,-.138,.9205),-.009,"clear the deck and face the track",camera),
     ]
     left_pose = WristPose(np.diag((-1.,1.,-1.)))
     left = [
