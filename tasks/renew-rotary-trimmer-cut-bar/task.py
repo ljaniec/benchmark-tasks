@@ -83,7 +83,7 @@ def cutting_bar():
         ("wear_line",(.0013,BAR_LENGTH-.014,.00025),(0.,0.,.00257),"line"),
     )
     visual = solids(faces)[0]
-    orientation = matrix_to_quat_xyzw(rot(0,START_TILT))
+    orientation = tuple(matrix_to_quat_xyzw(rot(0,START_TILT)))
     return m.free("cutting_bar",START,visual,(m.col_box("bar_contact",(SIDE,BAR_LENGTH,SIDE)),),
                   LOOKS,.019,friction=(.66,.51),start_quat=orientation,torsional_patch=.003)
 
