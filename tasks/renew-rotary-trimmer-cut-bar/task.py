@@ -117,7 +117,8 @@ def reset(env):
     cameras = [base.scene[name] for name in ("top_cam","left_cam","right_cam")]
     for camera in cameras:
         camera.reset()
-    for _ in range(24):
+    # Refill temporal history at the restored poses before delivering RGB.
+    for _ in range(64):
         base.sim.render()
     for camera in cameras:
         camera.update(0.,force_recompute=True)
@@ -131,7 +132,8 @@ def observe(env):
     delta = ends-TARGET
     rotation = bar.rotation()
     fresh_up = abs(float(rotation[2,0])) >= .98 or float(rotation[2,2]) <= -.98
-    clear_track = bool(np.all(delta[:,2] > .015) or np.all(np.abs(delta[:,0]) > .027))
+    clear_track = bool(np.all(delta[:,2] > .015) or np.all(delta[:,0] > .027)
+                       or np.all(delta[:,0] < -.027))
     within_track = np.max(np.abs(delta[:,0])) <= .0017 and np.max(np.abs(delta[:,1])) <= BAR_LENGTH/2.+.003
     height = np.abs(delta[:,2]).max()
     axis = ends[1]-ends[0]
