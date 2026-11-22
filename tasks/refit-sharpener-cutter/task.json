@@ -1,0 +1,19 @@
+{
+  "title": "Refit the cutter assembly on a hand-crank classroom sharpener",
+  "category": "Societal relatability",
+  "keywords": [
+    "pencil sharpener",
+    "cutter replacement",
+    "retaining ring",
+    "functional check"
+  ],
+  "instruction": "Seat the replacement cutter, turn its retaining ring clockwise, and turn the crank to check that the cutter stays in the sharpener.",
+  "context": "Replacing a worn cutter returns a classroom crank sharpener to use. The retaining ring secures the cutter in the mounted housing, and a separate crank turn checks that it stays seated while the mechanism moves.",
+  "setup": "A fixed 118 × 77 × 150 mm plastic classroom sharpener with its shavings drawer and a 130 × 83 mm desk mount sits on the worktop. The cutter bore is 91 mm above the worktop with the opening facing the robots. The steel replacement cutter starts guided in the bore, 43 mm short of the seated position. Align its 44 × 54 mm plastic retaining ring with the entry slots and set the steel crank 59° counterclockwise from downward when viewed from behind the sharpener.",
+  "scoring": "0.25 when the cutter seats within a 1.5 mm axial gap for 0.5 s. Score 0.5 when its retaining ring also reaches the seated mark, 67° clockwise with an 8° tolerance, for 0.5 s. Score 1.0 when the crank then turns at least 45° clockwise while the assembly stays seated and secured, and the grippers release it for 0.5 s. A damaged, dropped or displaced appliance earns zero.",
+  "run_limit": "320 control steps (16 seconds at 20 Hz)",
+  "reset_notes": "Set the sleeve, retaining ring and crank back to their starting marks. Restore all joint and robot states, counters and the three camera buffers.",
+  "fidelity": "The full fixed sharpener housing, guarded cutter, shavings drawer, original crank and independent retaining ring are present. Profiled tracks approximate the turn-to-secure ring, whose exterior uses beveled grip flats. The track dimensions and clearances are geometric estimates. The cutter starts partly guided in the original bore. No cutting operation is simulated.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-YRDGKS"
+}
