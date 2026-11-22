@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import mechkit as m
 import scene_fixture as g
 from scorer import Reading, Scorer
-from yam_arena.constants import FINGER_OPEN, GRIPPER, READY
+from yam_arena.constants import FINGER_CLOSED, FINGER_OPEN, GRIPPER, READY
 from yam_arena.station import TABLE_TOP
 
 
@@ -128,6 +128,9 @@ def demo():
     left_pose = grip(-82.)
     right_pose = grip(RIGHT_ELEVATION,RIGHT_HEADING)
     tray_pose = grip(-72.)
+    press_pose = grip(-90.)
+    press_hover = g.PIVOT + (-.100, .059, .097)
+    press_depth = g.PIVOT + (-.100, .059, .009)
     left_axis = left_pose.rotation[:,2]
     right_axis = right_pose.rotation[:,2]
     bumper = lambda angle: g.PIVOT+g.pitch(angle)@BUMPER-.010*left_axis
@@ -146,7 +149,11 @@ def demo():
         waypoint(.85,bumper(2.),-.019,'lay the soleplate down',left_pose),
         waypoint(.65,bumper(2.),-.034,'release the nozzle',left_pose),
         waypoint(.70,bumper(2.)-.105*left_axis,-.031,'lift clear of the nozzle',left_pose),
-        waypoint(1.1,left_home,FINGER_OPEN,'return the nozzle hand to rest',WristPose(left_rotation)),
+        waypoint(.65,press_hover,FINGER_CLOSED,'approach the upper shell',press_pose),
+        waypoint(.95,press_depth,FINGER_CLOSED,'press the sole flat through the upper shell',press_pose),
+        waypoint(.25,press_depth,FINGER_CLOSED,'settle the sole against the bench',press_pose),
+        waypoint(.60,press_hover,FINGER_CLOSED,'clear the upper shell',press_pose),
+        waypoint(.75,left_home,FINGER_OPEN,'return the nozzle hand to rest',WristPose(left_rotation)),
     ]
     right = [
         waypoint(2.75,right_home,FINGER_OPEN,'wait until the nozzle is held',WristPose(right_rotation)),
