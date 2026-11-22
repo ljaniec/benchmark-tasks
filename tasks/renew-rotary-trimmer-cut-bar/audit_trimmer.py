@@ -111,18 +111,25 @@ def audit_factory(**kwargs):
         rgb = {}
         for name in CAMERAS:
             delta = np.abs(frames[name].astype(np.float32) - after_frames[name])
+            # Filter isolated render-history speckles before matching scene edges.
+            stale_path = camera_output / f"t0340-delivered_{name}.npy"
+            stale_alignment = (gradient_alignment(frames[name], np.load(stale_path), passes=3)
+                               if stale_path.is_file() else None)
             rgb[name] = {
                 "mean_delta": float(delta.mean()),
                 "fraction_over_10": float((delta > 10.).mean()),
                 "raw_gradient_alignment": gradient_alignment(frames[name], after_frames[name]),
-                "registered_edge_alignment": gradient_alignment(frames[name], after_frames[name], passes=2),
+                "registered_edge_alignment": gradient_alignment(frames[name], after_frames[name], passes=3),
+                "stale_frame_alignment": stale_alignment,
             }
         checks = {
             "physical_state": max(err for name,err in errors.items() if name.split("/")[0] in ASSETS) <= 2.e-4,
             "counters_and_timestamps": counters == after_counters,
             "rates": after_counters["physics_hz"] == 480 and after_counters["control_hz"] == 20,
             "cameras": (all(row["mean_delta"] < 3. and row["fraction_over_10"] < .04
-                            and row["registered_edge_alignment"] >= .97 for row in rgb.values())
+                            and row["registered_edge_alignment"] >= .97
+                            and (row["stale_frame_alignment"] is None or row["stale_frame_alignment"] < .90)
+                            for row in rgb.values())
                         and max(err for name,err in errors.items() if name.split("/")[0] in CAMERAS) <= 1.e-5),
         }
         result = dict(checks=checks, steps=steps, terminal=terminal, reset=after_counters, max_state_errors=errors, rgb=rgb)
