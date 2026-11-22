@@ -22,6 +22,8 @@ TRAY = np.array((.250,-.218,TABLE_TOP))
 TRAY_HALF = np.array((.094,.079))
 BUMPER = np.array((-.093,.117,.025))
 CARD_VERTICES = g.card_mesh().v
+HEAD_CENTERS = np.asarray([center for _, _, center, _ in g.HEAD_BLOCKS])
+HEAD_HALF_SIZES = .5 * np.asarray([size for _, size, _, _ in g.HEAD_BLOCKS])
 RIGHT_ELEVATION = -10.
 RIGHT_HEADING = 0.
 GRASP_FROM_CENTER = .023
@@ -81,8 +83,9 @@ def observe(env):
                    and relative[:,2].max()<=.039 and np.linalg.norm(card.lin_vel)<=.020)
     fingers = m.fingertips(env)
     clear_card = float(np.linalg.norm(fingers - card.pos,axis=1).min()) >= .060
-    head_ends = g.PIVOT + np.array(((-.067,-.118,-.025),(-.067,0.,-.025),(-.067,.118,-.025))) @ axis.T
-    clear_head = float(np.linalg.norm(fingers[:,None,:]-head_ends,axis=2).min()) >= .047
+    tips_in_head = (fingers - g.PIVOT) @ axis
+    from_shell = np.maximum(np.abs(tips_in_head[:, None, :] - HEAD_CENTERS) - HEAD_HALF_SIZES, 0.)
+    clear_head = float(np.linalg.norm(from_shell, axis=2).min()) >= .025
     valid = bool(np.isfinite(vertices).all() and .070<=card.pos[0]<=.72 and abs(card.pos[1])<=.50
                  and card.pos[2]>=TABLE_TOP-.009 and tool.tilt_deg()<4.)
     result = Reading(passed,in_tray,bool(abs(angle)<=5.),bool(clear_card and clear_head),valid)
