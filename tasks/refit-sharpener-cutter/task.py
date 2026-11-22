@@ -60,7 +60,10 @@ def observe(env):
     score_now=scorer.update(state)
     log=os.getenv('SHARPENER_TRACE')
     if log:
-        trace=dict(vars(state),score=score_now,axial_gap_m=gap,collar_deg=collar,post_lock_crank_proved=scorer.crank_proved)
+        start = scorer.proof_start_deg
+        post_lock_travel = crank - start if start is not None else 0.
+        trace=dict(vars(state),score=score_now,axial_gap_m=gap,collar_deg=collar,
+                   post_lock_crank_deg=post_lock_travel,post_lock_crank_proved=scorer.crank_proved)
         with open(log,'a',encoding='utf-8') as stream:
             stream.write(json.dumps(trace,allow_nan=False)+'\n')
 
@@ -96,7 +99,7 @@ def demo():
     left_home,left_rotation=ik.tcp_pose(READY,station.BASES['left'])
     right_home,right_rotation=ik.tcp_pose(READY,station.BASES['right'])
     def crank_pose(degrees):
-        axis=roll(degrees)
+        axis=roll(g.CRANK_START_DEG+degrees)
         wrist=WristPose(axis@drive_rotation)
         return g.BORE+axis@CRANK_KNOB-.010*wrist.rotation[:,2],wrist
 

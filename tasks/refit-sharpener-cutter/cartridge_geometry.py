@@ -12,8 +12,14 @@ SLEEVE_START_M = -.043
 EAR_ANGLE = 8.
 ENTRY_HALF_ANGLE = 17.
 LOCK_ANGLE = 67.
+CRANK_START_DEG = -67.
 EAR_RADIUS = (.0174,.0220)
 EAR_AXIAL = (.0064,.0098)
+CRANK_BLOCKS = (
+    ('crank_web',(.006,.008,.061),(-.033,0.,-.022),'steel'),
+    ('crank_knob',(.035,.022,.022),(-.043,0.,-.051),'polymer'),
+    ('reference_dot',(.013,.008,.006),(-.033,.010,-.030),'marker'),
+)
 LOOKS = {
     'green': m.Look(m.rgb(.12,.42,.37),roughness=.51),
     'polymer': m.Look(m.rgb(.16,.18,.19),roughness=.79),
@@ -68,20 +74,21 @@ def cartridge():
                for i,a in enumerate((0.,180.)))
     collar_parts=(('black_collar',grip,'polymer'),('ring_pilot',hub,'polymer'),*ears)
     collar_collision=tuple(m.col_hull(f'{name}_contact',part) for name,part,_ in collar_parts)
+    witness = m.box((.001,.005,.006),(-.0195,0.,.019))
+    collar_parts += (('ring_position_mark',witness,'marker'),)
     lock=m.hinge('lock_collar','X',(0.,0.,0.),-7.,76.,collar_parts,collar_collision,parent='cutter_sleeve',mass=.033,
                   friction=.021,damping=.012,effort=.22,armature=1.e-6,inertia=(1.1e-5,9.e-6,9.e-6))
-    crank, crank_col=solids((
-        ('crank_web',(.012,.016,.061),(-.033,0.,-.022),'steel'),
-        ('crank_knob',(.035,.022,.022),(-.043,0.,-.051),'polymer'),
-        ('reference_dot',(.013,.008,.006),(-.033,.010,-.030),'marker'),
-    ))
+    crank, crank_col=solids(CRANK_BLOCKS[:2])
+    paint = CRANK_BLOCKS[2]
+    crank += ((paint[0],m.box(paint[1],paint[2]),paint[3]),)
     shaft=m.cylinder(.006,.104,(.017,0.,0.),axis='x')
     axle=m.hinge('crank','X',(0.,0.,0.),-375.,375.,crank+(('drive_shaft',shaft,'steel'),),
                   crank_col,parent='cutter_sleeve',mass=.066,
                   friction=.026,damping=.018,effort=.36,armature=1.e-6,inertia=(4.e-5,4.e-5,7.e-6))
-    return m.mechanism('mounted_sharpener',BORE,(sleeve,lock,axle),LOOKS,frame,frame_collisions,
+    reference = ('case_position_mark',m.box((.001,.005,.006),(-.0045,-.020,.009)),'marker')
+    return m.mechanism('mounted_sharpener',BORE,(sleeve,lock,axle),LOOKS,frame+(reference,),frame_collisions,
                        yaw_deg=0.,friction=(.55,.38),self_collide=True,
-                       start=(('cutter_sleeve',SLEEVE_START_M),))
+                       start=(('cutter_sleeve',SLEEVE_START_M),('crank',math.radians(CRANK_START_DEG))))
 
 
 def geometric_witness():
