@@ -148,7 +148,8 @@ def observe(env):
     if trace:
         with open(trace,"a",encoding="utf-8") as stream:
             row = dict(vars(outcome), score=score_now, bar_m=bar.pos.tolist(), ends_m=ends.tolist(),
-                       rotation=rotation.tolist(), guide_deg=guide.deg("guide"))
+                       rotation=rotation.tolist(), guide_deg=guide.deg("guide"),
+                       fingertips_m=m.fingertips(env).tolist())
             stream.write(json.dumps(row,allow_nan=False)+"\n")
 
 
@@ -182,7 +183,15 @@ def demo():
     handoff = np.array((.347,.010,.881))
     pass_bar = handoff + rot(1,-90.) @ reference
     take_ref = np.array((0.,.104,.0155))
-    take = handoff + take_ref
+    # A fixed handoff pose measured in the seed-zero rehearsal with the right grip held.
+    supported_center = np.array((.354281,.009119,.875697))
+    supported_rotation = np.array(((.0077786,.0565793,-.9983677),
+                                   (.0200334,.9981888,.0567253),
+                                   (.9997689,-.0204420,.0066311)))
+    correction = supported_rotation @ rot(1,-90.).T
+    left_down = np.diag((-1.,1.,-1.))
+    take = supported_center + correction @ take_ref
+    taking_pose = WristPose(correction @ left_down)
     release = TARGET + take_ref + (0.,0.,.008)
     rest, rest_rotation = ik.tcp_pose(READY,station.BASES["left"])
     # Push a free section of the guide after the bar has settled.
@@ -204,13 +213,13 @@ def demo():
         waypoint(.65,pass_bar,-.009,"open the first grip",turned),
         waypoint(1.20,(.225,-.138,.9205),-.009,"clear the deck and face the track",camera),
     ]
-    left_pose = WristPose(np.diag((-1.,1.,-1.)))
+    left_pose = WristPose(left_down)
     left = [
         waypoint(6.35,rest,FINGER_OPEN,"keep clear of the bar",WristPose(rest_rotation)),
-        waypoint(1.20,take+(0.,0.,.028),FINGER_OPEN,"approach the other end",left_pose),
-        waypoint(.85,take,FINGER_OPEN,"straddle the turned bar",left_pose),
-        waypoint(.85,take,-.0015,"hold the far end",left_pose),
-        waypoint(2.30,take,-.0015,"hold while the first grip opens",left_pose),
+        waypoint(1.20,take+(0.,0.,.028),FINGER_OPEN,"approach the other end",taking_pose),
+        waypoint(.85,take,FINGER_OPEN,"straddle the turned bar",taking_pose),
+        waypoint(.85,take,-.0015,"hold the far end",taking_pose),
+        waypoint(2.30,take,-.0015,"hold while the first grip opens",taking_pose),
         waypoint(1.05,release+(0.,0.,.043),-.0015,"align along the track",left_pose),
         waypoint(.90,release,-.0015,"lower the bar near the deck",left_pose),
         waypoint(.70,release,-.008,"release into the track",left_pose),

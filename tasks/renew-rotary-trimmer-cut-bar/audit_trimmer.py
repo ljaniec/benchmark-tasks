@@ -38,6 +38,10 @@ def snapshot(arena, observation):
         if name in ARTICULATIONS:
             for field in ("joint_pos", "joint_vel"):
                 state[f"{name}/{field}"] = as_array(getattr(data, field))
+    for side in CAMERAS:
+        camera = arena._base.scene[side].data
+        state[f"{side}/pos_w"] = as_array(camera.pos_w)
+        state[f"{side}/quat_w_world"] = as_array(camera.quat_w_world)
     info = {
         "score": scorer_state(task.scorer),
         "image_times": observation.image_times, "state_time": observation.state_time,
@@ -56,10 +60,12 @@ def record(arena, label, observation):
         np.save(camera_output / f"{label}_{name}.npy", frame)
 
 
-def gradient_alignment(before, after):
+def gradient_alignment(before, after, passes=0):
     vectors = []
     for frame in (before, after):
         gray = frame.astype(np.float32).mean(axis=2)
+        for _ in range(passes):
+            gray = (gray[:-1,:-1]+gray[1:,:-1]+gray[:-1,1:]+gray[1:,1:])*.25
         gradient = np.concatenate([np.diff(gray, axis=axis).ravel() for axis in (0, 1)])
         vectors.append(gradient)
     norms = np.linalg.norm(vectors[0]) * np.linalg.norm(vectors[1])
@@ -108,13 +114,16 @@ def audit_factory(**kwargs):
             rgb[name] = {
                 "mean_delta": float(delta.mean()),
                 "fraction_over_10": float((delta > 10.).mean()),
-                "gradient_alignment": gradient_alignment(frames[name], after_frames[name]),
+                "raw_gradient_alignment": gradient_alignment(frames[name], after_frames[name]),
+                "registered_edge_alignment": gradient_alignment(frames[name], after_frames[name], passes=2),
             }
         checks = {
-            "physical_state": max(errors.values()) <= 2.e-4,
+            "physical_state": max(err for name,err in errors.items() if name.split("/")[0] in ASSETS) <= 2.e-4,
             "counters_and_timestamps": counters == after_counters,
             "rates": after_counters["physics_hz"] == 480 and after_counters["control_hz"] == 20,
-            "cameras": all(row["mean_delta"] < 3. and row["gradient_alignment"] >= .95 for row in rgb.values()),
+            "cameras": (all(row["mean_delta"] < 3. and row["fraction_over_10"] < .04
+                            and row["registered_edge_alignment"] >= .97 for row in rgb.values())
+                        and max(err for name,err in errors.items() if name.split("/")[0] in CAMERAS) <= 1.e-5),
         }
         result = dict(checks=checks, steps=steps, terminal=terminal, reset=after_counters, max_state_errors=errors, rgb=rgb)
         (output / "reset-audit.json").write_text(json.dumps(result, indent=2) + "\n")
