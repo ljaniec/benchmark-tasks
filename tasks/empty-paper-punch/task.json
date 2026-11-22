@@ -1,0 +1,20 @@
+{
+  "title": "Empty the scraps from a paper punch and secure the cover",
+  "category": "Societal relatability",
+  "keywords": [
+    "office",
+    "bimanual",
+    "hinged cover",
+    "snap latch",
+    "containment"
+  ],
+  "instruction": "Empty the paper scraps into the waste tray. Close the punch's bottom cover while holding it, then leave it upright on its starting pad.",
+  "context": "Emptying a two-hole punch keeps paper scraps off a shared desk. The task tests keeping the punch steady while opening its waste cover, catching the loose scraps in a tray, and securing the cover for the next use.",
+  "setup": "The station desk is 747.5 mm high. With x away from the robot and y to its left, the steel and plastic 270 g punch stands upright at x = 285 mm and y = 120 mm, inside a taped outline. The body is approximately 100 mm wide, 70 mm tall and 81 mm deep, with a projecting plastic release. The hinged cover contains 48 cardstock disks, each 5.5 mm in diameter and 0.38 mm thick. The empty plastic waste tray is centred at x = 350 mm and y = -40 mm. Its interior is 220 by 190 mm, with a 26 mm rim above its floor.",
+  "scoring": "Judge the released result after 0.5 s of stillness with both grippers at least 35 mm from the punch and the disks. All original disks must be in the tray or the punch. Count a disk when its centre is within the inner walls and below the rim. Give 0.25 for 24 to 47 disks in the tray and 0.5 for all 48. Give 1.0 if all 48 are in the tray, the closed cover stays within 2 degrees of shut with the release button within 0.35 mm of its initial position for 0.5 s at least 45 mm above the desk, the holding hand stays at least 6 mm and the other hand at least 35 mm clear of the cover during that check, and the punch finishes within 5 degrees of upright and 18 mm of its starting centre. Give 0.0 for all other outcomes or if the tool is damaged or a part leaves the workspace.",
+  "run_limit": "600 control steps (30 seconds at 20 Hz)",
+  "reset_notes": "Empty the tray and clear the desk. Load the same 48 disks into the closed punch and return it upright to the marked centre with the hinge along the y axis. The simulation uses two fixed layers with seed 0 and zero layout jitter.",
+  "fidelity": "The rigid punch follows the dimensions and mass of a compact two-hole punch. Its unpowered hinge and sprung clip represent the folding plastic cover. The clip geometry and stiffness are estimates. The upper lever stays in its resting position. Cardstock disks are rigid. The tray's collision backing extends below its visible floor to improve thin-disk contacts at 480 Hz. Robot actions and camera observations run at 20 Hz.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-22VC4N"
+}
