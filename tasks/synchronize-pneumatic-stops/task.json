@@ -1,0 +1,19 @@
+{
+  "title": "Synchronize two pneumatic stops in a robot workcell",
+  "category": "Impact on AI timelines",
+  "keywords": [
+    "pneumatic diagnostics",
+    "speed control",
+    "timed feedback",
+    "machine setup"
+  ],
+  "instruction": "Run the test cycle. Adjust and lock the slow stop's speed control, then show that the two stops finish together twice.",
+  "context": "Two stops on a workcell fixture must arrive together before the next machine action. The robot diagnoses the slower branch from the flags in motion, adjusts its original flow control and repeats the functional test after relocking it.",
+  "setup": "Mount two guarded 32 mm bore, 80 mm stroke aluminum pneumatic cylinders in parallel. Give each a rigid colored flag, a finish mark and a separate 6 mm tube and meter-out valve. The reference valve is protected. The adjustable valve has a 12 mm cap with 1.4 mm lock travel. Set the adjustable valve half a turn below the reference. Both rods start retracted. Place the test button outside the rod sweep.",
+  "scoring": "Award 0.25 for a completed cycle with arrival times within 0.20 s of each other, and 0.5 for one within 0.10 s. Award 1.0 after two consecutive cycles within 0.10 s and 0.5 s with the rods back home and the cap still locked. The cap must stay locked during each cycle. Each flag center must reach within 3 mm of its 80 mm finish mark in 0.8 to 1.5 s. Touching a guarded moving part or modifying the reference branch earns zero.",
+  "run_limit": "410 control steps (20.5 seconds at 20 Hz)",
+  "reset_notes": "Restore both rods to their home marks, leave the adjustable cap locked at the original slower setting, and release the test button. Restore the robot joints and velocities, cycle history and three camera buffers.",
+  "fidelity": "The real push-lock cap and test button are actuated through contacts. A guarded pair of force-limited native sliders represents the cylinder motion. The dial controls speed through a steady-flow estimate from the manufacturer's related valve curve. The cap spline and exact stroke timings are simulation approximations.",
+  "scores": "Dream-1 run 0.00. Scripted demo 1.00.",
+  "media": "M-KXZWST"
+}
