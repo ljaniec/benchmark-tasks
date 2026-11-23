@@ -1,0 +1,19 @@
+{
+  "title": "Stop a feeder from sending two carton blanks at once",
+  "category": "Impact on jobs",
+  "keywords": [
+    "feed setup",
+    "packaging",
+    "sheet separation",
+    "functional verification"
+  ],
+  "instruction": "Adjust the separator to feed one blank at a time. Press the test button and confirm that both blanks feed through separately.",
+  "context": "Operators adjust friction feeders when changing stock or correcting a double feed. The separator holds the upper blank while the lower one moves, so a packing or finishing line receives one blank at a time.",
+  "setup": "Bolt the 322 × 137 mm steel feeder to a 1,100 × 1,300 mm wood worktop. Install five rubber rollers, each 36 × 84 mm, the 137 × 119 mm clear polycarbonate guard, the 50 mm winged separator screw and 26 mm spring-loaded test button. Set the 9.9 mm wide reset gap. Stack two 95 × 85 × 4.2 mm chipboard blanks flat and against the loading stop with their front edges aligned. The lower blank has a cyan edge mark and the top blank has a cream one. Keep the drive stopped. The README specifies the mounting and exit marks.",
+  "scoring": "Award 0.25 once the bottom front crosses the exit mark and the top stays at the gate until the bottom rear reaches the entry witness. Award 0.5 when the top crosses that exit at least 0.60 s later. Award 1.0 when both remain past the separator for 0.5 s after the cycle stops. A double feed, moving the stock by hand during the test, leaving the station or a tip-over above 15° earns zero. Start the test with both original blanks aligned.",
+  "run_limit": "330 control steps (16.5 seconds at 20 Hz)",
+  "reset_notes": "Return the wing screw to the wide reset mark, restore both original blanks to the aligned infeed stop, and release the test button. Stop the rollers and reset the robot poses, velocities and camera buffers.",
+  "fidelity": "Driven rollers physically advance two original rigid chipboard blanks through a real separating gap. The wing screw and gate share a native mechanical constraint. Wide and tight openings reproduce double feeding and blockage. The frame, low-speed test cycle and rigid stock represent a compact training feeder.",
+  "scores": "Dream-1 run 0.00. Scripted demo 1.00.",
+  "media": "M-YN7J98"
+}
