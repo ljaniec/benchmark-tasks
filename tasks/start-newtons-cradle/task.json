@@ -1,0 +1,20 @@
+{
+  "title": "Start a Newton's cradle: lift the end ball on taut strings and let it go so only the far ball swings out",
+  "category": "Societal relatability",
+  "keywords": [
+    "Newton's cradle",
+    "desk toy",
+    "constrained motion",
+    "clean release",
+    "momentum transfer"
+  ],
+  "instruction": "Start the Newton's cradle: lift the ball nearest you out along its swing with its strings taut, and let it go so that only the ball at the far end swings out. Don't touch the other balls.",
+  "context": "Newton's cradles are the classic executive desk toy and a standard classroom physics demonstration that most people have seen. Starting one cleanly means moving a ball along its arc on two strings, 1 mm from its neighbour, and letting it go from rest; a jerky lift, a push or a twisted release sets several balls swinging.",
+  "setup": "Origin on the floor midway between the two pedestal centres; x forward, y left. Two YAM arms on 750 mm pedestals at y = +/-305 mm. Table: wooden, 500 x 600 mm top, 760 mm high, centred at x = 520 mm, y = 0. Newton's cradle (a large desk cradle, 0.8 kg, standing loose on the table), centred on the table with its row of balls running straight ahead (along x): black wooden plinth 260 x 180 x 20 mm; chrome-plated steel frame of 6 mm rods, two end frames at x = 398 and 642 mm (each two legs rising from 90 mm either side of the centre line at the plinth to a crossbar) joined by two rails along x at y = +/-45 mm, 940 mm above the floor. Five 25 mm chrome steel balls, 64 g each, centres 822.5 mm above the floor (30 mm above the plinth's top at their lowest point) at x = 468, 494, 520, 546 and 572 mm, y = 0, so neighbours hang 1 mm apart. Each ball hangs from the two rails by two 0.6 mm nylon strings, 114 mm long, in a V from the rail points beside its centre to the top of the ball, so it swings only along the row. Ball 1 is the ball nearest the robot (x = 468 mm); ball 5 is at the far end. All balls hang still at the start. Nothing else is in the scene.",
+  "scoring": "Angles are each ball's swing from hanging straight down, along the row (video against a protractor card behind the cradle). 0.25 if, while the robot holds ball 1, ball 1 is swung at least 20 degrees towards the robot with both strings taut (neither sagging 1 cm or more; in simulation, its centre within 2.5 mm of its swing circle) and balls 2-5 within 3 degrees of hanging. 1.0 if the robot then lets go of ball 1 at least 20 degrees out, strings taut, balls 2-5 within 3 degrees and ball 1 still as the fingers come off (under 0.1 m/s: about 3 mm between frames at 30 frames/s), and ball 5's first swing out after that release reaches at least 15 degrees while balls 2-4 stay within 6 degrees; 0.5 if that swing reaches at least 10 degrees. A swing out ends when ball 5 falls 1 degree back from its peak. Touching ball 1 again before then cancels that release; a later release can still score. The highest level reached counts. The trial scores 0 if the robot touches any of balls 2-5, any plinth corner or rail end moves more than 3 mm from its start, or anything leaves the area (x -0.4 to 1.4 m, y -1.4 to 1.0 m, up to 1.6 m high).",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "reset_notes": "Stop all five balls and let them hang still, and put the cradle back on its marks, before each trial.",
+  "fidelity": "Rigid-body PhysX at 960 Hz, 20 Hz control. Strings are inextensible tethers that can go slack (drawn straight, no collision). Default PhysX solves touching balls as one block; 1 mm gaps, wider than the balls' contact distance, make it pass each impact ball to ball, and ball 5 leaves with about 93% of ball 1's speed, as measured on real cradles. Steel: restitution 0.97, friction 0.1. The 0.8 kg frame stands loose on the table. Unmodified YAM arms, 40 N grippers.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-QT7QF8"
+}
