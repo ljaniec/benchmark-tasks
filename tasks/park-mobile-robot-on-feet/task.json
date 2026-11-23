@@ -1,0 +1,19 @@
+{
+  "title": "Park a mobile robot workcell on its feet",
+  "category": "Impact on AI timelines",
+  "keywords": [
+    "mobile robot workcell",
+    "leveling pedals",
+    "load transfer",
+    "bimanual"
+  ],
+  "instruction": "Press the two leveling pedals so the front wheels clear the worktop. Leave the robot base parked on its feet.",
+  "context": "Mobile robot workcells roll between jobs and rest on fixed supports while operating. Deploying the two front feet keeps the loaded station steady before the robot is run.",
+  "setup": "A folded, secured 8.0 kg industrial arm on a 430 × 390 × 6 mm aluminum deck weighs 10.72 kg with the deck. The rear feet and the front two 50 × 25 mm wheels support it at reset. Each front caster has an independent 32 mm support pad 1.2 mm above the worktop. Its steel eccentric cam is operated by a 41 × 40 × 14 mm rectangular pedal grip. The starting layout and part coordinates are in the README.",
+  "scoring": "With hands clear, award 0.25 for one front pad touching the surface with its wheel at least 2 mm above it. Award 0.5 when both corners meet that condition and 1.0 when they hold for 0.5 s. The deck must stay within 6 mm of its starting position. Lifting, holding or blocking the base to create clearance, leaving the parking area or tipping more than 15° earns zero.",
+  "run_limit": "210 control steps (10.5 seconds at 20 Hz)",
+  "reset_notes": "Raise the pedals. Restore the deck to the start position with both front wheels touching and the two front pads 1.2 mm clear. Reset velocities, joints, counters and camera buffers.",
+  "fidelity": "Physical eccentric cams contact the two separate pad followers. Each pad takes load from its wheel and the cam travels beyond center to hold the released state. The cart is a compact mobile lab fixture carrying a fixed robot. Cam geometry, bearing drag and pad compliance are modeling estimates.",
+  "scores": "Dream-1 run 0.00. Scripted demo 1.00.",
+  "media": "M-5K6SHW"
+}
