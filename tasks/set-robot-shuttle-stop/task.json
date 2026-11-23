@@ -1,0 +1,19 @@
+{
+  "title": "Set and clamp a robot shuttle's mechanical stop",
+  "category": "Impact on AI timelines",
+  "keywords": [
+    "robot shuttle",
+    "mechanical stop",
+    "torque verification",
+    "pneumatic slide"
+  ],
+  "instruction": "Set the shuttle stop at the green mark. Tighten the clamp to the green torque band, withdraw the tools, and prove the position twice with the valve.",
+  "context": "Repeatable shuttle endpoints keep payload handoffs at the positions used by robot policies. This setup checks whether the original stop can be set, secured and verified through two powered arrivals before robot trials.",
+  "setup": "A fixed 35 mm wide metal mini-slide has a 30 mm nominal stroke, adjustable metal sleeve and elastic buffer. It starts retracted and vented with its stop at 26.125 mm. A 150 g aluminum block is bolted to the moving yoke. Its two steel drivers begin seated in supported cradles. An indicating wrench shows the 0.20 N·m band. The stroke gauge, 3.0 bar regulator and manual detented 5/3 exhaust-center valve with a 112 mm extended lever are installed on the bench.",
+  "scoring": "Award 0.25 for keyed adjustment and original metal stop contact in the 25.92–26.08 mm band. Award 0.5 after the seated wrench shows 0.18–0.22 N·m for 0.5 s and the tools are withdrawn and the fingertips are at least 44 mm from the moving yoke reference. Award 1.0 after two released advances hold the target for 0.5 s each with an intervening retraction below 5 mm. Backing off the clamp by more than 3 degrees clears tightening and proof credit. Blocking the original stop, exceeding 0.25 N·m on the wrench or activating the valve with a seated tool or fingers in the 44 mm keep-clear region earns zero.",
+  "run_limit": "560 control steps (28 seconds at 20 Hz)",
+  "reset_notes": "Vent and retract the slide, reset the stop to 26.125 mm, loosen the clamp to its free-running datum and back it off a quarter turn. Restore tools, poses, velocities, joints, counters and camera buffers.",
+  "fidelity": "The native screw moves the original metal sleeve through its thread pitch. The compliant buffer, clamping resistance and beam deflection provide separate physical witnesses. The hand valve commands a force-limited slide through the documented pneumatic circuit. Air dynamics, bolt preload and selected exterior details are approximations.",
+  "scores": "Dream-1 run 0.00. Scripted demo 1.00.",
+  "media": "M-KWP6SH"
+}
