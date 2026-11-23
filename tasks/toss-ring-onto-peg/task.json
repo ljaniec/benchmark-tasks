@@ -1,0 +1,20 @@
+{
+  "title": "Play ring toss: land a ring over the centre peg of a toddler's ring toss set from behind a taped line",
+  "category": "Societal relatability",
+  "keywords": [
+    "throwing",
+    "ring toss",
+    "timed release",
+    "out of reach",
+    "toy"
+  ],
+  "instruction": "Play ring toss: pick up the pink ring from the small table and land it over the red centre peg of the ring toss game. Stay behind the blue tape line.",
+  "context": "Ring toss is played at fairs, parties and in back gardens from toddler age. The centre peg is out of both arms' reach, so the ring has to fly there and come down flat enough, and close enough to the peg, to drop over it.",
+  "setup": "Origin on the floor midway between the two pedestal centres; x forward, y left. Two YAM arms on 750 mm pedestals at y = +/-305 mm. Ring toss set (Kiddie Play Ring Toss Game, Amazon ASIN B0CMR4MDYF): white plastic cross base of two 406 x 40 x 22 mm arms with five 25 mm plastic pegs (tips 178 mm above the floor), one red peg in the centre and one 180 mm out along each arm; 192 g without rings. It lies loose on the floor with the centre peg at x = 820 mm, y = -305 mm and its arms along x and y. One of its rings (127 mm outer diameter, 10 mm round plastic tube, 107 mm hole, 16 g, pink) lies flat on a wooden side table (200 x 240 mm top, 840 mm high) centred at x = 330 mm, y = -600 mm; the ring's centre is at x = 260 mm, y = -600 mm, 30 mm in front of the table's back edge (x = 230 mm), so its back hangs 33.5 mm over that edge. Throw line: 50 mm blue painter's tape across the floor, near edge at x = 450 mm. Nothing else is in the scene.",
+  "scoring": "0.25 if the ring touches any part of the set (base or a peg); 0.5 if it touches the centre peg; 1.0 if it ends up around the centre peg (the peg passes through the ring's hole, below the peg's tip) and stays there for 1 s. The highest level reached counts. The trial scores 0 if any part of the robot is past the throw line's near edge (x > 450 mm) at any time, the robot touches the ring after the ring has touched the floor or the set, or the ring or the set leaves the area (x -0.4 to 2.2 m, y -1.4 to 1.0 m, up to 1.8 m high). In simulation a touch is a gap of 1 mm or less.",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "fidelity": "Rigid-body PhysX at 240 Hz, 20 Hz control. The ring is a rigid hoop of 16 overlapping capsules (the real ring flexes slightly); the set is one rigid body loose on the floor. Peg diameter, base section and ring tube are estimated. Plastic friction 0.35/0.30, restitution 0.3; no air drag (small for a 16 g ring at about 2 m/s). Contacts and line crossings are checked every physics step. Unmodified YAM arms, 40 N grippers.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-RQEGV2",
+  "reset_notes": "Put the ring back flat on the side table at its marked position and the set back on its floor marks."
+}
