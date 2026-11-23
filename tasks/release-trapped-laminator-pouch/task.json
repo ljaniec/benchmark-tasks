@@ -1,0 +1,19 @@
+{
+  "title": "Release a trapped pouch from a desktop laminator",
+  "category": "Societal relatability",
+  "keywords": [
+    "laminator",
+    "misfeed recovery",
+    "release lever",
+    "bimanual"
+  ],
+  "instruction": "Hold the laminator’s rear release lever down, grip the folded edge and draw the trapped pouch straight out through the entry slot. Lay it in the marked area. Let the lever return.",
+  "context": "A creased pouch can catch in the rollers of a school or office laminator and block the next job. Keeping the rear release depressed while drawing the pouch straight out clears the feed path with the housing assembled.",
+  "setup": "A cool, disconnected 356 × 158 × 67 mm plastic desktop laminator with two pressure rollers, a 34 × 26 mm rear release paddle and a 240 mm entry sits on a 43 mm rigid polymer riser. The 164 × 117 mm polyester pouch and 148 × 105 mm paper insert start 61 mm inside the entry, with a leading crease caught at the nip. The exposed folded end is centered between two 205 × 8 mm plastic ledges. The released pouch rests inside a marked 162 × 224 mm area.",
+  "scoring": "Give 0.25 for 10 mm of straight withdrawal through the slot with the paddle held at least 11 mm down from the start of the pull. Give 0.5 for withdrawing the pouch at least 10 mm past the entry while still holding the release. Give 1.0 for the whole pouch resting flat within the marked area, the paddle returned within 2°, and both hands at least 20 mm from the pouch, 25 mm from its fold and 40 mm from the paddle for 0.5 seconds. Leaving the work area or damaging a part cancels credit.",
+  "run_limit": "240 control steps (12 seconds at 20 Hz)",
+  "reset_notes": "With the machine cool and unplugged, put the same pouch at the depth and centerline marks with the crease caught and the rear paddle at rest.",
+  "fidelity": "The assembled housing, nip, entry and spring-loaded release represent cold recovery. The pouch uses a 2 mm rigid envelope and a 2.6 mm leading crease. A fixed 24 × 35 × 19 mm envelope represents its exposed folded edge. The lever and rollers transmit physical contact. Internal dimensions and spring rates are estimates. Heating and motorized feeding are outside this trial.",
+  "scores": "Dream-1 run 0.00. Scripted demo 1.00.",
+  "media": "M-SX3ATX"
+}
