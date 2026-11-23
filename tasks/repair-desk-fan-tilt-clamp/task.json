@@ -1,0 +1,20 @@
+{
+  "title": "Restore a sagging desk fan's tilt",
+  "category": "Societal relatability",
+  "keywords": [
+    "desktop fan",
+    "loaded pivot",
+    "bimanual",
+    "friction clamp",
+    "load proof"
+  ],
+  "instruction": "Support the loose fan head, aim it straight ahead, and tighten its tilt knob. Set the test saddle on top of the grille to check the clamp, then take both hands away.",
+  "context": "A loose tilt knob lets the head of a desk fan sag so it blows down at the desk. Supporting the intact head while tightening the side knob restores its aim, and the saddle checks that the setting holds under load.",
+  "setup": "A 2.30 kg, approximately 305 mm tall unplugged desk fan with a 178 mm steel front grille stands upright on its 190 mm base. The head starts 22° down and the side knob is backed off from first contact. The flared rectangular grip is molded polymer. A 175 g rubber-faced metal saddle, 52 × 35 mm at the crown, starts upright to the right and in front of the fan.",
+  "scoring": "0.25 for head pitch from 12° down to 6° up, 0.5 within 2° of straight ahead. Score 1.0 after the released saddle rests on top of the grille for 0.5 s with the head within 2°, both hands at least 28 mm from the grille, 46 mm from the knob center and 47 mm from the saddle center. Give zero for damage, base movement over 26 mm, tipping over 5°, or the saddle leaving its marked workspace.",
+  "run_limit": "355 control steps (17.75 seconds at 20 Hz)",
+  "reset_notes": "Unplug the fan and return both objects to their bench marks. Back off the side knob until the head returns to the downward stop and leave the test saddle upright on the bench.",
+  "fidelity": "Dimensions and mass follow a compact commercial fan. The intact grille has a continuous contact envelope over its wire geometry. A rectangular knob and a reduced Coulomb brake approximate the threaded tilt clamp. The weight is a separate 175 g body. The modeled knob seating stiffness and brake friction are estimates. The fan remains off.",
+  "scores": "Dream-1 run 0.00. Scripted demo 1.00.",
+  "media": "M-W4GSMD"
+}
