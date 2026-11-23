@@ -1,0 +1,20 @@
+{
+  "title": "Score a foosball goal past the keeper: slide the three-man rod to line up, then strike without spinning",
+  "category": "Societal relatability",
+  "keywords": [
+    "foosball",
+    "table football",
+    "rod handle",
+    "wrist roll",
+    "strike"
+  ],
+  "instruction": "Play foosball: using the handle of your three-man rod in front of the right arm, shoot the ball into the opponents' goal past their keeper. Hold the rod only by its handle and don't spin it.",
+  "context": "Foosball tables stand in bars, student unions, offices and family rooms. A shot is made only through the rod: slide it to line a man up behind the ball, then turn it quickly through the ball, without spinning it, which the rules forbid.",
+  "setup": "Origin on the floor midway between the two pedestal centres; x forward, y left. Two YAM arms on 750 mm pedestals at y = +/-305 mm. Foosball table sized like a Tornado Sport, long axis along y, played from its near long side: green 1200 x 750 mm playfield 830 mm above the floor on a wooden cabinet; 20 mm wooden walls (120 mm high at the sides, 100 mm at the ends) with 203 x 75 mm goal mouths and closed goal boxes; near wall's inner face at x = 600 mm, table centred at y = -80 mm, opponents' goal line at y = -680 mm. Eight 15.9 mm steel rods 150 mm apart, axes 70 mm above the playfield; plastic men 22 mm wide with 25 x 20 x 22 mm feet clearing the playfield by 3 mm; robot's team red with 110 mm black handles (32 mm) on the near side, opponents blue. The robot's three-man rod (men 184 mm apart) is at y = -305 mm, centred with men hanging straight down; it slides 95 mm each way, and its handle's centre is at x = 450 mm. The opponents' two-man rod (men 241 mm apart, centred) at y = -455 mm and keeper rod at y = -605 mm (one man 60 mm nearer the robot than the centre line), and all other rods, are held still with men hanging down. Ball: 35 mm white hard plastic foosball, 20 g, at rest at x = 1025 mm (50 mm beyond the middle man), y = -336.5 mm, just in front of the men's feet.",
+  "scoring": "0.25 if the ball moves 50 mm or more towards the opponents' goal; 0.5 if it gets past the opponents' keeper rod; 1.0 if it goes into the opponents' goal. The highest level reached counts. The trial scores 0 if the three-man rod ever turns more than 360 degrees from its starting angle either way (spinning), a robot part touches the ball, any robot part enters the space over the playfield (between the walls, up to 250 mm above it), or the ball leaves the table other than into the goal.",
+  "run_limit": "400 steps (20 seconds at 20 Hz)",
+  "fidelity": "Rigid-body PhysX at 240 Hz, 20 Hz control. No opponent: their rods and the robot's other rods are held still. The active rod slides and turns on an ideal bearing with light damping; drawn shafts have no collision. Men are boxes and the handle a capsule; ball restitution 0.5, plastic friction 0.30/0.25, no rolling resistance. Playfield 40 mm higher than a Tornado Sport so the handle is in reach. Unmodified YAM arms, 40 N grippers.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-EUQ44B",
+  "reset_notes": "Put the ball back on its mark and centre the three-man rod with its men hanging straight down."
+}
