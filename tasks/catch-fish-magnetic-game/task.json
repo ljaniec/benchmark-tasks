@@ -1,0 +1,20 @@
+{
+  "title": "Play a magnetic fishing game: catch the red fish on the rod's dangling magnet and lift it out of the pond",
+  "category": "Societal relatability",
+  "keywords": [
+    "children's game",
+    "magnetic fishing game",
+    "dangling magnet",
+    "swing damping",
+    "tool use"
+  ],
+  "instruction": "Play the fishing game: pick up the fishing rod and, touching only the rod, catch the red fish on its magnet and lift the fish up out of the pond.",
+  "context": "Magnetic fishing games have been sold as children's games since about 1900 and are still a standard preschool toy. The magnet hangs on a slack cord, so it swings whenever the rod moves; it has to be settled over one 20 mm washer, between other fish it would also pick up.",
+  "setup": "Origin on the floor midway between the two pedestal centres; x forward, y left. Two YAM arms on 750 mm pedestals at y = +/-305 mm. Children's table: wooden, 600 x 800 mm top, 550 mm high, centred at x = 500 mm, y = -300 mm. Pond: round wooden tray, 300 mm inside diameter, 8 mm walls 40 mm above its 6 mm blue-painted floor, centred at x = 560 mm, y = -230 mm. Five flat painted wooden fish (as in Melissa & Doug Catch & Count): 80 x 40 x 12 mm body plus a 25 x 32 mm tail, 23 g, with a 20 mm steel washer glued on the back over the balance point, 9 mm behind the body's centre. They lie flat in the pond: red in the centre, nose pointing 20 degrees left of straight ahead; around it, 105 mm out, centres relative to the pond's centre (x, y; heading): blue (-46, +95 mm; -160 deg), green (+80, +69 mm; 125 deg), yellow (-26, -102 mm; -20 deg), orange (+87, -59 mm; 50 deg). Game box: closed, 200 x 120 x 60 mm, centred at x = 370 mm, y = -560 mm. Rod: flat wooden stick, 280 x 15 x 8 mm, 20 g, last 80 mm painted red (handle), lying flat along x on the box with its handle end at x = 225 mm (45 mm past the box's back edge) and its tip at x = 505 mm. A 200 mm cord runs from the tip to a 16 mm diameter x 8 mm disc magnet (6 g, 2 N pull on a washer at contact) lying on the table at x = 555 mm, y = -560 mm. Nothing else is in the scene.",
+  "scoring": "0.25 if the magnet touches the red fish's washer; 0.5 if the red fish is lifted on the magnet with its lowest point at least 20 mm off the pond's floor; 1.0 if the red fish hangs on the magnet with its lowest point at least 50 mm above the pond's rim, no other fish on the magnet, for 1 s. The highest level reached counts. The trial scores 0 if the robot touches any fish, the magnet or its cord, a fish falls off the table (more than 50 mm below its top), or anything leaves the area (x -0.4 to 1.4 m, y -1.4 to 1.0 m, up to 1.6 m high). In simulation a touch is a gap of 1 mm or less (for the cord, from its drawn surface), and a fish is on the magnet when its washer is within 2 mm of the magnet's face.",
+  "run_limit": "600 steps (30 seconds at 20 Hz)",
+  "reset_notes": "Lay the fish back on their marked spots in the pond, the rod on the box and the magnet on its table mark.",
+  "fidelity": "Rigid-body PhysX at 240 Hz, 20 Hz control. The cord is an inextensible tether that can go slack (drawn, no collision; robot contact with it is detected by queries); the magnet's pull is a force between the magnet and each washer within 25 mm, 2 N at contact falling as (1 + gap/4 mm)^-3. Magnet damping 0.3/s stands in for air drag and cord friction. Fish, rod and tray sizes are estimated. Unmodified YAM arms, 40 N grippers.",
+  "scores": "Dream-1 run: 0.0; demo: 1.0",
+  "media": "M-97CALH"
+}
