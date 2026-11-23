@@ -34,8 +34,8 @@
     "dream_adapter_url": "https://github.com/kairosiann/inspect-robots-dream"
   },
   "reference_geometry": {
-    "gate_manual": "https://manuals.plus/regalo/1164-ew-easy-step-extra-wide-safety-gate-manual",
-    "product": "https://regalo-baby.com/products/easy-step-safety-gate",
-    "note": "Own procedural geometry approximating Regalo Easy Step class dimensions and dual latch procedure; no branded packaging or manufacturer CAD."
+    "rules": "https://www.shuffleboardfederation.com/rules.html",
+    "playfield_build": "https://www.homedepot.com/p/Hampton-Bay-8-ft-L-x-25-in-D-Unfinished-Birch-Solid-Wood-Butcher-Block-Countertop-with-Square-Edge-1003076453/319218744",
+    "note": "Own procedural geometry from the Shuffleboard Federation's sizes for a 9-ft table and regulation weights; no manufacturer CAD."
   }
 }

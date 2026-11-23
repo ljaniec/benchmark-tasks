@@ -23,20 +23,37 @@ Here a 345 g weight is held in the fingers, slid along a board by an arm, and re
 
 ## Scene
 
-- Board: a 9-ft table's playfield, 7 ft 8 in × 20 in (2.337 × 0.508 m) of waxed maple. Its top is 30 in
-  (0.762 m) above the floor. The far end is 2.62 m from the robot's base line.
-- Cradle: 31 in wide and 9 ft long overall, with gutters 100 mm wide along the sides and 200 mm long at
-  each end, 65 mm below the board. A weight that goes off the board drops into them.
+- Board: a 9-ft table's playfield, 7 ft 8 in × 20 in (2.337 × 0.508 m) of finished, waxed hardwood (for real
+  trials, a birch butcher-block countertop cut to size: see Equipment and cost). Its top is 30 in (0.762 m) above
+  the floor. Its near end is 205 mm in front of the robot's pedestals and its far end 2.62 m from the robot's
+  base line.
+- Gutters: 100 mm wide along the sides and 200 mm long at each end, 65 mm below the board (31 in wide and 9 ft
+  long overall). A weight that goes off the board drops into them and scores 0; for real trials any tray or
+  padded catch will do.
 - Lines: painted strips 6 mm wide, drawn only (they have no thickness the weight can feel):
   - the single foul line across the middle of the board, as on 9, 12 and 14 ft tables;
   - at each end, the 3-line 6 in and the 2-line 12 in from the end.
-  The far zones carry three, two and one red dots for their points.
+  The far zones carry three, two and one red dots for their points. On the real board, use 6 mm tape or paint.
 - Weight: a chrome-plated steel puck 2 5/16 in across (58.7 mm) and 0.75 in (19.05 mm) high, with a red
   plastic cap 55 mm across and 13 mm high. It weighs 345 g, with its centre of mass 11.6 mm above its base.
   It starts at x = 0.315 m on the board's centre line (y = −0.305 m), straight ahead of the right arm,
   35 mm from the near end of the playfield.
 - Robot: two unmodified YAM arms on 750 mm pedestals at x = 0, y = ±0.305 m, with 40 N parallel grippers.
-  The cradle's near end is 5 mm in front of the pedestals.
+
+## Equipment and cost
+
+A championship table is not needed: only the playfield's size, flatness and speed matter, and these can be built
+for a few hundred dollars.
+- Playfield: a Hampton Bay 8 ft × 25 in × 1.5 in unfinished birch butcher-block countertop, $274 at Home Depot
+  (98 in long). Cut it to 7 ft 8 in (92 in) and rip it to 20 in; sand to 220 grit and seal with three coats of
+  polyurethane; tape or paint the lines.
+- Two sawhorses (or a sturdy bench) that hold its top level at 30 in, straight ahead of the right arm. The
+  simulation draws a table frame and a wooden cradle around the playfield; only the playfield and the gutters'
+  depth below it take part in the task.
+- Regulation weights (as in McClure's 2 5/16 in weights with plastic caps) and a can of silicone shuffleboard wax.
+- A tray or padding beside and beyond the board to catch weights that fall off.
+- Nitrile finger cots over the gripper pads, so no wax transfers to the shared rig.
+- A phone that films at 60 fps, and a tape measure.
 
 ## Physics
 
@@ -79,8 +96,9 @@ the weight left the board, whether it was in the air, and whether the hand touch
 
 ## Reset and board speed
 
-Between trials, stand the weight back on the centre line 35 mm from the near end and brush the playfield
-smooth. Before each set of trials, check the board's speed so it matches the simulated friction of 0.02:
+Before the session, slip thin nitrile finger cots over the gripper pads so no wax reaches the shared rig; remove
+them afterwards. Between trials, stand the weight back on the centre line 35 mm from the near end and brush the
+playfield smooth. Before each set of trials, check the board's speed so it matches the simulated friction of 0.02:
 1. Push a weight down the board by hand and film it at 60 fps beside a tape measure on the board.
 2. Read its speed from its positions 1 s apart. It must slow by 0.18 to 0.22 m/s each second.
 3. Sprinkle on silicone shuffleboard wax to make the board faster, or wipe some off to make it slower, and
@@ -114,6 +132,15 @@ GB10 GPU.
 
 The release speed and timing were rehearsed in this scene.
 
+## Robot asset and licences
+
+- The YAM arms (USD, kinematics and wrist cameras) come from the external adapter
+  https://github.com/kairosiann/yam-isaac-lab-arena (revision 0059d02a1a91bc6834c1d0846022891df0c78730), which uses
+  I2RT Robotics' YAM model (upstream commit 120c3c81400171174604e503943f8d1ebc891058). That asset is under the MIT
+  License, Copyright (c) I2RT Robotics; it is not redistributed here, and its upstream `LICENSE.i2rt` must be kept
+  with any copy. The arms are used unmodified. Pinned versions are in `DEPENDENCIES.json`.
+- This task's own code is under the MIT License (`LICENSE`).
+
 ## Sources
 
 - Shuffleboard Federation, official table shuffleboard rules (weight: 2.3125 in across, 0.75 in high,
@@ -129,3 +156,5 @@ The release speed and timing were rehearsed in this scene.
 - Table shuffleboard (silicone wax lowers friction; scoring): https://en.wikipedia.org/wiki/Table_shuffleboard
 - Friction examples: https://www.physicsforums.com/threads/coefficient-of-kinetic-friction-from-shuffleboard-puck-deceleration.199948/
   and https://www.pearson.com/channels/physics/asset/5d26ff16/tabletop-shuffleboard-is-a-popular-pub-game-where-players-slide-pucks-across-a-t
+- Playfield countertop (Hampton Bay 8 ft × 25 in birch butcher block, $274):
+  https://www.homedepot.com/p/Hampton-Bay-8-ft-L-x-25-in-D-Unfinished-Birch-Solid-Wood-Butcher-Block-Countertop-with-Square-Edge-1003076453/319218744
