@@ -1,5 +1,15 @@
 # Robocurve Benchmarking Program: tasks
 
+## A note from the team maintaining this fork
+
+**24 November 2026.** We would decline another Robocurve round on these terms. We estimate that compute, model usage, electricity and engineering time together cost our team hundreds of dollars. At 13:00 Warsaw time, three of our 51 distinct tasks had been accepted, 47 had received final rejections and one was pending. Rejected submissions earn no task award. Their code and designs remain available in public pull requests. [Program guide](https://tasks.robocurve.org/#about)
+
+Our carrom task was closed on its first review. The reviewer cited difficulty reproducing physical trials, but the closing notice cited importance. We asked which finding decided the case and whether using a fixed ramp to check board speed would address it. The reply invoked the five-appeal limit and left that question unanswered. In our mandoline appeal, Robocurve agreed that we had specified how to prepare the carrot and acknowledged tightening its real-food standard during the program. [Carrom decision](https://github.com/robocurve/benchmark-tasks/pull/4030#issuecomment-7121805414) · [Team’s questions](https://github.com/robocurve/benchmark-tasks/pull/4030#issuecomment-7130954114) · [Robocurve’s reply](https://github.com/robocurve/benchmark-tasks/pull/4030#issuecomment-7130973103) · [Mandoline appeal ruling](https://github.com/robocurve/benchmark-tasks/pull/3310#issuecomment-7121711423)
+
+The original call described teams receiving robot arms and running physical evaluations. The final-stage guide put physical testing of accepted tasks in-house and offered an arm kit as an award option at 20 acceptances. We think teams deserve access to hardware while designing the tasks, dated review criteria, and a clear explanation when a fixable setup issue ends a submission. We’ll take that approach in the independent Machinekind and RAMION workshop benchmark. [Original call](https://bounty.robocurve.org/) · [Final-stage guide](https://tasks.robocurve.org/#about)
+
+## Upstream program instructions
+
 Every team submits its tasks to this repository as pull requests. Program details, the review checklist
 and the simulation walkthrough are at https://tasks.robocurve.org.
 
